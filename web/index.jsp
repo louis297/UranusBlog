@@ -7,7 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-  <head>Uranus Blog</title>
+  <head>
+    <title>Uranus Blog</title>
   </head>
   <body>
   Welcome to Uranus Blog
