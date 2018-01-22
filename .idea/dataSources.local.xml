@@ -9,7 +9,6 @@
       <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact" />
       <secret-storage>master_key</secret-storage>
       <user-name>xliu617</user-name>
-      <introspection-schemas>*:information_schema</introspection-schemas>
     </data-source>
     <data-source name="@localhost" uuid="9f3f0297-4eaa-4489-978e-b300eb1a378b">
       <database-info product="MySQL" version="5.7.18" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.44 ( Revision: b3cda4f864902ffdde495b9df93937c3e20009be )">
@@ -19,7 +18,16 @@
       <case-sensitivity plain-identifiers="mixed" quoted-identifiers="upper" />
       <secret-storage>master_key</secret-storage>
       <user-name>root</user-name>
-      <introspection-schemas>*:UranusBlog,information_schema</introspection-schemas>
+    </data-source>
+    <data-source name="xliu617@db.sporadic.nz" uuid="ff82dbee-8d1b-47fb-aa0a-621b9f31f309">
+      <database-info product="MySQL" version="5.7.20-0ubuntu0.16.04.1" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.44 ( Revision: b3cda4f864902ffdde495b9df93937c3e20009be )">
+        <extra-name-characters>#@</extra-name-characters>
+        <identifier-quote-string>`</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>xliu617</user-name>
+      <resolve-scope>xliu617:</resolve-scope>
     </data-source>
   </component>
 </project>
