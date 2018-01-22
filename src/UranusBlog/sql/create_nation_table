@@ -1,6 +1,6 @@
-drop table IF EXISTS `UranusBlog`.`nation`;
+drop table IF EXISTS `nation`;
 
-CREATE TABLE `UranusBlog`.`nation` (
+CREATE TABLE `nation` (
   `abbreviation` VARCHAR(2) NOT NULL,
   `fullname` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`abbreviation`),
