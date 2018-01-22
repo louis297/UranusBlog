@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+    <!--  Question One -->
+    <!--<servlet>-->
+        <!--<servlet-name>question1</servlet-name>-->
+        <!--<servlet-class>ictgradschool.web.assignment04.question1</servlet-class>-->
+        <!--&lt;!&ndash; <init-param>-->
+          <!--<param-name>transaction-directory</param-name>-->
+          <!--<param-value>C:\Users\****\web_assignment_04\web\Transactions\</param-value>-->
+        <!--</init-param> &ndash;&gt;-->
+    <!--</servlet>-->
+
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>question1</servlet-name>-->
+        <!--<url-pattern>/question1</url-pattern>-->
+    <!--</servlet-mapping>-->
+
+   
+</web-app>

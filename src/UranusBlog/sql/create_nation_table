@@ -1,0 +1,9 @@
+drop table IF EXISTS `UranusBlog`.`nation`;
+
+CREATE TABLE `UranusBlog`.`nation` (
+  `abbreviation` VARCHAR(2) NOT NULL,
+  `fullname` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`abbreviation`),
+  UNIQUE INDEX `abbreviation_UNIQUE` (`abbreviation` ASC),
+  UNIQUE INDEX `fullname_UNIQUE` (`fullname` ASC))
+  ENGINE=InnoDB DEFAULT CHARSET=utf8;
