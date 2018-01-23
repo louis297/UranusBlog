@@ -1,6 +1,6 @@
 DROP PROCEDURE IF EXISTS GetUserRole;
 
-DELIMITER //
+DELIMITER ##
 CREATE PROCEDURE GetUserRole(IN userId int(11))
   BEGIN
     SELECT description
@@ -8,5 +8,6 @@ CREATE PROCEDURE GetUserRole(IN userId int(11))
     join `account`
       on role_id = `account`.role
     WHERE `account`.uid = userId;
-  END //
+END ##
+
 DELIMITER ;
