@@ -5,19 +5,53 @@
          version="3.1">
 
     <!--  Question One -->
-    <!--<servlet>-->
-        <!--<servlet-name>question1</servlet-name>-->
-        <!--<servlet-class>ictgradschool.web.assignment04.question1</servlet-class>-->
-        <!--&lt;!&ndash; <init-param>-->
-          <!--<param-name>transaction-directory</param-name>-->
-          <!--<param-value>C:\Users\****\web_assignment_04\web\Transactions\</param-value>-->
-        <!--</init-param> &ndash;&gt;-->
-    <!--</servlet>-->
+    <!-- <init-param>
+          <param-name>transaction-directory</param-name>
+          <param-value>C:\Users\****\web_assignment_04\web\Transactions\</param-value>
+        </init-param> -->
+    <servlet>
+        <servlet-name>index</servlet-name>
+        <servlet-class>UranusBlog.Controller.IndexController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>index</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
 
-    <!--<servlet-mapping>-->
-        <!--<servlet-name>question1</servlet-name>-->
-        <!--<url-pattern>/question1</url-pattern>-->
-    <!--</servlet-mapping>-->
+    <servlet>
+        <servlet-name>main</servlet-name>
+        <servlet-class>UranusBlog.Controller.MainPageController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>main</servlet-name>
+        <url-pattern>/main/*</url-pattern>
+    </servlet-mapping>
 
-   
+    <servlet>
+        <servlet-name>articleView</servlet-name>
+        <servlet-class>UranusBlog.Controller.ArticleViewController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>articleView</servlet-name>
+        <url-pattern>/article/view/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>articleEdit</servlet-name>
+        <servlet-class>UranusBlog.Controller.ArticleModifyController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>articleEdit</servlet-name>
+        <url-pattern>/article/edit/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>selfManagement</servlet-name>
+        <servlet-class>UranusBlog.Controller.UserSelfManagmentController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>selfManagement</servlet-name>
+        <url-pattern>/user/manage/*</url-pattern>
+    </servlet-mapping>
+
 </web-app>

@@ -1,7 +1,7 @@
 drop table IF EXISTS `comment`;
 
 CREATE TABLE `comment` (
-  `comment_id` int(11) NOT NULL,
+  `comment_id` int(11) NOT NULL AUTO_INCREMENT,
   `article_id` int(11) NOT NULL,
   `author` int(11) NOT NULL,
   `content` longtext NOT NULL,
