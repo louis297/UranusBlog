@@ -48,9 +48,9 @@ public class LoginController extends HttpServlet {
                 stmt.setString(1, userName);
                 stmt.setString(2, password);
                 try (ResultSet r = stmt.executeQuery()) {
-                    if (r != null){
-                        authorized=false;
-                    }
+                        if (r != null){
+                            authorized=false;
+                        }
                     while (r.next()){
                         String requestUserName= r.getString (2);
                         String requestPassword= r.getString (3);
