@@ -9,6 +9,7 @@ CREATE TABLE `article` (
   `modified_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `post_time` datetime DEFAULT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1',
+  `private` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`article_id`),
   KEY `author_idx` (`author`),
   CONSTRAINT `author` FOREIGN KEY (`author`) REFERENCES `account` (`uid`) ON DELETE NO ACTION ON UPDATE NO ACTION
