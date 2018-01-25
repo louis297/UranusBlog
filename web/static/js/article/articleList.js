@@ -15,7 +15,6 @@ function getArticleList(all) {
             //     var single={};
             //     single.title = allData[i].title
             //     single.content = allData[i].content;
-            //     // todo: if not all get author name from session
             //     if(all) {
             //         single.author = allData[i].authorName;
             //     }
