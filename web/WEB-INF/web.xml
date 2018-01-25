@@ -105,7 +105,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>articleView</servlet-name>
-        <url-pattern>/article/view/*</url-pattern>
+        <url-pattern>/articleView</url-pattern>
     </servlet-mapping>
 
 
