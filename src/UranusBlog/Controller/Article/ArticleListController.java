@@ -1,5 +1,6 @@
 package UranusBlog.Controller.Article;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import javax.servlet.ServletException;
@@ -69,28 +70,10 @@ public class ArticleListController extends HttpServlet {
                         if (r == null) {
                             articlesReturned = false;
                         }
-                        JSONObject jsonObject = new JSONObject();
+                        JSONArray jsonArray = constructJSON(r);
+                        out.print(jsonArray);
+                        articlesReturned = true;
 
-                        while (r.next()) {
-                            String title = r.getString(3);
-                            String content = r.getString(4);
-                            String created_time = r.getString(5);
-                            String modified_time = r.getString(6);
-                            String post_time = r.getString(7);
-                            String isPrivate = r.getString(9);
-                            String authorName = r.getString(10);
-
-                            jsonObject.put("title", title);
-                            jsonObject.put("content", content);
-                            jsonObject.put("created_time", created_time);
-                            jsonObject.put("modified_time", modified_time);
-                            jsonObject.put("post_time", post_time);
-                            jsonObject.put("isPrivate", isPrivate);
-                            jsonObject.put("authorName", authorName);
-
-                            out.print(jsonObject);
-                            articlesReturned = true;
-                        }
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -107,29 +90,10 @@ public class ArticleListController extends HttpServlet {
                         if (r == null) {
                             articlesReturned = false;
                         }
+                        JSONArray jsonArray = constructJSON(r);
+                        out.print(jsonArray);
+                        articlesReturned = true;
 
-                        JSONObject jsonObject = new JSONObject();
-
-                        while (r.next()) {
-                            String title = r.getString(3);
-                            String content = r.getString(4);
-                            String created_time = r.getString(5);
-                            String modified_time = r.getString(6);
-                            String post_time = r.getString(7);
-                            String isPrivate = r.getString(9);
-                            String authorName = r.getString(10);
-
-                            jsonObject.put("title", title);
-                            jsonObject.put("content", content);
-                            jsonObject.put("created_time", created_time);
-                            jsonObject.put("modified_time", modified_time);
-                            jsonObject.put("post_time", post_time);
-                            jsonObject.put("isPrivate", isPrivate);
-                            jsonObject.put("authorName", authorName);
-
-                            out.print(jsonObject);
-                            articlesReturned = true;
-                        }
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -143,6 +107,33 @@ public class ArticleListController extends HttpServlet {
         if (!articlesReturned) {
             out.println("<p> that didn't work </p>");
         }
+    }
+
+    private JSONArray constructJSON(ResultSet r) throws SQLException {
+        JSONArray jsonArray = new JSONArray();
+
+        while (r.next()) {
+            JSONObject jsonSingle = new JSONObject();
+
+            String title = r.getString(3);
+            String content = r.getString(4);
+            String created_time = r.getString(5);
+            String modified_time = r.getString(6);
+            String post_time = r.getString(7);
+            String isPrivate = r.getString(9);
+            String authorName = r.getString(10);
+
+            jsonSingle.put("title", title);
+            jsonSingle.put("content", content);
+            jsonSingle.put("created_time", created_time);
+            jsonSingle.put("modified_time", modified_time);
+            jsonSingle.put("post_time", post_time);
+            jsonSingle.put("isPrivate", isPrivate);
+            jsonSingle.put("authorName", authorName);
+
+            jsonArray.add(jsonSingle);
+        }
+        return jsonArray;
     }
 }
 
