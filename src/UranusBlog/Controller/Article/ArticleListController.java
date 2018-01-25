@@ -29,8 +29,8 @@ public class ArticleListController extends HttpServlet {
 //        int usersArticlesOnly = Integer.parseInt(req.getParameter("own"));
 //        int start = Integer.parseInt(req.getParameter("start"));
 //        int amount = Integer.parseInt(req.getParameter("amount"));
-        int userID = 2;
-        int usersArticlesOnly = 0;
+        int userID = 1;
+        int usersArticlesOnly = 1;
         int start = 0;
         int amount = 5;
 
@@ -58,18 +58,44 @@ public class ArticleListController extends HttpServlet {
                     stmt.setInt(1, userID);
                     stmt.setInt(2, start);
                     stmt.setInt(3, amount);
+                    System.out.println(stmt);
                     try (ResultSet r = stmt.executeQuery()) {
 
-                        if (r != null) {
+                        if (r == null) {
                             articlesReturned = false;
                         }
+                        out.print("\'[");
                         while (r.next()) {
+//                            String title = r.getString(3);
+//                            String content = r.getString(4);
+//                            out.println("<h1>" + title + "</h1><br>");
+//                            out.println("<p>" + content + "</p>");
                             String title = r.getString(3);
                             String content = r.getString(4);
-                            out.println("<h1>" + title + "</h1><br>");
-                            out.println("<p>" + content + "</p>");
+                            String created_time = r.getString(5);
+                            String modified_time = r.getString(6);
+                            String post_time = r.getString(7);
+                            String isPrivate = r.getString(9);
+                            String authorName = r.getString(10);
+
+                            StringBuffer jsonFormat = new StringBuffer();
+                            jsonFormat.append("{");
+                            jsonFormat.append("\"title\":\"" + title + "\",");
+                            jsonFormat.append("\"content\":\"" + content + "\",");
+                            jsonFormat.append("\"created_time\":\"" + created_time + "\",");
+                            jsonFormat.append("\"modified_time\":\"" + modified_time + "\",");
+                            jsonFormat.append("\"post_time\":\"" + post_time + "\",");
+                            jsonFormat.append("\"private\":\"" + isPrivate + "\",");
+                            jsonFormat.append("\"authorName\":\"" + authorName + "\"");
+
+
+                            jsonFormat.append("},");
+                            out.println(jsonFormat.toString());
                             articlesReturned = true;
+
+
                         }
+                        out.print("]\'");
                     } catch (SQLException e) {
                         e.printStackTrace();
 
@@ -84,7 +110,7 @@ public class ArticleListController extends HttpServlet {
                     stmt.setInt(3, amount);
                     try (ResultSet r = stmt.executeQuery()) {
 
-                        if (r != null) {
+                        if (r == null) {
                             articlesReturned = false;
                         }
                         out.print("\'[");
