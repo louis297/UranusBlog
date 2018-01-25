@@ -76,9 +76,10 @@ public class ArticleViewController extends HttpServlet {
                     e.printStackTrace();
                 }
             } else if (usersArticlesOnly == 0) {
-                try (PreparedStatement stmt = conn.prepareStatement("call GetArticleListAll(?,?)")) {
-                    stmt.setInt(1, start);
-                    stmt.setInt(2, amount);
+                try (PreparedStatement stmt = conn.prepareStatement("call GetArticleListAll(?,?,?)")) {
+                    stmt.setInt(1, userID);
+                    stmt.setInt(2, start);
+                    stmt.setInt(3, amount);
                     try (ResultSet r = stmt.executeQuery()) {
 
                         if (r != null) {
