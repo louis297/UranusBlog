@@ -26,11 +26,11 @@ public class ArticleListController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 //        int userID = Integer.parseInt(req.getParameter("userID"));
-//        int usersArticlesOnly = Integer.parseInt(req.getParameter("own"));
+        boolean usersArticlesOnly = Boolean.parseBoolean(req.getParameter("own"));
 //        int start = Integer.parseInt(req.getParameter("start"));
 //        int amount = Integer.parseInt(req.getParameter("amount"));
         int userID = 1;
-        int usersArticlesOnly = 1;
+//        int usersArticlesOnly = 1;
         int start = 0;
         int amount = 5;
 
@@ -53,7 +53,7 @@ public class ArticleListController extends HttpServlet {
         dbProps.setProperty("password", "123");
         try (Connection conn = DriverManager.getConnection(dbProps.getProperty("url"), dbProps.getProperty("user"), dbProps.getProperty("password"))) {
 
-            if (usersArticlesOnly == 1) {
+            if (usersArticlesOnly) {
                 try (PreparedStatement stmt = conn.prepareStatement("call GetArticleListOwn (?,?,?)")) {
                     stmt.setInt(1, userID);
                     stmt.setInt(2, start);
@@ -76,7 +76,6 @@ public class ArticleListController extends HttpServlet {
                             String modified_time = r.getString(6);
                             String post_time = r.getString(7);
                             String isPrivate = r.getString(9);
-                            String authorName = r.getString(10);
 
                             StringBuffer jsonFormat = new StringBuffer();
                             jsonFormat.append("{");
@@ -85,8 +84,8 @@ public class ArticleListController extends HttpServlet {
                             jsonFormat.append("\"created_time\":\"" + created_time + "\",");
                             jsonFormat.append("\"modified_time\":\"" + modified_time + "\",");
                             jsonFormat.append("\"post_time\":\"" + post_time + "\",");
-                            jsonFormat.append("\"private\":\"" + isPrivate + "\",");
-                            jsonFormat.append("\"authorName\":\"" + authorName + "\"");
+                            jsonFormat.append("\"private\":\"" + isPrivate + "\"");
+//                            jsonFormat.append("\"authorName\":\"" + authorName + "\"");
 
 
                             jsonFormat.append("},");
@@ -103,7 +102,7 @@ public class ArticleListController extends HttpServlet {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-            } else if (usersArticlesOnly == 0) {
+            } else {
                 try (PreparedStatement stmt = conn.prepareStatement("call GetArticleListAll(?,?,?)")) {
                     stmt.setInt(1, userID);
                     stmt.setInt(2, start);
