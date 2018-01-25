@@ -1,5 +1,7 @@
 package UranusBlog.Controller.Article;
 
+import org.json.simple.JSONObject;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,10 +25,9 @@ public class ArticleViewController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-//        int usersArticlesOnly = Integer.parseInt(req.getParameter("own"));
-//        int start = Integer.parseInt(req.getParameter("start"));
-//        int amount = Integer.parseInt(req.getParameter("amount"));
 
+//        int userID = Integer.parseInt(req.getParameter("userID"));
+//        int aID = Integer.parseInt(req.getParameter("aID"));
         int userID = 2;
         int aID = 20;
 
@@ -50,13 +51,9 @@ public class ArticleViewController extends HttpServlet {
                 stmt.setInt(2, aID);
                 try (ResultSet r = stmt.executeQuery()) {
 
-                    if (r != null && r.next()) {
-                        out.print("\'[");
-//                            String title = r.getString(3);
-//                            String content = r.getString(4);
-//                            out.println("<h1>" + title + "</h1><br>");
-//                            out.println("<p>" + content + "</p>");
+                    JSONObject jsonObject = new JSONObject();
 
+                    if (r != null && r.next()) {
                         String title = r.getString(3);
                         String content = r.getString(4);
                         String created_time = r.getString(5);
@@ -65,23 +62,20 @@ public class ArticleViewController extends HttpServlet {
                         String isPrivate = r.getString(9);
                         String authorName = r.getString(10);
 
-                        StringBuffer jsonFormat = new StringBuffer();
-                        jsonFormat.append("{");
-                        jsonFormat.append("\"title\":\"" + title + "\",");
-                        jsonFormat.append("\"content\":\"" + content + "\",");
-                        jsonFormat.append("\"created_time\":\"" + created_time + "\",");
-                        jsonFormat.append("\"modified_time\":\"" + modified_time + "\",");
-                        jsonFormat.append("\"post_time\":\"" + post_time + "\",");
-                        jsonFormat.append("\"private\":\"" + isPrivate + "\",");
-                        jsonFormat.append("\"authorName\":\"" + authorName + "\",");
-                        jsonFormat.append("\"result\":\"" + "\"success\"" + "\"");
+                        jsonObject.put("title", title);
+                        jsonObject.put("content", content);
+                        jsonObject.put("created_time", created_time);
+                        jsonObject.put("modified_time", modified_time);
+                        jsonObject.put("post_time", post_time);
+                        jsonObject.put("isPrivate", isPrivate);
+                        jsonObject.put("authorName", authorName);
 
+                        out.print(jsonObject);
 
-                        jsonFormat.append("},");
-                        out.println(jsonFormat.toString());
-                        out.print("]\'");
                     } else {
-                        out.print("'{\"result\":\"fail\"}'");
+                        String fail = "fail";
+                        jsonObject.put("result", fail);
+                        out.print(jsonObject);
                         return;
                     }
                 } catch (SQLException e) {
