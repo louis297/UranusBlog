@@ -26,6 +26,16 @@ public class ArticleListController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+
+        int userID = 2;
+//        int usersArticlesOnly = Integer.parseInt(req.getParameter("own"));
+//        int start = Integer.parseInt(req.getParameter("start"));
+//        int amount = Integer.parseInt(req.getParameter("amount"));
+        int usersArticlesOnly = 0;
+        int start = 0;
+        int amount = 5;
+
+
         PrintWriter out = resp.getWriter();
 
         boolean own= Boolean.parseBoolean(req.getParameter("own"));
@@ -45,6 +55,9 @@ public class ArticleListController extends HttpServlet {
             throw new RuntimeException(e);
         }
 
+
+
+//        int aid = Integer.parseInt(req.getParameter("aid"));
 
 
         Properties dbProps = new Properties();
@@ -68,7 +81,16 @@ public class ArticleListController extends HttpServlet {
                         }
                     }
                 }
+
+            } else if (usersArticlesOnly == 0) {
+                try (PreparedStatement stmt = conn.prepareStatement("call GetArticleListAll(?,?,?)")) {
+                    stmt.setInt(1, userID);
+                    stmt.setInt(2, start);
+                    stmt.setInt(3, amount);
+                    try (ResultSet r = stmt.executeQuery()) {
+
             }
+
 
             else if (own==false){
                     try (PreparedStatement stmt = conn.prepareStatement("call GetArticleListAll (?,?)")) {
