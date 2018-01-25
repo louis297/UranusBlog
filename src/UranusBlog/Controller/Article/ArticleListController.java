@@ -87,13 +87,35 @@ public class ArticleListController extends HttpServlet {
                         if (r != null) {
                             articlesReturned = false;
                         }
+                        out.print("\'[");
                         while (r.next()) {
                             String title = r.getString(3);
                             String content = r.getString(4);
-                            out.println("<h1>" + title + "</h1><br>");
-                            out.println("<p>" + content + "</p>");
+                            String created_time = r.getString(5);
+                            String modified_time = r.getString(6);
+                            String post_time = r.getString(7);
+                            String isPrivate = r.getString(9);
+                            String authorName = r.getString(10);
+
+                            StringBuffer jsonFormat = new StringBuffer();
+                            jsonFormat.append("{");
+                            jsonFormat.append("\"title\":\"" + title + "\",");
+                            jsonFormat.append("\"content\":\"" + content + "\",");
+                            jsonFormat.append("\"created_time\":\"" + created_time + "\",");
+                            jsonFormat.append("\"modified_time\":\"" + modified_time + "\",");
+                            jsonFormat.append("\"post_time\":\"" + post_time + "\",");
+                            jsonFormat.append("\"private\":\"" + isPrivate + "\",");
+                            jsonFormat.append("\"authorName\":\"" + authorName + "\"");
+
+
+                            jsonFormat.append("},");
+                            out.println(jsonFormat.toString());
+
+//                            out.println("<h1>" + title + "</h1><br>");
+//                            out.println("<p>" + content + "</p>");
                             articlesReturned = true;
                         }
+                        out.print("]\'");
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
