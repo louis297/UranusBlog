@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/static/css/bootstrap.css">
     <link rel="stylesheet" href="/static/css/main/main.css">
     <script src="static/js/jquery-3.2.1.slim.min.js"></script>
-    <script src="static/js/popper.js"></script>
+    <script src="static/js/popper.min.js"></script>
     <script src="static/js/bootstrap.js"></script>
     <script src="static/js/article/articleList.js"></script>
     <script src="static/js/main.js"></script>
@@ -43,11 +43,12 @@
                 <a class="nav-link disabled" href="#">Disabled</a>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="text" placeholder="Username" aria-label="Username">
-            <input class="form-control mr-sm-2" type="text" placeholder="Password" aria-label="Password">
-            <button class="btn btn-outline-success my-2 my-sm-0" name="login" id="loginButton" type="submit">Login</button>
-            <button class="btn btn-outline-info my-2 my-sm-0" name="register" id="registerButton" type="submit">Register</button>
+        <form class="form-inline my-1 my-lg-0" action="/login" method="post">
+            <input class="form-control mr-sm-1" type="text" name="Username" placeholder="Username" aria-label="Username" id="Username">
+            <input class="form-control mr-sm-1" type="text" name="Password" placeholder="Password" aria-label="Password" id="Password">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="button" id="loginButton">Login</button>
+            <!-- popup modal for register -->
+            <button class="btn btn-outline-info my-2 my-sm-0" type="button" id="registerButton">Register</button>
         </form>
     </div>
 </nav>

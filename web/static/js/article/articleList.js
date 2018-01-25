@@ -1,4 +1,4 @@
-function getArticleList(all){
+function getArticleList(all) {
     if (all) {
         var ret = []
         for (var i = 0; i < 10; i++) {
@@ -6,9 +6,10 @@ function getArticleList(all){
             single.title = "mock title" + i
             single.content = "mock content" + i
             single.author = "mock author" + i
-            single.createTime = Date.now().toString()
-            single.modifiedTime = Date.now().toString()
-            ret.append(single)
+            d = new Date()
+            single.createTime = d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
+            single.modifiedTime = d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
+            ret.push(single)
         }
         return ret
     } else {
