@@ -29,9 +29,9 @@ public class ArticleListController extends HttpServlet {
 //        int usersArticlesOnly = Integer.parseInt(req.getParameter("own"));
 //        int start = Integer.parseInt(req.getParameter("start"));
 //        int amount = Integer.parseInt(req.getParameter("amount"));
-        int usersArticlesOnly = 1;
+        int usersArticlesOnly = 0;
         int start = 0;
-        int amount = 2;
+        int amount = 5;
 
         PrintWriter out = resp.getWriter();
 
@@ -44,7 +44,7 @@ public class ArticleListController extends HttpServlet {
         }
 
 
-        int aid = Integer.parseInt(req.getParameter("aid"));
+//        int aid = Integer.parseInt(req.getParameter("aid"));
 
         Properties dbProps = new Properties();
         dbProps.setProperty("url", "jdbc:mysql://db.sporadic.nz/xliu617");
@@ -77,9 +77,10 @@ public class ArticleListController extends HttpServlet {
                     e.printStackTrace();
                 }
             } else if (usersArticlesOnly == 0) {
-                try (PreparedStatement stmt = conn.prepareStatement("call GetArticleListAll(?,?)")) {
-                    stmt.setInt(1, start);
-                    stmt.setInt(2, amount);
+                try (PreparedStatement stmt = conn.prepareStatement("call GetArticleListAll(?,?,?)")) {
+                    stmt.setInt(1, userID);
+                    stmt.setInt(2, start);
+                    stmt.setInt(3, amount);
                     try (ResultSet r = stmt.executeQuery()) {
 
                         if (r != null) {
