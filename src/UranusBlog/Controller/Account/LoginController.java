@@ -23,9 +23,9 @@ public class LoginController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //super.doPost(req, resp);
         //Testing-> switch back
-        String userName= req.getParameter("userName");
+        String userName= req.getParameter("Username");
         //String userName= "user7";
-        String password= req.getParameter("password");
+        String password= req.getParameter("Password");
         //String password= "password7";
 
         PrintWriter out = resp.getWriter();
@@ -57,7 +57,15 @@ public class LoginController extends HttpServlet {
 
                         if (requestUserName.equals(userName)&&requestPassword.equals(password)){
                             authorized=true;
+                            break;
                         }
+                    }
+
+                    if (authorized){
+                        out.println("<p> Login successfully! </p>");
+                    }
+                    if (!authorized){
+                        out.println("<p> Go away!! </p>");
                     }
                 }
             }
@@ -65,11 +73,5 @@ public class LoginController extends HttpServlet {
             e.printStackTrace();
         }
 
-        if (authorized){
-            out.println("<p> Login successfully! </p>");
-        }
-        if (!authorized){
-            out.println("<p> Go away!! </p>");
-        }
     }
 }
