@@ -25,24 +25,36 @@ public class ArticleModifyController extends HttpServlet {
     //------------------------------------------------------------------------------------------------------------------------------
         //String articleid= req.getParameter("articleid");
         //String userId=req.getParameter("userId");
-        String userId="2";
-        String articleid="2";
+        System.out.println("start");
+        int userId=2;
+        int articleid=2;
+
+        System.out.println("after int delcaration");
+
         String modifiedTitle= "hello louis this is the test for article modifier";
+        String modifiedContent="Hello!";
+        String modifiedPostTime="2018-01-24 20:29:42";
+        int modifiedPrivacy=0;
         //String modifiedTitle= req.getParameter("newtitle");
-        String modifiedContent=req.getParameter("newcontent");
-        String modifiedPostTime=req.getParameter("newposttime");
-        int modifiedPrivacy=Integer.parseInt(req.getParameter("privacy"));
+//        String modifiedContent=req.getParameter("newcontent");
+//        String modifiedPostTime=req.getParameter("newposttime");
+//        int modifiedPrivacy=Integer.parseInt(req.getParameter("privacy"));
+
+        System.out.println("after delcaration ");
+        System.out.println(""+modifiedContent+modifiedPostTime);
     // Test Printer
         PrintWriter out = resp.getWriter();
-
+        System.out.println("a1");
         try (Connection conn1 = DriverManager.getConnection(dbProps.getProperty("url"), dbProps.getProperty("user"), dbProps.getProperty("password"))) {
+            System.out.println("124");
             try (PreparedStatement stmt = conn1.prepareStatement("call GetArticleById (?,?)")) {
-                stmt.setString(1, userId);
-                stmt.setString(2, articleid);
+                stmt.setInt(1, userId);
+                stmt.setInt(2, articleid);
                 try (ResultSet r = stmt.executeQuery()) {
                     while (r.next()) {
                         if (modifiedTitle.equals(null) || modifiedTitle.equals("")){
                             modifiedTitle=r.getString(3);
+                            System.out.println("1");
                         }
                         if (modifiedContent.equals(null) || modifiedContent.equals("")){
                             modifiedContent=r.getString(4);
@@ -60,7 +72,7 @@ public class ArticleModifyController extends HttpServlet {
 
 
         boolean completed=false;
-
+        System.out.println("start 1");
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -71,7 +83,7 @@ public class ArticleModifyController extends HttpServlet {
 
         try (Connection conn2 = DriverManager.getConnection(dbProps.getProperty("url"), dbProps.getProperty("user"), dbProps.getProperty("password"))) {
             try (PreparedStatement stmt = conn2.prepareStatement("call UpdateArticle (?,?,?,?,?)")) {
-                stmt.setString(1,articleid);
+                stmt.setInt(1,articleid);
                 stmt.setString(2,modifiedTitle);
                 stmt.setString(3,modifiedContent);
                 stmt.setString(4,modifiedPostTime);
