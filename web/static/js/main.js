@@ -1,6 +1,7 @@
 var lock = true;
 var currentBlogList = 'all';
 var ARTICLES_PER_PAGE = 10;
+var isLogged = false;
 
 function loginAction(){
     var username = $('#Username').val();
