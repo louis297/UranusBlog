@@ -26,9 +26,9 @@ public class ArticleViewController extends HttpServlet {
 //        int usersArticlesOnly = Integer.parseInt(req.getParameter("own"));
 //        int start = Integer.parseInt(req.getParameter("start"));
 //        int amount = Integer.parseInt(req.getParameter("amount"));
-
+        int aID = Integer.parseInt(req.getParameter("aid"));
         int userID = 2;
-        int aID = 20;
+//        int aID = 20;
 
         PrintWriter out = resp.getWriter();
 

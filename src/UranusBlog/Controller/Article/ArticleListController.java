@@ -115,6 +115,7 @@ public class ArticleListController extends HttpServlet {
         while (r.next()) {
             JSONObject jsonSingle = new JSONObject();
 
+            int article_id = r.getInt(1);
             String title = r.getString(3);
             String content = r.getString(4);
             String created_time = r.getString(5);
@@ -123,13 +124,14 @@ public class ArticleListController extends HttpServlet {
             String isPrivate = r.getString(9);
             String authorName = r.getString(10);
 
+            jsonSingle.put("article_id", article_id);
             jsonSingle.put("title", title);
             jsonSingle.put("content", content);
             jsonSingle.put("created_time", created_time);
             jsonSingle.put("modified_time", modified_time);
             jsonSingle.put("post_time", post_time);
-            jsonSingle.put("isPrivate", isPrivate);
-            jsonSingle.put("authorName", authorName);
+            jsonSingle.put("is_private", isPrivate);
+            jsonSingle.put("author_name", authorName);
 
             jsonArray.add(jsonSingle);
         }
