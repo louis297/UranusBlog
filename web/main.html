@@ -25,17 +25,12 @@
             <li class="nav-item active" id="allBlog">
                 <a class="nav-link" href="#"><span id="allBlogBtn">Discover</span><span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item" id="ownBLog">
+            <li class="nav-item" id="ownBLog" style="display: none;">
                 <a class="nav-link" href="#"><span id="ownBlogBtn">My Blog</span></a>
             </li>
         </ul>
-        <form class="form-inline my-1 my-lg-0" action="/login" method="post">
-            <input class="form-control mr-sm-1" type="text" name="Username" placeholder="Username" aria-label="Username" id="Username">
-            <input class="form-control mr-sm-1" type="text" name="Password" placeholder="Password" aria-label="Password" id="Password">
-            <!--in main.js add ajax call for login-->
-            <button class="btn btn-outline-success my-2 my-sm-0" type="button" id="loginButton">Login</button>
-            <!-- popup modal for register -->
-            <button class="btn btn-outline-info my-2 my-sm-0" type="button" id="registerButton" data-toggle="modal" data-target="#registerModal">Register</button>
+        <form class="form-inline my-1 my-lg-0" id="loginForm" action="/login" method="post">
+
         </form>
     </div>
 </nav>

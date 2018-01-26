@@ -18,6 +18,7 @@ public class LoginController extends HttpServlet {
 //        PrintWriter out = resp.getWriter();
 //        out.println("hello login");
         //   super.doGet(req,resp);
+        // todo: use super.doGet if we don't need to use get method to test
         doPost(req, resp);
     }
 
@@ -66,10 +67,13 @@ public class LoginController extends HttpServlet {
                         JSONObject jsonObject = new JSONObject();
                         jsonObject.put("result", "success");
                         jsonObject.put("username", userName);
+                        req.getSession().setAttribute("is_logged", true);
+                        req.getSession().setAttribute("username", userName);
                         out.println(jsonObject);
                     } else {
                         JSONObject jsonObject = new JSONObject();
                         jsonObject.put("result", "fail");
+                        req.getSession().setAttribute("is_logged", false);
                         out.println(jsonObject);
                     }
                 }

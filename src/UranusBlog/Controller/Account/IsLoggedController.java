@@ -10,7 +10,7 @@ import java.io.IOException;
 public class IsLoggedController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Boolean isLogged = (Boolean) req.getSession().getAttribute("isLogged");
+        Boolean isLogged = (Boolean) req.getSession().getAttribute("is_logged");
         JSONObject jsonObject = new JSONObject();
         if(isLogged != null && isLogged){
             jsonObject.put("is_logged", true);
