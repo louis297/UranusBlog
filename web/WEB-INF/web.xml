@@ -105,18 +105,41 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>articleView</servlet-name>
-        <url-pattern>/article/view/*</url-pattern>
+        <url-pattern>/articleView</url-pattern>
     </servlet-mapping>
 
 
 
+    <!--<servlet>-->
+        <!--<servlet-name>selfManagement</servlet-name>-->
+        <!--<servlet-class>UranusBlog.Controller.Account.AccountEditController</servlet-class>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>selfManagement</servlet-name>-->
+        <!--<url-pattern>/user/manage/*</url-pattern>-->
+    <!--</servlet-mapping>-->
     <servlet>
-        <servlet-name>selfManagement</servlet-name>
-        <servlet-class>UranusBlog.Controller.Account.AccountEditController</servlet-class>
+        <servlet-name>default</servlet-name>
     </servlet>
     <servlet-mapping>
-        <servlet-name>selfManagement</servlet-name>
-        <url-pattern>/user/manage/*</url-pattern>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.html</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.jpg</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.png</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.css</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.js</url-pattern>
     </servlet-mapping>
 
 </web-app>

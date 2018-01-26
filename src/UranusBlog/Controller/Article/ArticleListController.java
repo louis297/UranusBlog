@@ -1,14 +1,17 @@
 package UranusBlog.Controller.Article;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
 import java.util.Properties;
+
 
 /**
  * possible parameters:
@@ -26,18 +29,20 @@ public class ArticleListController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+//        int userID = Integer.parseInt(req.getParameter("userID"));
+//        int start = Integer.parseInt(req.getParameter("start"));
+//        int amount = Integer.parseInt(req.getParameter("amount"));
+//        boolean usersArticlesOnly = (req.getParameter("own");
+
+        boolean usersArticlesOnly = Boolean.parseBoolean(req.getParameter("own"));
+
+        int userID = 2;
+        int start = 0;
+        int amount = 5;
+
         PrintWriter out = resp.getWriter();
 
-        boolean own= Boolean.parseBoolean(req.getParameter("own"));
-        int start= Integer.parseInt(req.getParameter("start"));
-        int amount= Integer.parseInt(req.getParameter("amount"));
-       // HttpSession thisSession= req.getSession();
-        //String userID= thisSession.getAttribute("userid").toString();
-
-        own= true;
-        start=1;
-        amount=3;
-        String userID="1";
+        boolean articlesReturned = false;
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -46,55 +51,89 @@ public class ArticleListController extends HttpServlet {
         }
 
 
+//        int aid = Integer.parseInt(req.getParameter("aid"));
 
         Properties dbProps = new Properties();
         dbProps.setProperty("url", "jdbc:mysql://db.sporadic.nz/xliu617");
         dbProps.setProperty("user", "xliu617");
         dbProps.setProperty("password", "123");
         try (Connection conn = DriverManager.getConnection(dbProps.getProperty("url"), dbProps.getProperty("user"), dbProps.getProperty("password"))) {
-            if (own==true){
-            try (PreparedStatement stmt = conn.prepareStatement("call GetArticleListAll (?,?)")) {
-                stmt.setInt(1, start);
-                stmt.setInt(2, amount);
-                try (ResultSet r = stmt.executeQuery()) {
-                    while (r.next()) {
-                        String title = r.getString(3);
-                        String author = r.getString(2);
-                        String content = r.getString(4);
-                        int privacy = Integer.parseInt(r.getString(9));
-                            if (author.equals(userID)) {
-                                out.println("<p>" + title + content + " </P>");
-                            }
-                        }
-                    }
-                }
-            }
 
-            else if (own==false){
-                    try (PreparedStatement stmt = conn.prepareStatement("call GetArticleListAll (?,?)")) {
-                        stmt.setInt(1, start);
-                        stmt.setInt(2, amount);
-                        try (ResultSet r = stmt.executeQuery()) {
-                            while (r.next()) {
-                                String title = r.getString(3);
-                                String author = r.getString(2);
-                                String content = r.getString(4);
-                                int privacy = Integer.parseInt(r.getString(9));
-                                if (privacy == 1) {
-                                    if (author.equals(userID)) {
-                                        out.println("<p>" + title + content + " </P>");
-                                    }
-                                } else {
-                                    out.println("<p>" + title + content + " </P>");
-                                }
-                            }
+            if (usersArticlesOnly) {
+                try (PreparedStatement stmt = conn.prepareStatement("call GetArticleListOwn (?,?,?)")) {
+                    stmt.setInt(1, userID);
+                    stmt.setInt(2, start);
+                    stmt.setInt(3, amount);
+                    System.out.println(stmt);
+                    try (ResultSet r = stmt.executeQuery()) {
+
+                        if (r == null) {
+                            articlesReturned = false;
                         }
+                        JSONArray jsonArray = constructJSON(r);
+                        out.print(jsonArray);
+                        articlesReturned = true;
+
+                    } catch (SQLException e) {
+                        e.printStackTrace();
                     }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                try (PreparedStatement stmt = conn.prepareStatement("call GetArticleListAll(?,?,?)")) {
+                    stmt.setInt(1, userID);
+                    stmt.setInt(2, start);
+                    stmt.setInt(3, amount);
+                    try (ResultSet r = stmt.executeQuery()) {
+
+                        if (r == null) {
+                            articlesReturned = false;
+                        }
+                        JSONArray jsonArray = constructJSON(r);
+                        out.print(jsonArray);
+                        articlesReturned = true;
+
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        if (!articlesReturned) {
+            out.println("<p> that didn't work </p>");
+        }
+    }
 
+    private JSONArray constructJSON(ResultSet r) throws SQLException {
+        JSONArray jsonArray = new JSONArray();
 
+        while (r.next()) {
+            JSONObject jsonSingle = new JSONObject();
+
+            String title = r.getString(3);
+            String content = r.getString(4);
+            String created_time = r.getString(5);
+            String modified_time = r.getString(6);
+            String post_time = r.getString(7);
+            String isPrivate = r.getString(9);
+            String authorName = r.getString(10);
+
+            jsonSingle.put("title", title);
+            jsonSingle.put("content", content);
+            jsonSingle.put("created_time", created_time);
+            jsonSingle.put("modified_time", modified_time);
+            jsonSingle.put("post_time", post_time);
+            jsonSingle.put("isPrivate", isPrivate);
+            jsonSingle.put("authorName", authorName);
+
+            jsonArray.add(jsonSingle);
+        }
+        return jsonArray;
     }
 }
+
