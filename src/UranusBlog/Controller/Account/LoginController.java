@@ -1,5 +1,7 @@
 package UranusBlog.Controller.Account;
 
+import org.json.simple.JSONObject;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,28 +17,27 @@ public class LoginController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 //        PrintWriter out = resp.getWriter();
 //        out.println("hello login");
-     //   super.doGet(req,resp);
-        doPost(req,resp);
+        //   super.doGet(req,resp);
+        doPost(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //super.doPost(req, resp);
         //Testing-> switch back
-        String userName= req.getParameter("Username");
+        String userName = req.getParameter("Username");
         //String userName= "user7";
-        String password= req.getParameter("Password");
+        String password = req.getParameter("Password");
         //String password= "password7";
 
         PrintWriter out = resp.getWriter();
-        boolean authorized=false;
+        boolean authorized = false;
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-
 
 
         Properties dbProps = new Properties();
@@ -48,24 +49,28 @@ public class LoginController extends HttpServlet {
                 stmt.setString(1, userName);
                 stmt.setString(2, password);
                 try (ResultSet r = stmt.executeQuery()) {
-                        if (r != null){
-                            authorized=false;
-                        }
-                    while (r.next()){
-                        String requestUserName= r.getString (2);
-                        String requestPassword= r.getString (3);
+                    if (r != null) {
+                        authorized = false;
+                    }
+                    while (r.next()) {
+                        String requestUserName = r.getString(2);
+                        String requestPassword = r.getString(3);
 
-                        if (requestUserName.equals(userName)&&requestPassword.equals(password)){
-                            authorized=true;
+                        if (requestUserName.equals(userName) && requestPassword.equals(password)) {
+                            authorized = true;
                             break;
                         }
                     }
 
-                    if (authorized){
-                        out.println("<p> Login successfully! </p>");
-                    }
-                    if (!authorized){
-                        out.println("<p> Go away!! </p>");
+                    if (authorized) {
+                        JSONObject jsonObject = new JSONObject();
+                        jsonObject.put("result", "success");
+                        jsonObject.put("username", userName);
+                        out.println(jsonObject);
+                    } else {
+                        JSONObject jsonObject = new JSONObject();
+                        jsonObject.put("result", "fail");
+                        out.println(jsonObject);
                     }
                 }
             }
