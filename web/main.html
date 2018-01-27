@@ -12,6 +12,11 @@
     <script src="static/js/main.js"></script>
 </head>
 <body>
+
+<div class="alert alert-danger" style="display:none" id="loginFailedBanner">
+    <strong>Login Failed!</strong> <span id="loginFailedMessage"></span>
+    <span class="float-right" onclick="$('#loginFailedBanner').hide()">X</span>
+</div>
 <!--navbar-->
 <div class="container">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">

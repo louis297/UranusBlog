@@ -1,5 +1,8 @@
 package UranusBlog.Controller.Article;
 
+import UranusBlog.DAO.ArticleDAO;
+import UranusBlog.DB.MySQLDatabase;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,81 +21,79 @@ public class ArticleModifyController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Properties dbProps = new Properties();
-        dbProps.setProperty("url", "jdbc:mysql://db.sporadic.nz/xliu617");
-        dbProps.setProperty("user", "xliu617");
-        dbProps.setProperty("password", "123");
-    //------------------------------------------------------------------------------------------------------------------------------
+        PrintWriter out = resp.getWriter();
+
         //String articleid= req.getParameter("articleid");
         //String userId=req.getParameter("userId");
-        System.out.println("start");
-        int userId=2;
-        int articleid=2;
+        Integer userId=2;
+        Integer articleid=2;
 
         System.out.println("after int delcaration");
 
-        String modifiedTitle= "hello louis this is the test for article modifier";
-        String modifiedContent="Hello!";
-        String modifiedPostTime="2018-01-24 20:29:42";
-        int modifiedPrivacy=0;
+        String title= "hello louis this is the test for article modifier";
+        String content="Hello!";
+        String postTimeStr="2018-01-24 20:29:42";
+        String isPrivateStr="false";
+
+
+        try (ArticleDAO dao = new ArticleDAO(new MySQLDatabase(getServletContext()))) {
+            // 1. check if the user can modify the article
+                // TODO: as above
+
+            // 2. validate the input data
+            if(title == null || title.isEmpty() ||
+                    content == null || content.isEmpty() ||
+                    postTimeStr == null || postTimeStr.isEmpty() ||
+                    isPrivateStr == null || isPrivateStr.isEmpty()){
+                out.print("{result:\"fail\"}");
+                return;
+            }
+
+            Timestamp postTime = Timestamp.valueOf(postTimeStr);
+            boolean modifiedPrivacy= Boolean.parseBoolean(isPrivateStr);
+
+            // 3. do modify
+            dao.updateArticle(articleid, title, content, postTime, modifiedPrivacy);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         //String modifiedTitle= req.getParameter("newtitle");
 //        String modifiedContent=req.getParameter("newcontent");
 //        String modifiedPostTime=req.getParameter("newposttime");
 //        int modifiedPrivacy=Integer.parseInt(req.getParameter("privacy"));
 
-        System.out.println("after delcaration ");
-        System.out.println(""+modifiedContent+modifiedPostTime);
-    // Test Printer
-        PrintWriter out = resp.getWriter();
-        System.out.println("a1");
-        try (Connection conn1 = DriverManager.getConnection(dbProps.getProperty("url"), dbProps.getProperty("user"), dbProps.getProperty("password"))) {
-            System.out.println("124");
-            try (PreparedStatement stmt = conn1.prepareStatement("call GetArticleById (?,?)")) {
-                stmt.setInt(1, userId);
-                stmt.setInt(2, articleid);
-                try (ResultSet r = stmt.executeQuery()) {
-                    while (r.next()) {
-                        if (modifiedTitle.equals(null) || modifiedTitle.equals("")){
-                            modifiedTitle=r.getString(3);
-                            System.out.println("1");
-                        }
-                        if (modifiedContent.equals(null) || modifiedContent.equals("")){
-                            modifiedContent=r.getString(4);
-                        }
-                        if (modifiedPostTime.equals(null) || modifiedPostTime.equals("")){
-                            modifiedContent=r.getString(7);
-                        }
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+//        System.out.println("after delcaration ");
+//        System.out.println(""+modifiedContent+modifiedPostTime);
+//    // Test Printer
+//        PrintWriter out = resp.getWriter();
+//        System.out.println("a1");
+//        try (Connection conn1 = DriverManager.getConnection(dbProps.getProperty("url"), dbProps.getProperty("user"), dbProps.getProperty("password"))) {
+//            System.out.println("124");
+//            try (PreparedStatement stmt = conn1.prepareStatement("call GetArticleById (?,?)")) {
+//                stmt.setInt(1, userId);
+//                stmt.setInt(2, articleid);
+//                try (ResultSet r = stmt.executeQuery()) {
+//                    while (r.next()) {
+//                        if (modifiedTitle.equals(null) || modifiedTitle.equals("")){
+//                            modifiedTitle=r.getString(3);
+//                            System.out.println("1");
+//                        }
+//                        if (modifiedContent.equals(null) || modifiedContent.equals("")){
+//                            modifiedContent=r.getString(4);
+//                        }
+//                        if (modifiedPostTime.equals(null) || modifiedPostTime.equals("")){
+//                            modifiedContent=r.getString(7);
+//                        }
+//                    }
+//                }
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
 
-
-
-        boolean completed=false;
-        System.out.println("start 1");
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-
-
-        try (Connection conn2 = DriverManager.getConnection(dbProps.getProperty("url"), dbProps.getProperty("user"), dbProps.getProperty("password"))) {
-            try (PreparedStatement stmt = conn2.prepareStatement("call UpdateArticle (?,?,?,?,?)")) {
-                stmt.setInt(1,articleid);
-                stmt.setString(2,modifiedTitle);
-                stmt.setString(3,modifiedContent);
-                stmt.setString(4,modifiedPostTime);
-                stmt.setInt(5,modifiedPrivacy);
-                stmt.executeUpdate();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
  }

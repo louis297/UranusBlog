@@ -1,7 +1,15 @@
-#loginButton {
-    margin-right: 5px;
-}
+/*#loginButton {*/
+    /*margin-right: 5px;*/
+/*}*/
 
 .articleBox{
     border: 1px solid black;
+}
+
+
+/* change line for small size screen (when navbar collapse) */
+@media (min-width: 992px){
+    #loginForm div{
+        display: none;
+    }
 }

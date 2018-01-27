@@ -17,11 +17,19 @@ function loginAction(){
         url: '/login',
         method: 'post',
         data: dataStr,
+        dataType: 'json',
         success: function(ret) {
-            console.log(ret);
+            if(ret.result !== 'success'){
+                $('#loginFailedMessage').html("Please check your username and password!")
+                $('#loginFailedBanner').show();
+            } else {
+                $('#loginFailedBanner').hide();
+            }
             isLogged();
         },
         error: function(){
+            $('#loginFailedMessage').html("Network or server issue!")
+            $('#loginFailedBanner').show();
             isLogged();
         }
     })
@@ -30,21 +38,21 @@ function loginAction(){
 function updateLoginForm(success, ret){
     if(success){
         // display username and logout button
-        $('#loginForm').html('<button class="btn btn-outline-success my-2 my-sm-1" type="button" id="manageButton">Account Manage</button>\n' +
-            '            <!-- popup modal for register -->\n' +
-            '            <button class="btn btn-outline-info my-2 my-sm-1" type="button" id="logoutButton" onclick="logoutButtonClicked();">Logout</button>')
+        $('#loginForm').html('<button class="btn btn-outline-success mr-sm-1 my-2 my-sm-1" type="button" id="manageButton">Account Manage</button>\n' +
+            '            <button class="btn btn-outline-danger mr-sm-1 my-2 my-sm-1" type="button" id="logoutButton" onclick="logoutButtonClicked();">Logout</button>')
 
         // display the "my blog" tag
         $('#ownBLog').show();
     } else {
         $('#ownBLog').hide();
         // display login form
-        $('#loginForm').html('<input class="form-control mr-sm-1" type="text" name="Username" placeholder="Username" aria-label="Username" id="Username">\n' +
-            '            <input class="form-control mr-sm-1" type="text" name="Password" placeholder="Password" aria-label="Password" id="Password">\n' +
+        $('#loginForm').html('<input class="form-control mr-sm-1 my-2 my-sm-1" type="text" name="Username" placeholder="Username" aria-label="Username" id="Username">\n' +
+            '            <input class="form-control mr-sm-1 my-2 my-sm-1" type="text" name="Password" placeholder="Password" aria-label="Password" id="Password">\n' +
+            '<div style="width:100%; height=5px;"></div>' +
             '            <!--in main.js add ajax call for login-->\n' +
-            '            <button class="btn btn-outline-success my-2 my-sm-1" type="button" id="loginButton" onclick="loginButtonClicked()">Login</button>\n' +
+            '            <button class="btn btn-outline-success mr-sm-1 my-2 my-sm-1" type="button" id="loginButton" onclick="loginButtonClicked()">Login</button>\n' +
             '            <!-- popup modal for register -->\n' +
-            '            <button class="btn btn-outline-info my-2 my-sm-1" type="button" id="registerButton" data-toggle="modal" data-target="#registerModal">Register</button>');
+            '            <button class="btn btn-outline-info mr-sm-1 my-2 my-sm-1" type="button" id="registerButton" data-toggle="modal" data-target="#registerModal">Register</button>');
     }
 }
 function isLogged(){
@@ -55,7 +63,6 @@ function isLogged(){
         success: function(ret){
             console.log(ret);
             if(ret.is_logged === true){
-                console.log("login success")
                 updateLoginForm(true, ret);
             } else {
                 updateLoginForm(false, ret);
