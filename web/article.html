@@ -3,8 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Article</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/css/article/article.css">
+    <script src="static/js/jquery.min.js"></script>
+    <script src="static/js/popper.min.js"></script>
+    <script src="static/js/bootstrap.js"></script>
+    <script src="static/js/article/article.js"></script>
 </head>
 <body>
-    Article view
+    <div class="container" style="display:none;">
+        <h1 id="title" style="display:none;">Title</h1>
+        <hr />
+        <p>
+            <span id="author" style="display:none;">Author:</span>
+            <span id="modify" style="display:none;">Last Modify:</span>
+        </p>
+        <hr />
+        <p id="content" style="display:none;">
+            Content
+        </p>
+        <hr />
+        <button class="btn btn-primary mr-2 mr-sm-1 my-2 my-sm-1" id="btnModify" style="display:none;">Modify</button>
+        <button class="btn btn-danger mr-2 mr-sm-1 my-2 my-sm-1 " id="btnDelete" style="display:none;">Delete</button>
+    </div>
 </body>
 </html>

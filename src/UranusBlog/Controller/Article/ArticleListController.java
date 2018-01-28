@@ -56,14 +56,12 @@ public class ArticleListController extends HttpServlet {
             }
             JSONArray jsonArray = constructJSON(articles);
             if(jsonArray.isEmpty()){
-                out.print("error!");
+                out.print("{\"result\":\"fail\", \"reason\":\"No article found\"}");
             } else {
                 out.print(jsonArray);
             }
-        } catch (
-                Exception e)
-
-        {
+        } catch (Exception e) {
+            out.print("{\"result\":\"fail\", \"reason\":\"Server error\"}");
             e.printStackTrace();
         }
 

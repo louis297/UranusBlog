@@ -52,7 +52,7 @@ public class ArticleViewController extends HttpServlet {
                 jsonObject.put("authorName", article.getAuthorName());
                 out.print(jsonObject);
             } else {
-                out.print("{result:\"fail\"}");
+                out.print("{\"result\":\"fail\"}");
             }
 
         } catch (SQLException e) {

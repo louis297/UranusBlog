@@ -44,7 +44,7 @@ public class ArticleModifyController extends HttpServlet {
             // 2. check if article exist (since front-end hacking may send invalid articleID information
             Article article = dao.getArticleById(userID, articleID);
             if(article == null){
-                out.print("{result:\"fail\", reason:\"Article does not exist.\"}");
+                out.print("{\"result\":\"fail\", \"reason\":\"Article does not exist.\"}");
                 return;
             }
 
@@ -53,7 +53,7 @@ public class ArticleModifyController extends HttpServlet {
                     content == null || content.isEmpty() ||
                     postTimeStr == null || postTimeStr.isEmpty() ||
                     isPrivateStr == null || isPrivateStr.isEmpty()){
-                out.print("{result:\"fail\", reason:\"Input data is invalid.\"}");
+                out.print("{\"result\":\"fail\", \"reason\":\"Input data is invalid.\"}");
                 return;
             }
 

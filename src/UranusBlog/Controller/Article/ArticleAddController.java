@@ -38,7 +38,7 @@ public class ArticleAddController extends HttpServlet {
                 content == null || content.isEmpty() ||
                 postTimeStr == null || postTimeStr.isEmpty() ||
                 isPrivateStr == null || isPrivateStr.isEmpty()){
-            out.print("{result:\"fail\"}");
+            out.print("{\"result\":\"fail\"}");
             return;
         }
 
@@ -54,13 +54,13 @@ public class ArticleAddController extends HttpServlet {
 
         try (ArticleDAO dao = new ArticleDAO(new MySQLDatabase(getServletContext()))) {
             dao.addArticle(userID, title, content, postTime, isPrivate);
-            out.print("{result:\"success\"}");
+            out.print("{\"result\":\"success\"}");
         } catch (SQLException e) {
             e.printStackTrace();
-            out.print("{result:\"fail\"}");
+            out.print("{\"result\":\"fail\"}");
         } catch (Exception e) {
             e.printStackTrace();
-            out.print("{result:\"fail\"}");
+            out.print("{\"result\":\"fail\"}");
         }
     }
 }

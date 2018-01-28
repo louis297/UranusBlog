@@ -39,10 +39,9 @@ public class ArticleDeleteController extends HttpServlet {
 
         try (ArticleDAO dao = new ArticleDAO(new MySQLDatabase(getServletContext()))) {
             dao.deleteArticle(articleID);
-            out.print("{result:\"success\"}");
-        } catch (SQLException e) {
-            e.printStackTrace();
+            out.print("{\"result\":\"success\"}");
         } catch (Exception e) {
+            out.print("{\"result\":\"fail\", \"reason\":\"Server error\"}");
             e.printStackTrace();
         }
 

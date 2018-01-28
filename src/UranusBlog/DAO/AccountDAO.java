@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.sql.Date;
 import java.util.List;
 
 public class AccountDAO implements AutoCloseable{
@@ -48,6 +47,19 @@ public class AccountDAO implements AutoCloseable{
                 return accounts;
             }
         }
+    }
+
+    public Account login(String username, String password) throws SQLException {
+        try (PreparedStatement stmt = conn.prepareStatement("CALL LoginValidate(?,?)")) {
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            try (ResultSet r = stmt.executeQuery()) {
+                if(r.next()){
+                    return accountFromResultSet(r);
+                }
+            }
+        }
+        return null;
     }
 
     /**
