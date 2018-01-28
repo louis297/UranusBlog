@@ -1,10 +1,10 @@
 DROP PROCEDURE IF EXISTS LoginValidate;
 
 DELIMITER ##
-CREATE PROCEDURE LoginValidate(IN username VARCHAR(45), IN password VARCHAR(45))
+CREATE PROCEDURE LoginValidate(IN Username VARCHAR(45), IN Password VARCHAR(45))
   BEGIN
     SELECT count(*) from `account`
-    WHERE username = username and password = password;
+    WHERE username = Username and password = Password;
   END ##
 
 DELIMITER ;

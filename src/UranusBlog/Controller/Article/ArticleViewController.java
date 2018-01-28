@@ -42,13 +42,14 @@ public class ArticleViewController extends HttpServlet {
             if (article != null) {
                 JSONObject jsonObject = new JSONObject();
                 SimpleDateFormat sdf = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss z");
+                jsonObject.put("article_id", article.getArticleId());
                 jsonObject.put("title", article.getTitle());
                 jsonObject.put("content", article.getContent());
-                jsonObject.put("created_time", sdf.format(article.getCreated_time()));
-                jsonObject.put("modified_time", sdf.format(article.getModified_time()));
-                jsonObject.put("post_time", sdf.format(article.getPost_time()));
-                jsonObject.put("isPrivate", article.getIs_private());
-                jsonObject.put("authorName", article.getAuthor_name());
+                jsonObject.put("created_time", sdf.format(article.getCreatedTime()));
+                jsonObject.put("modified_time", sdf.format(article.getModifiedTime()));
+                jsonObject.put("post_time", sdf.format(article.getPostTime()));
+                jsonObject.put("isPrivate", article.getPrivate());
+                jsonObject.put("authorName", article.getAuthorName());
                 out.print(jsonObject);
             } else {
                 out.print("{result:\"fail\"}");

@@ -76,14 +76,14 @@ public class ArticleListController extends HttpServlet {
 
             JSONObject jsonSingle = new JSONObject();
 
-            jsonSingle.put("article_id", article.getArticle_id());
+            jsonSingle.put("article_id", article.getArticleId());
             jsonSingle.put("title", article.getTitle());
             jsonSingle.put("content", article.getContent());
-            jsonSingle.put("created_time", sdf.format(article.getCreated_time()));
-            jsonSingle.put("modified_time", sdf.format(article.getModified_time()));
-            jsonSingle.put("post_time", sdf.format(article.getPost_time()));
-            jsonSingle.put("is_private", article.getIs_private());
-            jsonSingle.put("author_name", article.getAuthor_name());
+            jsonSingle.put("created_time", sdf.format(article.getCreatedTime()));
+            jsonSingle.put("modified_time", sdf.format(article.getModifiedTime()));
+            jsonSingle.put("post_time", sdf.format(article.getPostTime()));
+            jsonSingle.put("is_private", article.getPrivate());
+            jsonSingle.put("author_name", article.getAuthorName());
 
             jsonArray.add(jsonSingle);
         }
