@@ -22,10 +22,10 @@ public class ArticleDAO implements AutoCloseable{
         this.conn = db.getConnection();
     }
 
-    public List<Comment> getComments(int articleID, int userID) throws SQLException{
+    public List<Comment> getComments(int commentID, int userID) throws SQLException{
         List<Comment> comments = new ArrayList<>();
         try (PreparedStatement stmt = conn.prepareStatement("call GetCommentList(?,?)")) {
-            stmt.setInt(1, articleID);
+            stmt.setInt(1, commentID);
             stmt.setInt(2, userID);
             try (ResultSet rs = stmt.executeQuery()) {
                 while(rs.next()){
@@ -34,6 +34,19 @@ public class ArticleDAO implements AutoCloseable{
             }
         }
         return comments;
+    }
+
+    public Comment getCommentById(int commentID) throws SQLException{
+        try (PreparedStatement stmt = conn.prepareStatement("call GetCommentById (?)")) {
+            stmt.setInt(1, commentID);
+            try (ResultSet r = stmt.executeQuery()) {
+                if(r.next()){
+                    return commentFromResultSet(r);
+                } else {
+                    return null;
+                }
+            }
+        }
     }
 
     public List<Article> getArticles(int userID, int start, int amount, boolean own) throws SQLException {
@@ -111,6 +124,13 @@ public class ArticleDAO implements AutoCloseable{
         }
     }
 
+    public void resumeComment(int commentID) throws SQLException{
+        try (PreparedStatement stmt = conn.prepareStatement("call ResumeComment (?)")) {
+            stmt.setInt(1, commentID);
+            stmt.executeQuery();
+        }
+    }
+
     /**
      * VERY IMPORTANT
      * need validate if the user is the author or the user is admin!
@@ -131,6 +151,13 @@ public class ArticleDAO implements AutoCloseable{
     public void addArticle(int userID, String title, String content, Timestamp postTime, Boolean isPrivate) throws SQLException{
         String query = "call InsertArticle(?,?,?,?,?)";
         modifyArticle(userID, title, content, postTime, isPrivate, query);
+    }
+
+    public void resumeArticle(int articleID) throws SQLException{
+        try (PreparedStatement stmt = conn.prepareStatement("call ResumeArticle (?)")) {
+            stmt.setInt(1, articleID);
+            stmt.executeQuery();
+        }
     }
 
     /**
@@ -162,13 +189,16 @@ public class ArticleDAO implements AutoCloseable{
 
     private Article articleFromResultSet(ResultSet rs) throws SQLException {
         Boolean is_private = rs.getInt(9) == 1;
+        Boolean is_active = rs.getInt(8) == 1;
         return new Article(rs.getInt(1), rs.getInt(2), rs.getString(3),
                 rs.getString(4), rs.getTimestamp(5), rs.getTimestamp(6),
-                rs.getTimestamp(7), is_private, rs.getString(10));
+                rs.getTimestamp(7), is_active, is_private, rs.getString(10));
     }
 
     private Comment commentFromResultSet(ResultSet r) throws SQLException {
-        return new Comment(r.getString(1), r.getTimestamp(2), r.getString(3), r.getString(4));
+        Boolean is_active = r.getInt(3) == 1;
+        return new Comment(r.getString(1), r.getTimestamp(2), is_active,
+                r.getInt(4), r.getString(5), r.getString(6));
     }
 
     @Override

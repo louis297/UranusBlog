@@ -15,17 +15,19 @@ public class Article {
     private Timestamp createdTime;
     private Timestamp modifiedTime;
     private Timestamp postTime;
+    private Boolean isActive;
     private Boolean isPrivate;
     private String authorName;
 
-    public Article(Integer articleId, Integer author_id, String title, String content, Timestamp createdTime, Timestamp modifiedTime, Timestamp postTime, Boolean isPrivate, String authorName) {
+    public Article(Integer articleId, Integer authorId, String title, String content, Timestamp createdTime, Timestamp modifiedTime, Timestamp postTime, Boolean isActive, Boolean isPrivate, String authorName) {
         this.articleId = articleId;
-        this.authorId = author_id;
+        this.authorId = authorId;
         this.title = title;
         this.content = content;
         this.createdTime = createdTime;
         this.modifiedTime = modifiedTime;
         this.postTime = postTime;
+        this.isActive = isActive;
         this.isPrivate = isPrivate;
         this.authorName = authorName;
     }
@@ -86,6 +88,14 @@ public class Article {
         this.postTime = postTime;
     }
 
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
     public Boolean getPrivate() {
         return isPrivate;
     }
@@ -112,6 +122,7 @@ public class Article {
                 ", createdTime=" + createdTime +
                 ", modifiedTime=" + modifiedTime +
                 ", postTime=" + postTime +
+                ", isActive=" + isActive +
                 ", isPrivate=" + isPrivate +
                 ", authorName='" + authorName + '\'' +
                 '}';
