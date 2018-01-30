@@ -8,18 +8,6 @@ function getArticleList(own) {
         success: function(ret) {
             parsedData = [];
             console.log(ret);
-            // allData = JSON.parse(ret);
-            // for(var i=0; i<allData.length; i++){
-            //     var single={};
-            //     single.title = allData[i].title
-            //     single.content = allData[i].content;
-            //     if(all) {
-            //         single.author = allData[i].authorName;
-            //     }
-            //     single.createTime = allData[i].created_time;
-            //     single.modifiedTime = allData[i].modified_time;
-            //     parsedData.push(single)
-            // }
             if(ret.result != 'fail') {
                 updateArticles(ret);
                 lock = false;
@@ -34,7 +22,6 @@ function getArticleList(own) {
             console.log(ret)
         }
     });
-
 }
 
 function updateArticles(articleList){

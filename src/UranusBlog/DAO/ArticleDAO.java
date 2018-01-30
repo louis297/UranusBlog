@@ -2,6 +2,7 @@ package UranusBlog.DAO;
 
 import UranusBlog.DB.Database;
 import UranusBlog.Model.Article;
+import UranusBlog.Model.Comment;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -19,6 +20,20 @@ public class ArticleDAO implements AutoCloseable{
      */
     public ArticleDAO(Database db) throws SQLException {
         this.conn = db.getConnection();
+    }
+
+    public List<Comment> getComments(int articleID, int userID) throws SQLException{
+        List<Comment> comments = new ArrayList<>();
+        try (PreparedStatement stmt = conn.prepareStatement("call GetCommentList(?,?)")) {
+            stmt.setInt(1, articleID);
+            stmt.setInt(2, userID);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while(rs.next()){
+                    comments.add(commentFromResultSet(rs));
+                }
+            }
+        }
+        return comments;
     }
 
     public List<Article> getArticles(int userID, int start, int amount, boolean own) throws SQLException {
@@ -76,6 +91,31 @@ public class ArticleDAO implements AutoCloseable{
      * need validate if the user is the author or the user is admin!
      * the DAO method or SP will not do any validation!
      *
+     * @param commentID
+     * @throws SQLException
+     */
+    public void deleteComment(int commentID) throws SQLException{
+        try (PreparedStatement stmt = conn.prepareStatement("call DeleteComment (?)")) {
+            stmt.setInt(1, commentID);
+            stmt.executeQuery();
+        }
+    }
+
+    public void addComment(int userID, int articleID, String content) throws SQLException{
+        String query = "call InsertArticle(?,?,?)";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, userID);
+            stmt.setInt(2, articleID);
+            stmt.setString(3, content);
+            stmt.executeUpdate();
+        }
+    }
+
+    /**
+     * VERY IMPORTANT
+     * need validate if the user is the author or the user is admin!
+     * the DAO method or SP will not do any validation!
+     *
      * @param articleID
      * @param title
      * @param content
@@ -125,6 +165,10 @@ public class ArticleDAO implements AutoCloseable{
         return new Article(rs.getInt(1), rs.getInt(2), rs.getString(3),
                 rs.getString(4), rs.getTimestamp(5), rs.getTimestamp(6),
                 rs.getTimestamp(7), is_private, rs.getString(10));
+    }
+
+    private Comment commentFromResultSet(ResultSet r) throws SQLException {
+        return new Comment(r.getString(1), r.getTimestamp(2), r.getString(3), r.getString(4));
     }
 
     @Override

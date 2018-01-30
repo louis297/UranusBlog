@@ -146,4 +146,24 @@ public class Account {
     public void setRoleDetail(String roleDetail) {
         this.roleDetail = roleDetail;
     }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", middlename='" + middlename + '\'' +
+                ", email='" + email + '\'' +
+                ", birthday=" + birthday +
+                ", nation='" + nation + '\'' +
+                ", nationFullname='" + nationFullname + '\'' +
+                ", avatarPath='" + avatarPath + '\'' +
+                ", avatarThumbnailPath='" + avatarThumbnailPath + '\'' +
+                ", roleId=" + roleId +
+                ", roleDetail='" + roleDetail + '\'' +
+                '}';
+    }
 }

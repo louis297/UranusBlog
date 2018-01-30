@@ -101,4 +101,19 @@ public class Article {
     public void setAuthorName(String authorName) {
         this.authorName = authorName;
     }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "articleId=" + articleId +
+                ", authorId=" + authorId +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", createdTime=" + createdTime +
+                ", modifiedTime=" + modifiedTime +
+                ", postTime=" + postTime +
+                ", isPrivate=" + isPrivate +
+                ", authorName='" + authorName + '\'' +
+                '}';
+    }
 }

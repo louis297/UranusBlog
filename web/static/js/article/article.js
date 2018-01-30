@@ -1,4 +1,28 @@
-
+function getCommentList(own) {
+    var params = {own: own=='true'};
+    $.ajax({
+        url: '/api/commentList',
+        method: 'get',
+        data: params,
+        dataType: 'json',
+        success: function(ret) {
+            parsedData = [];
+            console.log(ret);
+            if(ret.result != 'fail') {
+                updateArticles(ret);
+                lock = false;
+            } else {
+                // todo: provide link to create blog if list is empty
+                $('#articleList').html('<h1>No articles found.</h1>');
+                lock = false;
+            }
+        },
+        error: function(ret){
+            console.log('getArticleList ajax fail')
+            console.log(ret)
+        }
+    });
+}
 
 
 
@@ -44,13 +68,14 @@ $(function () {
     });
 
 
-    $('#btnDelete').click(function(){
+    $('#btnConfirmDeletion').click(function(){
         $.ajax({
             url: '/api/articleDelete',
             data: {'aid': aid},
             method: 'post',
             success: function(){
-
+                // popup
+                $('#succeededDeletion').modal();
             },
             error: function(){
 
