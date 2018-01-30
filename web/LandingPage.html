@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <title>Uranus Blog</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-          crossorigin="anonymous">
+    <link rel="stylesheet" href="static/css/bootstrap.css">
+    <script src="static/js/jquery.min.js"></script>
+    <script src="static/js/popper.min.js"></script>
+    <script src="static/js/bootstrap.js"></script>
 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-            crossorigin="anonymous"></script>
 
     <style>
     body{
         background: black;
+        font-size: 100%;
     }
     video#bgvideo{
         background:url(WebMaterial/landingpage_bg.mp4) ;
@@ -27,51 +28,378 @@
         z-index: -100;
         transform: translate(-50%, -50%);
     }
-
-
-    #textdisplay1{
-        color: white;
-        text-align: left;
-        font-size:100px;
-        font-family:"Monospace";
-        position: absolute;
-        left:150px;
-        top:150px;
+    #black_img{
+        position: fixed;
+        top: 0;
+        left: 0;
+        min-width: 100%;
+        min-height: 100%;
+        z-index: -99;
     }
+
+
     #textdisplay1{
         color: white;
         text-align: left;
-        font-size:100px;
+        font-size:35px;
         font-family:"Monospace";
-        position: absolute;
-        left:150px;
-        top:150px;
+        z-index: 2;
+
     }
 
     #textdisplay2{
+        color: lightgray;
+        font-size:90px;
+        font-family:"Monospace";
+        text-align: right;
+        z-index: 3;
+    }
+
+    #btn_response{
         color: white;
         text-align: left;
-        font-size:100px;
+        font-size:15px;
         font-family:"Monospace";
-        position: absolute;
-        left:150px;
-        top:150px;
+        text-align: left;
     }
+
+    #buttons>.button_group1{
+        background-color: lightgray;
+        color: black;
+        text-align: center;
+        font-size:20px;
+        font-family:"Monospace";
+        width: 100px;
+        z-index: 2;
+    }
+
+    #support_legal{
+        color: white;
+        text-align: center;
+        font-size:15px;
+        font-family:"Monospace";
+    }
+
+    /*#talk_btn{*/
+        /*background-color: darkgray;*/
+        /*font-family:"Monospace";*/
+        /*font-size:22px;*/
+        /*width: 150px;*/
+        /*color: black;*/
+        /*font-weight: bold;*/
+        /*z-index: 2;*/
+    /*}*/
+
+    #uranus_img{
+        position: absolute;
+        top:230px;
+        left:200px;
+        z-index: 1;
+        width:350px;
+        transform: rotate(27deg);
+        filter: grayscale(100%) opacity(30%);
+    }
+
+    #mars_img{
+        position: absolute;
+        top:150px;
+        right:100px;
+        z-index: -1;
+        width:600px;
+        filter: grayscale(100%) opacity(50%);
+    }
+
+    #mercury_img{
+        position: absolute;
+        top:-50px;
+        left:80px;
+        z-index: -1;
+        width:600px;
+        filter: grayscale(100%) opacity(30%);
+    }
+
+    #venus_img{
+        position: absolute;
+        top:75px;
+        left:350px;
+        z-index: -1;
+        width:300px;
+        filter: grayscale(100%) opacity(50%);
+    }
+
+    #video_onoff_btn{
+        background-color: lightgray;
+        color: black;
+        text-align: center;
+        font-size:20px;
+        font-family:"Monospace";
+        width: 200px;
+        z-index: 2;
+    }
+
+
+
 
     </style>
     <script>
-        var quote= document.getElementById("textdisplay1");
-        //function
+
+        var statmentList = ["Be fearless in the pursuit of what sets your soul on fire. – Jennifer Lee",
+            "You see what a tiny place you occupy in the world.” -Gustav Flaubert",
+            "The life you have led doesn’t need to be the only life you have. – Anna Quindlen",
+            "We travel, some of us forever, to seek other states, other lives, other souls.-Anaïs Nin"];
+
+        var authorList = ["Jennifer Lee",
+            "Gustav Flaubert",
+            "Anna Quindlen",
+            "Anaïs Nin"];
+
+        var rand = Math.floor(Math.random() * 4);
+
+        setInterval(function() {
+            var rand = Math.floor(Math.random() * 4);
+            document.getElementById("textdisplay1").innerHTML = statmentList[rand];
+        }, 3000);
+
+
+
+        $(document).ready(function(){
+
+            $("#support_legal").hide();
+
+            $("#uranus_img").hide();
+            $("#mars_img").hide();
+            $("#mercury_img").hide();
+            $("#venus_img").hide();
+
+            $("#black_img").hide();
+
+            // $("#talk_btn").mouseenter(function(){
+            //     $("#talk_btn").css({"background-color": "SlateGray ", "color": "white", "font-size":"24px", "font-weight":"bold"});
+            //     document.getElementById("btn_response").innerHTML = "Don't be surprised. I am a talking website!";
+            //     $("#uranus_img").show();
+            // });
+            //
+            // $("#talk_btn").click(function(){
+            //     $("<audio></audio>").attr({
+            //         'src':'WebMaterial/explore.mp3',
+            //         'volume':1,
+            //         'autoplay':'autoplay'
+            //     }).appendTo("body");
+            //
+            // });
+            //
+            // $("#talk_btn").mouseleave(function(){
+            //     $("#talk_btn").css({"background-color": "darkgray", "color": "black", "font-size":"22px", "font-weight":"normal"});
+            //     document.getElementById("btn_response").innerHTML = "";
+            //     $("#uranus_img").hide();
+            // });
+
+            $("#explore_btn").mouseenter(function(){
+                $("#explore_btn").css({"background-color": "SlateGray ", "color": "white", "font-size":"22px", "font-weight":"bold"});
+                document.getElementById("btn_response").innerHTML = "Don't have an account yet? Feel free to look around our blog!";
+                $("#mars_img").show();
+            });
+
+            $("#explore_btn").click(function(){
+                $("<audio></audio>").attr({
+                    'src':'WebMaterial/explore.mp3',
+                    'volume':1,
+                    'autoplay':'autoplay'
+                }).appendTo("body");
+
+            });
+
+            $("#explore_btn").mouseleave(function(){
+                $("#explore_btn").css({"background-color": "lightgray", "color": "black", "font-size":"20px", "font-weight":"normal"});
+                document.getElementById("btn_response").innerHTML = "";
+                $("#mars_img").hide();
+            });
+
+            $("#register_btn").mouseenter(function(){
+                $("#register_btn").css({"background-color": "SlateGray ", "color": "white", "font-size":"22px", "font-weight":"bold"});
+                document.getElementById("btn_response").innerHTML = "No worries- you can join the best site on planet earth for free!";
+                $("#mercury_img").show();
+
+            });
+
+            $("#register_btn").click(function(){
+                $("<audio></audio>").attr({
+                    'src':'WebMaterial/register.mp3',
+                    'volume':1,
+                    'autoplay':'autoplay'
+                }).appendTo("body");
+            });
+
+            $("#register_btn").mouseleave(function(){
+                $("#register_btn").css({"background-color": "lightgray", "color": "black", "font-size":"20px", "font-weight":"normal"});
+                document.getElementById("btn_response").innerHTML = "";
+                $("#mercury_img").hide();
+
+            });
+
+
+            $("#login_btn").mouseenter(function(){
+                $("#login_btn").css({"background-color": "SlateGray ", "color": "white", "font-size":"22px", "font-weight":"bold"});
+                document.getElementById("btn_response").innerHTML = "Welcome back- do you know you can also login via facebook";
+                $("#venus_img").show();
+            });
+
+            $("#login_btn").click(function(){
+                $("<audio></audio>").attr({
+                    'src':'WebMaterial/login.mp3',
+                    'volume':1,
+                    'autoplay':'autoplay'
+                }).appendTo("body");
+            });
+
+            $("#login_btn").mouseleave(function(){
+                $("#login_btn").css({"background-color": "lightgray", "color": "black", "font-size":"20px", "font-weight":"normal"});
+                document.getElementById("btn_response").innerHTML = "";
+                $("#venus_img").hide();
+            });
+
+            $("#siteinfo_btn").mouseenter(function(){
+                $("#siteinfo_btn").css({"background-color": "SlateGray ", "color": "white", "font-size":"22px", "font-weight":"bold"});
+                $("#support_legal").show();
+
+            });
+
+
+            $("#siteinfo_btn").mouseleave(function(){
+                $("#siteinfo_btn").css({"background-color": "lightgray", "color": "black", "font-size":"20px", "font-weight":"normal"});
+                $("#support_legal").hide();
+
+            });
+
+            var on_off= true;
+
+
+
+            $("#video_onoff_btn").mouseenter(function(){
+                $("#video_onoff_btn").css({"background-color": "SlateGray ", "color": "white", "font-size":"22px", "font-weight":"bold"});
+
+            });
+
+            $("#video_onoff_btn").click(function(){
+                if (on_off==true){
+                    $("#black_img").show();
+                    document.getElementById("video_onoff_btn").innerText="Background 0n";
+                    on_off=false;
+                }
+                else if (on_off==false){
+                    $("#black_img").hide();
+                    document.getElementById("video_onoff_btn").innerText="Background 0ff";
+                    on_off=true;
+                }
+
+            });
+
+
+
+            $("#video_onoff_btn").mouseleave(function(){
+                $("#video_onoff_btn").css({"background-color": "lightgray", "color": "black", "font-size":"20px", "font-weight":"normal"});
+
+            });
+
+
+
+        });
+
+
+
     </script>
 </head>
 <body>
-    <div class="container-fluid">
-        <div id="textdisplay1"> The gladdest moment in human life, me thinks, is a departure into unknown lands.” – Sir Richard Burton </div>
-        <div id="textdisplay2"> Welcome to the Uranus Blog</div>
+    <div class="container">
+
+        <div class="row">
+            <div class="col-xs-10 offset-xs-1 col-md-8 offset-md-2"> <p id="header">  </p>  </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-xs-10 offset-xs-1 col-md-8 offset-md-2"> <p id="textdisplay1"> Be fearless in the pursuit of what sets your soul on fire. – Jennifer Lee </p>  </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-xs-10 offset-xs-1 col-md-8 offset-md-2"> <p id="spacer1">  </p>  </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-10 offset-xs-1 col-md-8 offset-md-2"> <p id="spacer2">  </p>  </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-xs-10 offset-xs-1 col-md-8 offset-md-2"> <p id="textdisplay2"> Welcome to the Uranus Blog </p>  </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-10 offset-xs-1 col-md-8 offset-md-2"> <p id="spacer3">  </p>  </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-10 offset-xs-1 col-md-8 offset-md-2"> <p id="spacer4">  </p>  </div>
+        </div>
+
+
+
+        <div class="row" id="buttons">
+            <div class="col-xs-12 col-md-1" id="btn_group"><p></p></div>
+            <!--<button type="button"  id="talk_btn">Talk to me</button>-->
+            <!--<p> </p>-->
+            <button type="button"  class="button_group1" id="explore_btn">Explore</button>
+            <p> </p>
+            <button type="button"  class="button_group1" id="register_btn">Register</button>
+            <p> </p>
+            <button type="button"  class="button_group1" id="login_btn">Login</button>
+            <p> </p>
+            <button type="button"  class="button_group1" id="siteinfo_btn">Site Info</button>
+            <p> </p>
+            <button type="button"   id="video_onoff_btn">Background 0ff</button>
+            <div class="col-xs-12 col-md-2"><p></p></div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-md-1 "><p></p></div>
+            <div> <p id="btn_response">     </p> </div>
+            <div class="col-xs-12 col-md-1 "><p></p></div>
+        </div>
+
+        <div id="support_legal">
+            <div class="row">
+                <div class="col-xs-12 col-md-1 "><p></p></div>
+                <div> <p id="developedby"> Developed by <b> Louis Liu, Dan Champs &amp; James Ku </b>. Product Owner: <b>Yu-Chung Tu and Andrew Meads</b>. </p>  </div>
+                <div class="col-xs-12 col-md-1 "><p></p></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-1 "><p></p></div>
+                <div> <p id="support"> Help and support contact- <b>Phone:027-xxx-xxxx, Email:uranussupport@uranus.com </b> </p>  </div>
+                <div class="col-xs-12 col-md-1 "><p></p></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-1 "><p></p></div>
+                <div> <p id="legal"> &copy; Reserved by Uranus Corp. Illegal use of site content will result in legal actions.</p>  </div>
+                <div class="col-xs-12 col-md-1 "><p></p></div>
+            </div>
+        </div>
+
     </div>
 
     <video id="bgvideo" autoplay loop >
-        <source src="WebMaterial/landingpage_bg.mp4" type="video/mp4"/>
+        <source src="WebMaterial/uranus_background.mp4" type="video/mp4"/>
     </video>
+
+    <img src="WebMaterial/uranus1.png" id="uranus_img">
+
+    <img src="WebMaterial/mars.png" id="mars_img">
+
+    <img src="WebMaterial/mercury.png" id="mercury_img">
+    <img src="WebMaterial/Venus.png" id="venus_img">
+    <img src="WebMaterial/black_image.png" id="black_img">
+
+
+
 </body>
 </html>

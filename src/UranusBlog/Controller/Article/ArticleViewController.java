@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
@@ -32,7 +33,10 @@ public class ArticleViewController extends HttpServlet {
         int articleID = Integer.parseInt(req.getParameter("aid"));
 
         // TODO: userID should ge got from session, if it doesn't exist, set it to 0 (we add a special user for guest)
-        int userID = 2;
+//        int userID = 2;
+        Integer userID = (Integer) req.getSession().getAttribute("userID");
+        if(userID == null)
+            userID = 0;
 //        int aID = 20;
 
         PrintWriter out = resp.getWriter();
@@ -40,6 +44,7 @@ public class ArticleViewController extends HttpServlet {
         try (ArticleDAO dao = new ArticleDAO(new MySQLDatabase(getServletContext()))) {
             Article article = dao.getArticleById(userID, articleID);
             if (article != null) {
+                HttpSession session = req.getSession();
                 JSONObject jsonObject = new JSONObject();
                 SimpleDateFormat sdf = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss z");
                 jsonObject.put("article_id", article.getArticleId());
@@ -50,9 +55,18 @@ public class ArticleViewController extends HttpServlet {
                 jsonObject.put("post_time", sdf.format(article.getPostTime()));
                 jsonObject.put("isPrivate", article.getPrivate());
                 jsonObject.put("authorName", article.getAuthorName());
+                Boolean isOwn;
+                if (session.getAttribute("is_logged") == null || !((Boolean) session.getAttribute("is_logged"))){
+                    isOwn = false;
+                } else {
+                    isOwn = session.getAttribute("userID").equals(article.getAuthorId()) ||
+                            session.getAttribute("roleDetail").equals("admin");
+                }
+                // "admin" is considered as the owner of all the articles
+                jsonObject.put("isOwnArticle", isOwn);
                 out.print(jsonObject);
             } else {
-                out.print("{\"result\":\"fail\"}");
+                out.print("{\"result\":\"fail\",\"reason\":\"Incorrect article ID or access denied.\"}");
             }
 
         } catch (SQLException e) {

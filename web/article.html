@@ -11,12 +11,16 @@
     <script src="static/js/article/article.js"></script>
 </head>
 <body>
-    <div class="container" style="display:none;">
+
+    <!--Main article container-->
+    <div class="container" id="main" style="display:none;">
         <h1 id="title" style="display:none;">Title</h1>
+        <h1 id="fail_title" style="display:none;">Cannot get the article</h1>
         <hr />
         <p>
             <span id="author" style="display:none;">Author:</span>
             <span id="modify" style="display:none;">Last Modify:</span>
+            <span id="fail_reason" style="display:none;"></span>
         </p>
         <hr />
         <p id="content" style="display:none;">
@@ -26,5 +30,11 @@
         <button class="btn btn-primary mr-2 mr-sm-1 my-2 my-sm-1" id="btnModify" style="display:none;">Modify</button>
         <button class="btn btn-danger mr-2 mr-sm-1 my-2 my-sm-1 " id="btnDelete" style="display:none;">Delete</button>
     </div>
+
+    <!--Confirm deletion modal-->
+
+
+    <!--Confirm modification modal-->
+
 </body>
 </html>

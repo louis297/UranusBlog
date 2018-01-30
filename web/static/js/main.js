@@ -14,7 +14,7 @@ function loginAction(){
     }
     var dataStr = 'Username=' + username +'&Password=' + password;
     $.ajax({
-        url: '/login',
+        url: '/api/login',
         method: 'post',
         data: dataStr,
         dataType: 'json',
@@ -52,12 +52,13 @@ function updateLoginForm(success, ret){
             '            <!--in main.js add ajax call for login-->\n' +
             '            <button class="btn btn-outline-success mr-sm-1 my-2 my-sm-1" type="button" id="loginButton" onclick="loginButtonClicked()">Login</button>\n' +
             '            <!-- popup modal for register -->\n' +
-            '            <button class="btn btn-outline-info mr-sm-1 my-2 my-sm-1" type="button" id="registerButton" data-toggle="modal" data-target="#registerModal">Register</button>');
+            //  data-toggle="modal" data-target="#registerModal"
+            '            <button class="btn btn-outline-info mr-sm-1 my-2 my-sm-1" type="button" id="registerButton" onclick="window.location.href=\'/register.html\';">Register</button>');
     }
 }
 function isLogged(){
     $.ajax({
-        url: '/isLogged',
+        url: '/api/isLogged',
         method: 'get',
         dataType: 'json',
         success: function(ret){
@@ -82,7 +83,7 @@ function loginButtonClicked(){
 function logoutButtonClicked(){
     // call /logout
     $.ajax({
-        url: '/logout',
+        url: '/api/logout',
         method: 'get',
         success: function(){
             updateLoginForm(false, null);
@@ -113,6 +114,55 @@ $(function () {
             currentBlogList = 'own';
             getArticleList('true')
         }
+    });
+
+    $('#btnRegister').click(function(){
+        var data = {};
+        data.username = $('#regUsername').val();
+        data.password = $('#regPassword').val();
+        data.firstname = $('#regFirstname').val();
+        data.lastname = $('#regLastname').val();
+        data.middlename = $('#regMiddlename').val();
+        data.email = $('#regEmail').val();
+        data.nation = $('#regNation').val();
+        data.birthday = $('#regBirthday').val();
+        console.log(data);
+        $.ajax({
+            url:'/api/register',
+            method:'post',
+            data:data,
+            dataType:'json',
+            success:function(ret){
+                // jump to main page
+                if(ret.result=="success"){
+                    $('#loginFailedBanner').hide();
+                    window.location.href = '/main.html';
+                } else {
+                    // register error
+                    $('#registerModal').modal();
+                    $('#loginFailedMessage').html(ret.reason);
+                    $('#loginFailedBanner').show();
+                }
+            },
+            error:function(){
+                // show error message
+                $('#loginFailedMessage').html("Server error, please try later...")
+                $('#loginFailedBanner').show();
+            }
+        });
+
+    });
+
+    $('#btnUploadAvatar').click(function(){
+        $.ajax({
+        url: '/api/register',
+        method: 'post',
+        data: data,
+        dataType: 'json',
+        success: function (ret) {
+
+        }
+        });
     });
 
     isLogged();

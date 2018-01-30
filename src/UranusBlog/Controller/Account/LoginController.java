@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
@@ -37,6 +38,8 @@ public class LoginController extends HttpServlet {
         PrintWriter out = resp.getWriter();
         boolean authorized = false;
 
+        HttpSession session = req.getSession();
+
         try(AccountDAO dao = new AccountDAO(new MySQLDatabase(getServletContext()))){
             Account account = dao.login(userName, password);
             if(account == null){
@@ -50,8 +53,20 @@ public class LoginController extends HttpServlet {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("result", "success");
                 jsonObject.put("username", userName);
-                req.getSession().setAttribute("is_logged", true);
-                req.getSession().setAttribute("username", userName);
+                session.setAttribute("is_logged", true);
+                session.setAttribute("username", userName);
+                session.setAttribute("firstname", account.getFirstname());
+                session.setAttribute("lastname", account.getLastname());
+                session.setAttribute("middlename", account.getMiddlename());
+                session.setAttribute("email", account.getEmail());
+                session.setAttribute("userID", account.getUserId());
+                session.setAttribute("avatarPath", account.getAvatarPath());
+                session.setAttribute("avatarThumbnailPath", account.getAvatarThumbnailPath());
+                session.setAttribute("roleID", account.getRoleId());
+                session.setAttribute("roleDetail", account.getRoleDetail());
+                session.setAttribute("nation", account.getNation());
+                session.setAttribute("nationDetail", account.getNationFullname());
+
                 System.out.println(jsonObject);
                 out.println(jsonObject);
             }

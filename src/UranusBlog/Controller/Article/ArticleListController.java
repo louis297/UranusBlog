@@ -40,9 +40,18 @@ public class ArticleListController extends HttpServlet {
 
         boolean usersArticlesOnly = Boolean.parseBoolean(req.getParameter("own"));
 
-        int userID = 2;
-        int start = 0;
-        int amount = 5;
+//        int userID = 2;
+        Integer userID = (Integer) req.getSession().getAttribute("userID");
+        if(userID == null)
+            userID = 0;
+        Integer start = (Integer) req.getSession().getAttribute("start");
+        if(start == null)
+            start = 0;
+        Integer amount = (Integer) req.getSession().getAttribute("amount");
+        if(amount == null)
+            amount = 5;
+//        int start = 0;
+//        int amount = 5;
 
         PrintWriter out = resp.getWriter();
 
@@ -50,9 +59,9 @@ public class ArticleListController extends HttpServlet {
         try (ArticleDAO dao = new ArticleDAO(new MySQLDatabase(getServletContext()))) {
             List<Article> articles;
             if (usersArticlesOnly) {
-                articles = dao.getArticles(userID, start, amount, false);
-            } else {
                 articles = dao.getArticles(userID, start, amount, true);
+            } else {
+                articles = dao.getArticles(userID, start, amount, false);
             }
             JSONArray jsonArray = constructJSON(articles);
             if(jsonArray.isEmpty()){
