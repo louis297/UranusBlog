@@ -29,7 +29,7 @@ public class PasswordResetPageController extends HttpServlet {
         dbProps.setProperty("password", "123");
 
         try (Connection conn = DriverManager.getConnection(dbProps.getProperty("url"), dbProps.getProperty("user"), dbProps.getProperty("password"))) {
-            try (PreparedStatement stmt = conn.prepareStatement("SELECT* FROM passwordreset WHERE key＝？")) {
+            try (PreparedStatement stmt = conn.prepareStatement("SELECT* FROM passwordreset WHERE `key`=?")) {
                 stmt.setString(1, key);
                 try (ResultSet r = stmt.executeQuery()) {
                     while (r.next()) {

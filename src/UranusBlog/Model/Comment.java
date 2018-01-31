@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 
 //c.content, c.created_time, a.username, a.avatar_path
 public class Comment {
+    private Integer commentID;
     private String content;
     private Timestamp createdTime;
     private boolean isActive;
@@ -12,13 +13,22 @@ public class Comment {
     private String avatarPath;
 
 
-    public Comment(String content, Timestamp createdTime, boolean isActive, Integer authorID, String username, String avatarPath) {
+    public Comment(Integer commentID, String content, Timestamp createdTime, boolean isActive, Integer authorID, String username, String avatarPath) {
+        this.commentID = commentID;
         this.content = content;
         this.createdTime = createdTime;
         this.isActive = isActive;
         this.authorID = authorID;
         this.username = username;
         this.avatarPath = avatarPath;
+    }
+
+    public Integer getCommentID() {
+        return commentID;
+    }
+
+    public void setCommentID(Integer commentID) {
+        this.commentID = commentID;
     }
 
     public String getContent() {

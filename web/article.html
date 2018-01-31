@@ -11,63 +11,78 @@
     <script src="static/js/article/article.js"></script>
 </head>
 <body>
+<div class="alert alert-danger" style="display:none" id="failedBanner">
+    <strong>Failed!</strong> <span id="failedMessage"></span>
+    <span class="float-right" onclick="$('#failedBanner').hide()">X</span>
+</div>
+<!--Main article container-->
+<div class="container" id="main" style="display:none;">
+    <h1 id="title" style="display:none;">Title</h1>
+    <h1 id="fail_title" style="display:none;">Cannot get the article</h1>
+    <hr/>
+    <p>
+        <span id="author" style="display:none;">Author:</span>
+        <span id="modify" style="display:none;">Last Modify:</span>
+        <span id="fail_reason" style="display:none;"></span>
+    </p>
+    <hr/>
+    <p id="content" style="display:none;">
+        Content
+    </p>
+    <hr/>
+    <button class="btn btn-primary mr-2 mr-sm-1 my-2 my-sm-1" id="btnModify" style="display:none;">Modify</button>
+    <button class="btn btn-danger mr-2 mr-sm-1 my-2 my-sm-1" id="btnDelete" style="display:none;" data-toggle="modal"
+            data-target="#confirmDeletion">Delete
+    </button>
+    <hr/>
+    <h3>Comment</h3>
+    <div class="offset-md-1" id="commentList">
 
-    <!--Main article container-->
-    <div class="container" id="main" style="display:none;">
-        <h1 id="title" style="display:none;">Title</h1>
-        <h1 id="fail_title" style="display:none;">Cannot get the article</h1>
-        <hr />
-        <p>
-            <span id="author" style="display:none;">Author:</span>
-            <span id="modify" style="display:none;">Last Modify:</span>
-            <span id="fail_reason" style="display:none;"></span>
-        </p>
-        <hr />
-        <p id="content" style="display:none;">
-            Content
-        </p>
-        <hr />
-        <button class="btn btn-primary mr-2 mr-sm-1 my-2 my-sm-1" id="btnModify" style="display:none;">Modify</button>
-        <button class="btn btn-danger mr-2 mr-sm-1 my-2 my-sm-1" id="btnDelete" style="display:none;"  data-toggle="modal" data-target="#confirmDeletion">Delete</button>
-        <hr />
-        <h3>Comment</h3>
-        <div class="offset-md-1" id="commentList">
-
+    </div>
+    <!--Add comment-->
+    <div id="commentAdd" style="display:none;">
+        <h3>Write new comment:</h3>
+        <div class="offset-md-1">
+            <textarea id="commentContent" required></textarea>
+            <button class="btn btn-primary" id="btnAddComment">Add Comment</button>
         </div>
     </div>
+</div>
 
-    <!--Confirm deletion modal-->
-    <div class="modal fade" id="confirmDeletion" tabindex="-1" role="dialog" data-backdrop="static"
-         aria-labelledby="confirmDeletion" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmDeletionLabel">Delete article</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger" id="btnConfirmDeletion">Delete</button>
-                </div>
+<!--Confirm deletion modal-->
+<div class="modal fade" id="confirmDeletion" tabindex="-1" role="dialog" data-backdrop="static"
+     aria-labelledby="confirmDeletion" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeletionLabel">Delete article</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" id="btnConfirmDeletion">Delete</button>
             </div>
         </div>
     </div>
+</div>
 
-    <!--Succeeded deletion-->
-    <div class="modal fade" id="succeededDeletion" tabindex="-1" role="dialog" data-backdrop="static"
-         aria-labelledby="succeededDeletion" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="succeededDeletionLabel">Article deleted!</h5>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="window.location.href='/main.html';">Back to list</button>
-                </div>
+<!--Succeeded deletion-->
+<div class="modal fade" id="succeededDeletion" tabindex="-1" role="dialog" data-backdrop="static"
+     aria-labelledby="succeededDeletion" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="succeededDeletionLabel">Article deleted!</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="window.location.href='/main.html';">Back to
+                    list
+                </button>
             </div>
         </div>
     </div>
+</div>
 </body>
 </html>

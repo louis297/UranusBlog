@@ -31,22 +31,29 @@ public class ArticleViewController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        PrintWriter out = resp.getWriter();
 
-        int articleID = Integer.parseInt(req.getParameter("aid"));
+//        int articleID = Integer.parseInt(req.getParameter("aid"));
+        String articleIDStr = req.getParameter("aid");
+        if(articleIDStr == null || articleIDStr.isEmpty() || !articleIDStr.matches("^[+-]?\\d+$")){
+            out.print("{\"result\":\"fail\", \"reason\":\"No valid article ID provided\"}");
+            return;
+        }
+        int articleID = Integer.parseInt(articleIDStr);
 
         // TODO: userID should ge got from session, if it doesn't exist, set it to 0 (we add a special user for guest)
 //        int userID = 2;
-        Integer userID = (Integer) req.getSession().getAttribute("userID");
+        HttpSession session = req.getSession();
+        Integer userID = (Integer) session.getAttribute("userID");
         if(userID == null)
             userID = 0;
-//        int aID = 20;
-
-        PrintWriter out = resp.getWriter();
+        Integer authorRole = (Integer) session.getAttribute("roleID");
+        if(authorRole == null)
+            authorRole = 3;
 
         try (ArticleDAO dao = new ArticleDAO(new MySQLDatabase(getServletContext()))) {
             Article article = dao.getArticleById(userID, articleID);
             if (article != null) {
-                HttpSession session = req.getSession();
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("result","success");
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
@@ -58,6 +65,8 @@ public class ArticleViewController extends HttpServlet {
                 jsonObject.put("post_time", sdf.format(article.getPostTime()));
                 jsonObject.put("isPrivate", article.getPrivate());
                 jsonObject.put("authorName", article.getAuthorName());
+                jsonObject.put("authorID", article.getAuthorId());
+                jsonObject.put("authorRole", authorRole);
                 Boolean isOwn;
                 if (session.getAttribute("is_logged") == null || !((Boolean) session.getAttribute("is_logged"))){
                     isOwn = false;

@@ -43,7 +43,7 @@ public class ArticleDeleteController extends HttpServlet {
             Article article = dao.getArticleById(userID, articleID);
             if(article == null){
                 out.print("{\"result\":\"fail\", \"reason\":\"Cannot access to the article\"}");
-            } else if(userID.equals(article.getAuthorId()) || userRole.equals("admin")) {
+            } else if(userID.equals(article.getAuthorId()) && !userRole.equals("admin")) {
                 dao.deleteArticle(articleID);
                 out.print("{\"result\":\"success\"}");
             } else {

@@ -1,42 +1,85 @@
-function getCommentList(own) {
-    var params = {own: own=='true'};
+var authorID = 0;
+var authorRole = 3;
+var aid;
+
+function updateComments(commentList, authorID, authorRole){
+    var commentListDiv = $('#commentList');
+    commentListDiv.html('');
+    commentList.forEach(function(comment){
+        var cd = $('<div id="comment' + comment.cid + '" class="commentBox"></div>');
+        cd.append('<p><span>@' + comment.author + ' </span>' + '<span>  Created Time:' + comment.createdTime +'</span></p>');
+        cd.append('<p>' + comment.content + '</p>');
+        if(authorRole == 1 || authorID == comment.authorID){
+            // show delete button
+            cd.append('<button class="btn btn-sm btn-outline-danger" onclick="deleteComment(' + comment.cid + ')">Delete</button>');
+        }
+        cd.append('<hr/>')
+        commentListDiv.append(cd);
+    });
+}
+
+function deleteComment(cid){
     $.ajax({
-        url: '/api/commentList',
-        method: 'get',
-        data: params,
+        url: 'api/commentDelete',
+        data: {cid: cid},
+        method: 'post',
         dataType: 'json',
         success: function(ret) {
-            parsedData = [];
-            console.log(ret);
-            if(ret.result != 'fail') {
-                updateArticles(ret);
-                lock = false;
+            if (ret.result === "success") {
+                $('#comment'+cid).hide();
+                $('#failedBanner').hide();
             } else {
-                // todo: provide link to create blog if list is empty
-                $('#articleList').html('<h1>No articles found.</h1>');
-                lock = false;
+                $('#failedBanner').show();
+                if(!ret.reason)
+                    ret.reason = "Unknown reason";
+                $('#failedMessage').text(ret.reason);
             }
         },
         error: function(ret){
-            console.log('getArticleList ajax fail')
-            console.log(ret)
+            console.log(ret);
+            $('#failedBanner').show();
+            if(!ret.reason)
+                ret.reason = "Unknown reason";
+            $('#failedMessage').text(ret.reason);
+        }
+    })
+}
+
+function getCommentList(){
+    $.ajax({
+        url:'api/commentList',
+        data:{aid:aid},
+        method:'get',
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        success:function(ret){
+            var commentListDiv = $('#commentList');
+            if(ret.result != 'fail'){
+                updateComments(ret, authorID, authorRole);
+            } else {
+                if(!ret.reason){
+                    ret.reason = "Cannot get comments currently."
+                }
+                commentListDiv.html('<h3>' + ret.reason + '</h3>')
+            }
+
+        },
+        error:function(ret){
+            $('#commentList').html('<h3>No response from server, cannot add comments now.</h3>')
         }
     });
 }
 
-
-
-
-
 $(function () {
     var searchParams = new URLSearchParams(window.location.search);
-    var aid = searchParams.get('aid');
+    aid = searchParams.get('aid');
 
     $.ajax({
-        url: '/api/articleView',
+        url: 'api/articleView',
         data: {aid: aid},
         method: 'post',
         dataType: 'json',
+        async: false,
         success: function(ret) {
             if (ret.result === "success") {
 
@@ -51,6 +94,12 @@ $(function () {
                 $('#modify').show();
                 $('#main').show();
 
+                authorID = ret.authorID;
+                authorRole = ret.authorRole;
+
+                if(authorID !== 0){
+                    $('#commentAdd').show();
+                }
                 if (ret.isOwnArticle) {
                     $('#btnModify').show();
                     $('#btnDelete').show();
@@ -69,19 +118,8 @@ $(function () {
         }
     });
 
-    $.ajax({
-        url:'api/commentList',
-        data:{uid:uid},
-        method:'get',
-        dataType:'json',
-        success:function(){
 
-        },
-        error:function(){
-
-        }
-    })
-
+    getCommentList();
 
     $('#btnModify').click(function(){
         window.location.href='article_edit.html?aid='+aid;
@@ -106,6 +144,31 @@ $(function () {
 
             }
 
+        })
+    });
+
+    $('#btnAddComment').click(function(){
+        $.ajax({
+            url: 'api/commentAdd',
+            data: {aid: aid, content: $('#commentContent').val()},
+            method: 'post',
+            dataType: 'json',
+            success: function(ret){
+                if(ret.result === "success") {
+                    getCommentList();
+                } else {
+                    $('#failedBanner').show();
+                    if(!ret.reason)
+                        ret.reason = "Unknown reason";
+                    $('#failedMessage').text(ret.reason);
+                }
+            },
+            error: function(ret){
+                $('#failedBanner').show();
+                if(!ret.reason)
+                    ret.reason = "Unknown reason";
+                $('#failedMessage').text(ret.reason);
+            }
         })
     });
 });

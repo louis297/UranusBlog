@@ -39,6 +39,8 @@ public class ArticleModifyController extends HttpServlet {
 
         String articleIDStr = req.getParameter("aid");
 
+        System.out.println(userRole);
+
 
         String title=req.getParameter("title");
         String content=req.getParameter("content");
@@ -63,7 +65,7 @@ public class ArticleModifyController extends HttpServlet {
             if(article == null){
                 out.print("{\"result\":\"fail\", \"reason\":\"Cannot access to article\"}");
                 return;
-            } else if(!article.getAuthorId().equals(userID) || userRole.equals("admin")){
+            } else if(!article.getAuthorId().equals(userID) && !userRole.equals("admin")){
                 out.print("{\"result\":\"fail\", \"reason\":\"No authorization to modify the article.\"}");
                 return;
             }

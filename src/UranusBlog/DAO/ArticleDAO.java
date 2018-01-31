@@ -115,7 +115,7 @@ public class ArticleDAO implements AutoCloseable{
     }
 
     public void addComment(int userID, int articleID, String content) throws SQLException{
-        String query = "call InsertArticle(?,?,?)";
+        String query = "call InsertComment(?,?,?)";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, userID);
             stmt.setInt(2, articleID);
@@ -202,9 +202,9 @@ public class ArticleDAO implements AutoCloseable{
     }
 
     private Comment commentFromResultSet(ResultSet r) throws SQLException {
-        Boolean is_active = r.getInt(3) == 1;
-        return new Comment(r.getString(1), r.getTimestamp(2), is_active,
-                r.getInt(4), r.getString(5), r.getString(6));
+        Boolean is_active = r.getInt(4) == 1;
+        return new Comment(r.getInt(1), r.getString(2), r.getTimestamp(3), is_active,
+                r.getInt(5), r.getString(6), r.getString(7));
     }
 
     @Override
