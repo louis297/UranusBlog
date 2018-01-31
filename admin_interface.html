@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Uranus Blog Admin Interface</title>
+
+    <link rel="stylesheet" href="static/css/bootstrap.css">
+    <script src="static/js/jquery.min.js"></script>
+    <script src="static/js/popper.min.js"></script>
+    <script src="static/js/bootstrap.js"></script>
+
+    <script>
+
+
+        $(document).ready(function(){
+            $("#user_display1").hide();
+            $("#account_tools1").hide();
+            $("#user_display2").hide();
+            $("#account_tools2").hide();
+            $("#registrationsuccess").hide();
+            $("#registrationfailed").hide();
+            $("#account_tools3").hide();
+            $("#user_display4").hide();
+            $("#account_tools4").hide();
+
+            $("#btn_submit_1").click(function(){
+                //var tempValue= document.getElementById("userID").value;
+                console.log("abced");
+                //document.cookie="userid="+tempValue;
+            });
+
+           // var cookieString=document.cookie;
+            // need to be modified
+            //cookieString.indexOf(userName=)
+        })
+    </script>
+
+    <style>
+
+        #title{
+            font-size:50px;
+            font-weight:bold;
+            color: darkslategrey;
+        }
+
+        #logout{
+            font-size:24px;
+            font-weight:bold;
+            color: dodgerblue;
+            position:absolute;
+            right:30px;
+
+        }
+
+        #second_line{
+            font-size:27px;
+            font-weight:bold;
+
+            color: darkgray;
+        }
+        button{
+            width:200px;
+        }
+
+        #registrationfailed{
+            color:red;
+            font-weight: bold;
+        }
+
+        #registrationsuccess{
+            color:green;
+            font-weight: bold;
+        }
+
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+
+        <div class="row">
+            <p id="title">Welcome to the administrative interface</p>
+        </div>
+
+        <div class="row">
+            <button id="logout" class="btn btn-muted"> <b> Logout </b> </button>
+        </div>
+
+
+        <div class="row">
+            <p id="second_line">Hi <snpa id="admin_name"></snpa> ! welcome back! </p>
+        </div>
+
+
+
+
+        <div class="row">
+
+            <div class="col-md-6 col-sm-12">
+                <div class="panel-group">
+                    <div class="panel panel-muted">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" href="#collapse1"><b> Delete Account and Reset User Password</b></a>
+                            </h4>
+                        </div>
+                        <div id="collapse1" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <form action="", method="post">
+
+                                    <div class="form-group">
+                                        <label for="userID"> Please Enter The User ID: </label>
+                                        <input type="text" class="form-control" placeholder="Account/UserID" id="userID" name="username">
+                                    </div>
+                                    <button  class="btn btn-muted" width="100px" id="btn_submit_1">Submit</button>
+                                </form>
+                                <p> Or you can list all users</p>
+                                    <button class="btn btn-mute" width="100px"> List All Users</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-md-6 col-sm-12">
+                <div id="user_display1">
+                    <div class="row">
+                        <p> <b>Name:</b></p>
+                        <p id="user_name_display"></p>
+                    </div>
+                    <div class="row">
+                        <p> <b>UserID:</b></p>
+                        <p id="user_id_display"></p>
+                    </div>
+                    <div class="row">
+                        <p> <b>User Name:</b></p>
+                        <p id="user_userName_display"></p>
+                    </div>
+                    <div class="row">
+                        <p> <b>User Email:</b></p>
+                        <p id="user_email_display"></p>
+                    </div>
+                </div>
+
+                <div id="account_tools1">
+                    <div class="row">
+                        <button id="password_reset_btn" action="/pwreset"> Reset Password </button>
+                        <button> Delete Account </button>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <div class="row" id="load_user">
+            <div id="user_info"> </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-6 col-sm-12">
+                <div class="panel-group">
+                    <div class="panel panel-muted">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" href="#collapse2"><b> Add New User </b></a>
+                            </h4>
+                        </div>
+                        <div id="collapse2" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <form action="", method="post">
+                                    <div class="form-group">
+                                        <label for="user_registration_id"> User Name: </label>
+                                        <input type="text" class="form-control" placeholder="User name" id="user_registration_id" name="ID">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="user_registration_fname"> First Name: </label>
+                                        <input type="text" class="form-control" placeholder="First name" id="user_registration_fname" name="fname">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="user_registration_lname"> Last Name: </label>
+                                        <input type="text" class="form-control" placeholder="Last name" id="user_registration_lname" name="lname">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="user_registration_dob"> Date Of Birth: </label>
+                                        <input type="date" class="form-control" id="user_registration_dob" name="dob">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="user_registration_nationality"> Nationality: </label>
+                                        <input type="text" class="form-control" placeholder="Nationality" id="user_registration_nationality" name="nationality">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="user_registration_email"> Email: </label>
+                                        <input type="date" class="form-control" placeholder="Email" id="user_registration_email" name="email">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <pre>  </pre>
+                                            <label for="admin_role"> Admin </label>
+                                            <input type="radio" id="admin_role" value="1" name="role">
+                                            <pre>    </pre>
+                                            <label for="user_role"> User </label>
+                                            <input type="radio" id="user_role" value="2" name="role">
+                                            <pre>    </pre>
+                                            <label for="guest_role"> Guest </label>
+                                            <input type="radio" id="guest_role" value="3" name="role">
+                                        </div>
+                                    </div>
+
+
+
+
+
+                                    <button type="submit" class="btn btn-muted">Submit</button>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div id="user_display3">
+                    <!--<div class="row">-->
+                        <!--<p> <b>User ID: </b></p>-->
+                        <!--<p id="user_id_registration"></p>-->
+                    <!--</div>-->
+                    <!--<div class="row">-->
+                        <!--<p> <b>User Name:</b></p>-->
+                        <!--<p id="user_username_registration"></p>-->
+                    <!--</div>-->
+
+                    <!--<div class="row">-->
+                        <!--<p> <b>Name: </b></p>-->
+                        <!--<p id="user_name_registration"></p>-->
+                    <!--</div>-->
+                    <div class="row">
+                        <p id="registrationsuccess"> <b>Has been added successfully </b></p>
+                        <p id="registrationfailed"><b>Registration failed</b> </p>
+                    </div>
+                </div>
+
+                <div id="account_tools3">
+                    <div class="row">
+                        <button> Hide Article </button>
+                        <button> Show Article </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="row">
+
+            <div class="col-md-6 col-sm-12">
+                <div class="panel-group">
+                    <div class="panel panel-muted">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" href="#collapse3"><b> Show or Hide Articles </b></a>
+                            </h4>
+                        </div>
+                        <div id="collapse3" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <form action="", method="post">
+
+                                    <div class="form-group">
+                                        <label for="articleID"> Please Enter The Article ID: </label>
+                                        <input type="text" class="form-control" placeholder="Article ID" id="articleID" name="articleID">
+                                    </div>
+                                    <button type="submit"  class="btn btn-muted">Submit</button>
+
+                                </form>
+                                <p> Or you can list all articles </p>
+                                <button class="btn btn-mute" width="100px"> List All Articles</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div id="user_display2">
+                    <div class="row">
+                        <p> <b>Article ID:</b></p>
+                        <p id="articleid_display"></p>
+                    </div>
+                    <div class="row">
+                    <p> <b>Author:</b></p>
+                    <p id="author_display"></p>
+                     </div>
+
+                    <div class="row">
+                        <p> <b>Title:</b></p>
+                        <p id="title_display"></p>
+                    </div>
+                    <div class="row">
+                        <p> <b>Article Content:</b></p>
+                        <p id="articlecontent_display"></p>
+                    </div>
+                </div>
+
+                <div id="account_tools2">
+                    <div class="row">
+                        <button> Hide Article </button>
+                        <button> Show Article </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row" id="load_articles">
+            <div id="article_info"> </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-6 col-sm-12">
+                <div class="panel-group">
+                    <div class="panel panel-muted">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" href="#collapse4"><b> Show or Hide Comments </b></a>
+                            </h4>
+                        </div>
+                        <div id="collapse4" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <form action="", method="post">
+
+                                    <div class="form-group">
+                                        <label for="commentID"> Please Enter The Comment ID: </label>
+                                        <input type="text" class="form-control" placeholder="Comment ID" id="commentID" name="commentID">
+                                    </div>
+                                    <button type="submit" class="btn btn-muted">Submit</button>
+
+                                </form>
+
+                                <p> You can list all comment for an article. </p>
+
+                                <form action="", method="post">
+
+                                    <div class="form-group">
+                                        <label for="commentuserID">  Please Enter The User ID: </label>
+                                        <input type="text" class="form-control" placeholder="User ID" id="commentuserID" name="userID">
+                                    </div>
+                                    <button type="submit" class="btn btn-muted">List all comments</button>
+
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div id="user_display4">
+                    <div class="row">
+                        <p> <b>Comment ID:</b></p>
+                        <p id="commentid_display"></p>
+                    </div>
+                    <div class="row">
+                        <p> <b>Comment Author:</b></p>
+                        <p id="commentauthor_display"></p>
+                    </div>
+
+
+                    <div class="row">
+                        <p> <b>Comment Content:</b></p>
+                        <p id="conmmentcontent_display"></p>
+                    </div>
+                </div>
+
+                <div id="account_tools4">
+                    <div class="row">
+                        <button> Hide Comment </button>
+                        <button> Show Comment </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row" id="load_comments">
+            <div id="comment_info"> </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
