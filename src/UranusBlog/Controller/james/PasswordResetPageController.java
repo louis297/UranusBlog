@@ -1,4 +1,4 @@
-package UranusBlog.Controller.Account;
+package UranusBlog.Controller.james;
 
 import jdk.nashorn.internal.parser.JSONParser;
 import org.json.simple.JSONObject;

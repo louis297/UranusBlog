@@ -1,4 +1,4 @@
-package UranusBlog.Controller.Account;
+package UranusBlog.Controller.james;
 
 import sun.net.smtp.SmtpClient;
 
