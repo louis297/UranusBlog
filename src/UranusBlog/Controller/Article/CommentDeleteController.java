@@ -41,7 +41,7 @@ public class CommentDeleteController extends HttpServlet {
             Comment comment = dao.getCommentById(commentID);
             if(comment == null){
                 out.print("{\"result\":\"fail\", \"reason\":\"No comment found\"}");
-            } else if(userID.equals(comment.getAuthorID()) && !userRole.equals("admin")) {
+            } else if(userID.equals(comment.getAuthorID()) || userRole.equals("admin")) {
                 dao.deleteComment(commentID);
                 out.print("{\"result\":\"success\"}");
             } else {

@@ -35,6 +35,9 @@ public class LoginController extends HttpServlet {
         String password = req.getParameter("Password");
         //String password= "password7";
 
+        // calculate hash of password (get salt and iteration for the user)
+
+
         PrintWriter out = resp.getWriter();
         boolean authorized = false;
 

@@ -6,7 +6,6 @@ function getArticleList(own) {
         data: params,
         dataType: 'json',
         success: function(ret) {
-            parsedData = [];
             console.log(ret);
             if(ret.result != 'fail') {
                 updateArticles(ret);
