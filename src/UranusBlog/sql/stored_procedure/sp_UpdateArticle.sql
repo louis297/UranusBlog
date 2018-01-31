@@ -15,6 +15,7 @@ CREATE PROCEDURE UpdateArticle(
         post_time = new_post_time,
         private = new_private
       where article_id = aid;
+    SELECT aid;
   END ##
 
 DELIMITER ;

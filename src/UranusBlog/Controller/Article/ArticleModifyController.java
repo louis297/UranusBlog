@@ -39,12 +39,6 @@ public class ArticleModifyController extends HttpServlet {
 
         String articleIDStr = req.getParameter("aid");
 
-        System.out.println("after int delcaration");
-
-//        String title= "hello louis this is the test for article modifier";
-//        String content="Hello!";
-//        String postTimeStr="2018-01-24 20:29:42";
-//        String isPrivateStr="false";
 
         String title=req.getParameter("title");
         String content=req.getParameter("content");
@@ -78,11 +72,14 @@ public class ArticleModifyController extends HttpServlet {
             boolean modifiedPrivacy= Boolean.parseBoolean(isPrivateStr);
 
             // 4. do modify
-            dao.updateArticle(articleID, title, content, postTime, modifiedPrivacy);
+            int aid = dao.updateArticle(articleID, title, content, postTime, modifiedPrivacy);
+            out.print("{\"result\":\"success\", \"aid\":\"" + aid + "\"}");
         } catch (SQLException e) {
             e.printStackTrace();
+            out.print("{\"result\":\"fail\", \"reason\":\"Database error\"}");
         } catch (Exception e) {
             e.printStackTrace();
+            out.print("{\"result\":\"fail\", \"reason\":\"Unknown error\"}");
         }
 
     }

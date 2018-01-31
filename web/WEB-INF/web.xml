@@ -109,6 +109,24 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>commentAdd</servlet-name>
+        <servlet-class>UranusBlog.Controller.Article.CommentAddController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>commentAdd</servlet-name>
+        <url-pattern>/api/commentAdd</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>commentDelete</servlet-name>
+        <servlet-class>UranusBlog.Controller.Article.CommentDeleteController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>commentDelete</servlet-name>
+        <url-pattern>/api/commentDelete</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>main</servlet-name>
         <servlet-class>UranusBlog.Controller.MainPageController</servlet-class>
     </servlet>

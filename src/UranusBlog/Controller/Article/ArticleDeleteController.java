@@ -21,7 +21,6 @@ public class ArticleDeleteController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
 //        int userID = Integer.parseInt(req.getParameter("userID"));
         int articleID = Integer.parseInt(req.getParameter("aid"));
 //        int articleID = 1;
@@ -33,11 +32,12 @@ public class ArticleDeleteController extends HttpServlet {
         // if the user is the author or admin, process the deletion, or forbid it
         HttpSession session = req.getSession();
         Integer userID = (Integer) session.getAttribute("userID");
-        if(userID != null )
+        if(userID == null )
             userID = 0;
         String userRole = (String) session.getAttribute("roleDetail");
         if(userRole == null)
             userRole = "guest";
+
 
         try (ArticleDAO dao = new ArticleDAO(new MySQLDatabase(getServletContext()))) {
             Article article = dao.getArticleById(userID, articleID);

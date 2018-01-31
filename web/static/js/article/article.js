@@ -37,22 +37,29 @@ $(function () {
         data: {aid: aid},
         method: 'post',
         dataType: 'json',
-        success: function(ret){
-            $('#title').text(ret.title);
-            $('#content').text(ret.content);
-            $('#author').text("Author: " + ret.authorName);
-            $('#modify').text("Modified on: " + ret.modified_time);
+        success: function(ret) {
+            if (ret.result === "success") {
 
-            $('#title').show();
-            $('#content').show();
-            $('#author').show();
-            $('#modify').show();
-            $('#main').show();
+                $('#title').text(ret.title);
+                $('#content').text(ret.content);
+                $('#author').text("Author: " + ret.authorName);
+                $('#modify').text("Modified on: " + ret.modified_time);
 
-            if(ret.isOwnArticle){
-                $('#btnModify').show();
-                $('#btnDelete').show();
+                $('#title').show();
+                $('#content').show();
+                $('#author').show();
+                $('#modify').show();
+                $('#main').show();
 
+                if (ret.isOwnArticle) {
+                    $('#btnModify').show();
+                    $('#btnDelete').show();
+
+                }
+            } else {
+                $('#fail_title').show();
+                $('#fail_reason').text(ret.reason);
+                $('#fail_reason').show();
             }
         },
         error: function(ret){
@@ -62,20 +69,38 @@ $(function () {
         }
     });
 
+    $.ajax({
+        url:'api/commentList',
+        data:{uid:uid},
+        method:'get',
+        dataType:'json',
+        success:function(){
+
+        },
+        error:function(){
+
+        }
+    })
+
 
     $('#btnModify').click(function(){
-
+        window.location.href='article_edit.html?aid='+aid;
     });
 
 
     $('#btnConfirmDeletion').click(function(){
         $.ajax({
-            url: '/api/articleDelete',
+            url: 'api/articleDelete',
             data: {'aid': aid},
             method: 'post',
-            success: function(){
+            dataType: 'json',
+            success: function(ret){
                 // popup
-                $('#succeededDeletion').modal();
+                if(ret.result==="success") {
+                    $('#succeededDeletion').modal();
+                } else {
+                    alert(ret.reason);
+                }
             },
             error: function(){
 

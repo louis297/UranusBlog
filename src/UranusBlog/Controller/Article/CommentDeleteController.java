@@ -31,7 +31,7 @@ public class CommentDeleteController extends HttpServlet {
         // if the user is the author or admin, process the deletion, or forbid it
         HttpSession session = req.getSession();
         Integer userID = (Integer) session.getAttribute("userID");
-        if(userID != null )
+        if(userID == null )
             userID = 0;
         String userRole = (String) session.getAttribute("roleDetail");
         if(userRole == null)

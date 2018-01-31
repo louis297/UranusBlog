@@ -43,7 +43,7 @@ public class ArticleAddController extends HttpServlet {
             out.print("{\"result\":\"fail\",\"reason\":\"The required fields are missing\"}");
             return;
         }
-
+        System.out.println(postTimeStr);
         Timestamp postTime = Timestamp.valueOf(postTimeStr);
         boolean isPrivate = Boolean.parseBoolean(isPrivateStr);
 
@@ -53,13 +53,13 @@ public class ArticleAddController extends HttpServlet {
 
         // uid of 0 is guest
         if(userID == null || userID == 0){
-            out.print("{\"result\":\"fail\",\"reason\":\"Please register first\"}");
+            out.print("{\"result\":\"fail\",\"reason\":\"Please login or register first\"}");
             return;
         }
 
         try (ArticleDAO dao = new ArticleDAO(new MySQLDatabase(getServletContext()))) {
-            dao.addArticle(userID, title, content, postTime, isPrivate);
-            out.print("{\"result\":\"success\"}");
+            int aid = dao.addArticle(userID, title, content, postTime, isPrivate);
+            out.print("{\"result\":\"success\",\"aid\":\"" + aid + "\"}");
         } catch (SQLException e) {
             e.printStackTrace();
             out.print("{\"result\":\"fail\",\"reason\":\"Database error\"}");

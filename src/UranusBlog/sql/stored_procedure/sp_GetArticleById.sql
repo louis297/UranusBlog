@@ -3,9 +3,14 @@ DROP PROCEDURE IF EXISTS GetArticleById;
 DELIMITER ##
 CREATE PROCEDURE GetArticleById(IN userId INT(11), IN aid INT(11))
   BEGIN
-    SELECT article.*, `account`.username AS author_name FROM article, `account`
-    WHERE active = 1 AND article_id = aid AND ((private = 0 AND post_time < current_time) OR (private = 1 AND author = userId))
-    AND author = `account`.uid
+    SELECT ar.*, a.username AS author_name FROM article ar, `account` a
+    WHERE article_id = aid AND
+          (
+           (ar.private = 0 AND ar.post_time < DATE_ADD(now(), INTERVAL 18 HOUR) AND ar.active = 1) OR
+           (ar.private = 1 AND ar.author = userId AND ar.active=1) OR
+           (a.role = 1)
+          )
+    AND ar.author = a.uid
     GROUP BY `article_id`;
   END ##
 

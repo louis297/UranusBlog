@@ -30,7 +30,7 @@ function updateArticles(articleList){
     articleList.forEach(function(article){
         var ad = $('<div id="article' + i + '" class="articleBox"></div>')
         ad.append('<div class="articleTitle" id="articleTitle' + i +'">' +
-            '<a href="api/article.html?aid='+ article.article_id +'">' + article.title + '</a>' +
+            '<a href="article.html?aid='+ article.article_id +'">' + article.title + '</a>' +
             '</div>');
         ad.append('<div id="authorName"' + i + '>' +
             article.author_name +

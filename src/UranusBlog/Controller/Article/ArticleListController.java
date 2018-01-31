@@ -78,7 +78,7 @@ public class ArticleListController extends HttpServlet {
 
     private JSONArray constructJSON(List<Article> articles) throws SQLException {
         JSONArray jsonArray = new JSONArray();
-        SimpleDateFormat sdf = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss z");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
         for (Article article : articles) {
 
             JSONObject jsonSingle = new JSONObject();

@@ -120,7 +120,7 @@ public class ArticleDAO implements AutoCloseable{
             stmt.setInt(1, userID);
             stmt.setInt(2, articleID);
             stmt.setString(3, content);
-            stmt.executeUpdate();
+            stmt.executeQuery();
         }
     }
 
@@ -143,14 +143,14 @@ public class ArticleDAO implements AutoCloseable{
      * @param isPrivate
      * @throws SQLException
      */
-    public void updateArticle(int articleID, String title, String content, Timestamp postTime, Boolean isPrivate) throws SQLException{
+    public int updateArticle(int articleID, String title, String content, Timestamp postTime, Boolean isPrivate) throws SQLException{
         String query = "call UpdateArticle (?,?,?,?,?)";
-        modifyArticle(articleID, title, content, postTime, isPrivate, query);
+        return modifyArticle(articleID, title, content, postTime, isPrivate, query);
     }
 
-    public void addArticle(int userID, String title, String content, Timestamp postTime, Boolean isPrivate) throws SQLException{
+    public int addArticle(int userID, String title, String content, Timestamp postTime, Boolean isPrivate) throws SQLException{
         String query = "call InsertArticle(?,?,?,?,?)";
-        modifyArticle(userID, title, content, postTime, isPrivate, query);
+        return modifyArticle(userID, title, content, postTime, isPrivate, query);
     }
 
     public void resumeArticle(int articleID) throws SQLException{
@@ -170,7 +170,7 @@ public class ArticleDAO implements AutoCloseable{
      * @param query
      * @throws SQLException
      */
-    private void modifyArticle (int ID, String title, String content, Timestamp postTime, Boolean isPrivate, String query) throws SQLException{
+    private int modifyArticle (int ID, String title, String content, Timestamp postTime, Boolean isPrivate, String query) throws SQLException{
         Integer intPrivate;
         if(isPrivate){
             intPrivate = 1;
@@ -183,7 +183,13 @@ public class ArticleDAO implements AutoCloseable{
             stmt.setString(3, content);
             stmt.setTimestamp(4, postTime);
             stmt.setInt(5, intPrivate);
-            stmt.executeUpdate();
+            try (ResultSet r = stmt.executeQuery()){
+                if(r.next()){
+                    return r.getInt(1);
+                } else {
+                    return 0;
+                }
+            }
         }
     }
 

@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
 /**
@@ -46,7 +48,8 @@ public class ArticleViewController extends HttpServlet {
             if (article != null) {
                 HttpSession session = req.getSession();
                 JSONObject jsonObject = new JSONObject();
-                SimpleDateFormat sdf = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss z");
+                jsonObject.put("result","success");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
                 jsonObject.put("article_id", article.getArticleId());
                 jsonObject.put("title", article.getTitle());
                 jsonObject.put("content", article.getContent());
