@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <title>Main</title>
+    <link rel="stylesheet" href="Main_files/bootstrap.css">
+    <link rel="stylesheet" href="Main_files/main.css">
+    <script src="Main_files/jquery.js"></script>
+    <script src="Main_files/popper.js"></script>
+    <script src="Main_files/bootstrap.js"></script>
+    <script src="Main_files/articleList.js"></script>
+    <script src="Main_files/main.js"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Titillium+Web" rel="stylesheet">
+
+</head>
+<body>
+<div class="alert alert-danger" style="display:none" id="loginFailedBanner">
+    <strong>Login Failed!</strong> <span id="loginFailedMessage"></span>
+    <span class="float-right" onclick="$('#loginFailedBanner').hide()">X</span>
+</div>
+
+<div class = "container">
+    <div class="imgHeader">
+        <a href="main.html"><img src="spacemanEDIT.jpg" class="img-fluid" min-height="100%" alt="Responsive image"></a>
+    </div>
+
+</div>
+<!--navbar-->
+<div class="container">
+    <nav id = "navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+        <a id = "navbar-brand" class="navbar-brand" href="http://localhost:8181/">Welcome, Earthling!</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active" id="allBlog">
+                    <a class="nav-link" href="#"><span id="allBlogBtn">Discover</span><span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item" id="ownBLog" style="display: none;">
+                    <a class="nav-link" href="#"><span id="ownBlogBtn">My Blog</span></a>
+                </li>
+            </ul>
+            <form class="form-inline my-1 my-lg-1" id="loginForm" action="/api/login" method="post"><input class="form-control mr-sm-1 my-2 my-sm-1" name="Username" placeholder="Username" aria-label="Username" id="Username" type="text">
+                <input class="form-control mr-sm-1 my-2 my-sm-1" name="Password" placeholder="Password" aria-label="Password" id="Password" type="text">
+                <div style="width:100%; height=5px;"></div>            <!--in main.js add ajax call for login-->
+                <button class="btn btn-outline-success mr-sm-1 my-2 my-sm-1" type="button" id="loginButton" onclick="loginButtonClicked()">Login</button>
+                <!-- popup modal for register -->
+                <button class="btn btn-outline-info mr-sm-1 my-2 my-sm-1" type="button" id="registerButton" onclick="window.location.href='/register.html';">Register</button></form>
+        </div>
+    </nav>
+</div>
+
+<!--article list-->
+<div class="container">
+    <div id="articleList">
+        <div id="article0" class="articleBox">
+            <div class="articleTitle" id="articleTitle0"><a href="http://localhost:8181/article.html?aid=13">modified title 13</a></div>
+            <div id="authorName" 0="">user2</div>
+            <div id="created_time" 0="">2018-01-31T04:52:32</div>
+            <div id="modified_time" 0="">2018-02-01T10:49:31</div>
+            <div class="articleContent" id="articleContent0">modified by admin o/and modified by user 2 </div>
+        </div>
+        <div id="article1" class="articleBox">
+            <div class="articleTitle" id="articleTitle1"><a href="http://localhost:8181/article.html?aid=14">title 14 modify</a></div>
+            <div id="authorName" 1="">user2</div>
+            <div id="created_time" 1="">2018-01-31T04:53:05</div>
+            <div id="modified_time" 1="">2018-01-31T05:04:14</div>
+            <div class="articleContent" id="articleContent1">modified 141414</div>
+        </div>
+        <div id="article2" class="articleBox"><div class="articleTitle" id="articleTitle2"><a href="http://localhost:8181/article.html?aid=10">asdf</a></div><div id="authorName" 2="">user2</div><div id="created_time" 2="">2018-01-30T07:40:47</div><div id="modified_time" 2="">2018-01-30T07:40:47</div><div class="articleContent" id="articleContent2">fasdfasdf</div></div><div id="article3" class="articleBox"><div class="articleTitle" id="articleTitle3"><a href="http://localhost:8181/article.html?aid=2">hello louis this is the test for article modifier</a></div><div id="authorName" 3="">user2</div><div id="created_time" 3="">2018-01-23T08:41:58</div><div id="modified_time" 3="">2018-01-24T09:07:53</div><div class="articleContent" id="articleContent3">Hello!</div></div><div id="article4" class="articleBox"><div class="articleTitle" id="articleTitle4"><a href="http://localhost:8181/article.html?aid=3">Title 3</a></div><div id="authorName" 4="">user2</div><div id="created_time" 4="">2018-01-23T08:41:58</div><div id="modified_time" 4="">2018-01-24T08:29:42</div><div class="articleContent" id="articleContent4">Lorem
+        ipsum dolor sit amet, consectetur adipiscing elit. Cras ornare libero
+        nisl, in elementum sem lacinia ut. Proin in lectus metus. Mauris congue,
+        ex vitae viverra sollicitudin, nisi urna accumsan ligula, ac vehicula
+        ex ex et risus. Aliquam bibendum rutrum metus eu ultricies. Vivamus elit
+        mi, ullamcorper ut sodales volutpat, tincidunt quis risus. Nulla
+        hendrerit ex et sodales viverra. Proin molestie leo lacus, ac cursus
+        tellus varius id. Praesent eu nulla nec quam iaculis molestie. Sed
+        placerat urna in risus egestas, vel egestas metus fermentum. Aliquam
+        pretium vitae tortor et facilisis. Proin non justo nibh. Nam commodo
+        finibus pellentesque. Maecenas consequat bibendum mattis. Ut egestas non
+        diam quis sollicitudin. Lorem ipsum dolor sit amet, consectetur
+        adipiscing elit. Cras ornare libero nisl, in elementum sem lacinia ut.
+        Proin in lectus metus. Mauris congue, ex vitae viverra sollicitudin,
+        nisi urna accumsan ligula, ac vehicula ex ex et risus. Aliquam bibendum
+        rutrum metus eu ultricies. Vivamus elit mi, ullamcorper ut sodales
+        volutpat, tincidunt quis risus. Nulla hendrerit ex et sodales viverra.
+        Proin molestie leo lacus, ac cursus tellus varius id. Praesent eu nulla
+        nec quam iaculis molestie. Sed placerat urna in risus egestas, vel
+        egestas metus fermentum. Aliquam pretium vitae tortor et facilisis.
+        Proin non justo nibh. Nam commodo finibus pellentesque. Maecenas
+        consequat bibendum mattis. Ut egestas non diam quis sollicitudin.</div></div></div>
+</div>
+
+<!-- Register Modal -->
+<!--<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+<!--<div class="modal-dialog modal-lg" role="document">-->
+<!--<div class="modal-content">-->
+<!--<div class="modal-header">-->
+<!--<h5 class="modal-title" id="exampleModalLabel">Register</h5>-->
+<!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--<span aria-hidden="true">&times;</span>-->
+<!--</button>-->
+<!--</div>-->
+<!--<div class="modal-body">-->
+<!--<form class="" action="/api/register" method="post">-->
+<!--<div class="row">-->
+<!--<Label for="regUsername">Username: </Label>-->
+<!--<input class="form-control mr-sm-1 col-lg-4 offset-xs-1 col-xs-10" type="text" name="Username" placeholder="Username" aria-label="Username" id="regUsername">-->
+<!--<Label for="regPassword">Password: </Label>-->
+<!--<input class="form-control mr-sm-1 col-lg-4 offset-xs-1 col-xs-10" type="text" name="Password" placeholder="Password" aria-label="Password" id="regPassword">-->
+<!--</div>-->
+<!--<div class="row">-->
+<!--<Label for="regFirstname">Firstname: </Label>-->
+<!--<input class="form-control mr-sm-1 col-lg-4 offset-xs-1 col-xs-10" type="text" name="Firstname" placeholder="Firstname" aria-label="Firstname" id="regFirstname">-->
+<!--<Label for="regMiddlename">Middlename: </Label>-->
+<!--<input class="form-control mr-sm-1 col-lg-4 offset-xs-1 col-xs-10" type="text" name="Middlename" placeholder="Middlename" aria-label="Middlename" id="regMiddlename">-->
+<!--<Label for="regLastname">Lastname: </Label>-->
+<!--<input class="form-control mr-sm-1 col-lg-4 offset-xs-1 col-xs-10" type="text" name="Lastname" placeholder="Lastname" aria-label="Lastname" id="regLastname">-->
+<!--</div>-->
+<!--<div class="row">-->
+<!--<Label for="regEmail">Email: </Label>-->
+<!--<input class="form-control mr-sm-1 col-lg-4 offset-xs-1 col-xs-10" type="email" name="Email" placeholder="Email" aria-label="Email" id="regEmail">-->
+<!--<Label for="regNation">Nation: </Label>-->
+<!--<input class="form-control mr-sm-1 col-lg-4 offset-xs-1 col-xs-10" type="text" name="Nation" placeholder="Nation" aria-label="Nation" id="regNation">-->
+<!--<Label for="regBirthday">Birthday: </Label>-->
+<!--<input class="form-control mr-sm-1 col-lg-4 offset-xs-1 col-xs-10" type="date" name="Birthday" placeholder="Birthday" aria-label="Birthday" id="regBirthday">-->
+<!--</div>-->
+<!--<div class="row">-->
+<!--<fieldset>-->
+<!--<legend> Profile Picture</legend>-->
+<!--<div class="row">-->
+<!--<label for="avatar1"> <img src="WebMaterial/avi_1.png" width="150px"></label>-->
+<!--&lt;!&ndash;Need to modify value&ndash;&gt;-->
+<!--<input type="radio" id="avatar1" value="avatar1" name="system_avatars">-->
+
+<!--<label for="avatar2"> <img src="WebMaterial/avi_2.png" width="150px"></label>-->
+<!--&lt;!&ndash;Need to modify value&ndash;&gt;-->
+<!--<input type="radio" id="avatar2" value="avatar2" name="system_avatars">-->
+
+<!--<label for="avatar3"> <img src="WebMaterial/avi_3.png" width="150px"></label>-->
+<!--&lt;!&ndash;Need to modify value&ndash;&gt;-->
+<!--<input type="radio" id="avatar3" value="avatar3" name="system_avatars">-->
+
+<!--<label for="avatar4"> <img src="WebMaterial/avi_4.png" width="150px"></label>-->
+<!--&lt;!&ndash;Need to modify value&ndash;&gt;-->
+<!--<input type="radio" id="avatar4" value="avatar4" name="system_avatars">-->
+
+<!--<label for="avatar5"> <img src="WebMaterial/avi_5.png" width="150px"></label>-->
+<!--&lt;!&ndash;Need to modify value&ndash;&gt;-->
+<!--<input type="radio" id="avatar5" value="avatar5" name="system_avatars">-->
+<!--</div>-->
+<!--<div class="row">-->
+<!--<input type="radio" id="avatarUser" value="avatarUser" name="avatarUser">-->
+<!--<button class="btn btn-primary" type="button" data-toggle="modal" data-target="#uploadAvatarModal">Upload</button>-->
+<!--</div>-->
+<!--</fieldset>-->
+<!--</div>-->
+
+
+<!--</div>-->
+<!--</form>-->
+<!--</div>-->
+<!--<div class="modal-footer">-->
+<!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+<!--<button type="button" class="btn btn-primary" id="btnRegister">Register</button>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+
+<!--Upload avatar modal-->
+<!--<div class="modal fade" id="uploadAvatarModal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="uploadAvatarModal" aria-hidden="true">-->
+<!--<div class="modal-dialog modal-lg" role="document">-->
+<!--<div class="modal-content">-->
+<!--<div class="modal-header">-->
+<!--<h5 class="modal-title" id="uploadAvaterModalLabel">Upload Avatar</h5>-->
+<!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--<span aria-hidden="true">&times;</span>-->
+<!--</button>-->
+<!--</div>-->
+<!--<div class="modal-body">-->
+<!--<form class="" action="/api/register" method="post">-->
+<!--<input type="file" class="" name="file" size="100%"/>-->
+<!--</form>-->
+<!--</div>-->
+<!--<div class="modal-footer">-->
+<!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+<!--<button type="button" class="btn btn-primary" id="btnUploadAvatar">Upload</button>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+
+</body></html>
