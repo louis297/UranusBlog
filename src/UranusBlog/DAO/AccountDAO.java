@@ -80,7 +80,7 @@ public class AccountDAO implements AutoCloseable{
      * @throws SQLException
      */
     public void deleteUser(int userId) throws SQLException {
-        try (PreparedStatement stmt = conn.prepareStatement("CALL GetUserInfo(?)")) {
+        try (PreparedStatement stmt = conn.prepareStatement("CALL DeleteAccount(?)")) {
             stmt.setInt(1, userId);
             stmt.executeQuery();
         }

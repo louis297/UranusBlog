@@ -11,9 +11,10 @@ public class Comment {
     private Integer authorID;
     private String username;
     private String avatarPath;
+    private Integer articleID;
 
 
-    public Comment(Integer commentID, String content, Timestamp createdTime, boolean isActive, Integer authorID, String username, String avatarPath) {
+    public Comment(Integer commentID, String content, Timestamp createdTime, boolean isActive, Integer authorID, String username, String avatarPath, Integer articleID) {
         this.commentID = commentID;
         this.content = content;
         this.createdTime = createdTime;
@@ -21,6 +22,15 @@ public class Comment {
         this.authorID = authorID;
         this.username = username;
         this.avatarPath = avatarPath;
+        this.articleID = articleID;
+    }
+
+    public Integer getArticleID() {
+        return articleID;
+    }
+
+    public void setArticleID(Integer articleID) {
+        this.articleID = articleID;
     }
 
     public Integer getCommentID() {

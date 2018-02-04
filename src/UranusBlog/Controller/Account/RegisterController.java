@@ -36,7 +36,6 @@ public class RegisterController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         final int maxFileSize = 5 * 1024 * 1024;
-        final String RECAPTCHA_SECRET_CODE = "6LfWa0MUAAAAAOAipFBb2LbAImwDpVoA7A7xLU6F";
         PrintWriter out = resp.getWriter();
         HttpSession session = req.getSession();
 
@@ -162,6 +161,17 @@ public class RegisterController extends HttpServlet {
                 birthdayStr == null || birthdayStr.isEmpty()) {
             // missing area and send error message back
             out.print("\"result\":\"fail\",\"reason\":\"Some required fields are missing.\"");
+            return;
+        }
+
+        if (username.length() > 45 ||
+                firstname.length() > 45 ||
+                lastname.length() > 45 ||
+                middlename.length() > 100 ||
+                email.length() > 70 ||
+                nation.length() > 2){
+            // fields size
+            out.print("\"result\":\"fail\",\"reason\":\"Some fields are too long.\"");
             return;
         }
 

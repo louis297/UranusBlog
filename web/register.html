@@ -8,12 +8,26 @@
     <script src="static/js/jquery.min.js"></script>
     <script src="static/js/popper.min.js"></script>
     <script src="static/js/bootstrap.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+
     <script>
         $(document).ready(function() {
             $('#pass2').focusout(compareTwoPasswords)
             $('#pass1').focusout(compareTwoPasswords)
 
         });
+
+        var onloadCallback = function() {
+            grecaptcha.render('recaptcha_dom', {
+                'sitekey' : '6LfWa0MUAAAAAJ6ZOABo4_F7w2CGRkCf1kHGqSih',
+                'callback' : correctCaptcha
+            });
+        };
+
+        var correctCaptcha = function(ret) {
+            console.log(ret);
+            $('#btnSubmitDiv').html('<button type="submit" class="btn btn-primary">Register</button>');
+        };
 
         function validateForm(){
             if($('#pass1').val() !== $('#pass2').val()){
@@ -402,9 +416,10 @@
             </div>
         </div>
 
+        <div id='recaptcha_dom'></div>
+        <div id="btnSubmitDiv" class="offset-md-1 my-2">
 
-        <div class="offset-md-1">
-            <button type="submit" class="btn btn-primary">Register</button>
+
         </div>
     </form>
 </div>

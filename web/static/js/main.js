@@ -15,7 +15,7 @@ function loginAction(){
     }
     var dataStr = 'Username=' + username +'&Password=' + password;
     $.ajax({
-        url: '/api/login',
+        url: 'api/login',
         method: 'post',
         data: dataStr,
         dataType: 'json',
@@ -39,8 +39,9 @@ function loginAction(){
 function updateLoginForm(success, ret){
     if(success){
         // display username and logout button
-        $('#loginForm').html('<button class="btn btn-outline-success mr-sm-1 my-2 my-sm-1" type="button" id="btnAccountManage" onclick="accountManageButtonClicked();">Account Manage</button>\n' +
-            '            <button class="btn btn-outline-danger mr-sm-1 my-2 my-sm-1" type="button" id="btnLogout" onclick="logoutButtonClicked();">Logout</button>')
+        $('#loginForm').html('<button class="btn btn-outline-primary mr-sm-1 my-2 my-sm-1" type="button" id="btnAddArticle" onclick="addArticleButtonClicked();">Write Article</button>\n' +
+            '            <button class="btn btn-outline-success mr-sm-1 my-2 my-sm-1" type="button" id="btnAccountManage" onclick="accountManageButtonClicked();">Account Manage</button>' +
+        '            <button class="btn btn-outline-danger mr-sm-1 my-2 my-sm-1" type="button" id="btnLogout" onclick="logoutButtonClicked();">Logout</button>')
 
         // display the "my blog" tag
         $('#ownBLog').show();
@@ -48,18 +49,18 @@ function updateLoginForm(success, ret){
         $('#ownBLog').hide();
         // display login form
         $('#loginForm').html('<input class="form-control mr-sm-1 my-2 my-sm-1" type="text" name="Username" placeholder="Username" aria-label="Username" id="Username">\n' +
-            '            <input class="form-control mr-sm-1 my-2 my-sm-1" type="text" name="Password" placeholder="Password" aria-label="Password" id="Password">\n' +
+            '            <input class="form-control mr-sm-1 my-2 my-sm-1" type="password" name="Password" placeholder="Password" aria-label="Password" id="Password">\n' +
             '<div style="width:100%; height=5px;"></div>' +
             '            <!--in main.js add ajax call for login-->\n' +
             '            <button class="btn btn-outline-success mr-sm-1 my-2 my-sm-1" type="button" id="loginButton" onclick="loginButtonClicked()">Login</button>\n' +
             '            <!-- popup modal for register -->\n' +
             //  data-toggle="modal" data-target="#registerModal"
-            '            <button class="btn btn-outline-info mr-sm-1 my-2 my-sm-1" type="button" id="registerButton" onclick="window.location.href=\'/register.html\';">Register</button>');
+            '            <button class="btn btn-outline-info mr-sm-1 my-2 my-sm-1" type="button" id="registerButton" onclick="window.location.href=\'register.html\';">Register</button>');
     }
 }
 function isLogged(){
     $.ajax({
-        url: '/api/isLogged',
+        url: 'api/isLogged',
         method: 'get',
         dataType: 'json',
         success: function(ret){
@@ -79,6 +80,10 @@ function isLogged(){
     });
 }
 
+function addArticleButtonClicked(){
+    window.location.href = 'article_add.html';
+}
+
 function loginButtonClicked(){
     loginAction();
 }
@@ -86,7 +91,7 @@ function loginButtonClicked(){
 function logoutButtonClicked(){
     // call /logout
     $.ajax({
-        url: '/api/logout',
+        url: 'api/logout',
         method: 'get',
         success: function(){
             updateLoginForm(false, null);
@@ -120,42 +125,42 @@ $(function () {
         }
     });
 
-    $('#btnRegister').click(function(){
-        var data = {};
-        data.username = $('#regUsername').val();
-        data.password = $('#regPassword').val();
-        data.firstname = $('#regFirstname').val();
-        data.lastname = $('#regLastname').val();
-        data.middlename = $('#regMiddlename').val();
-        data.email = $('#regEmail').val();
-        data.nation = $('#regNation').val();
-        data.birthday = $('#regBirthday').val();
-        console.log(data);
-        $.ajax({
-            url:'/api/register',
-            method:'post',
-            data:data,
-            dataType:'json',
-            success:function(ret){
-                // jump to main page
-                if(ret.result=="success"){
-                    $('#loginFailedBanner').hide();
-                    window.location.href = '/main.html';
-                } else {
-                    // register error
-                    $('#registerModal').modal();
-                    $('#loginFailedMessage').html(ret.reason);
-                    $('#loginFailedBanner').show();
-                }
-            },
-            error:function(){
-                // show error message
-                $('#loginFailedMessage').html("Server error, please try later...")
-                $('#loginFailedBanner').show();
-            }
-        });
-
-    });
+    // $('#btnRegister').click(function(){
+    //     var data = {};
+    //     data.username = $('#regUsername').val();
+    //     data.password = $('#regPassword').val();
+    //     data.firstname = $('#regFirstname').val();
+    //     data.lastname = $('#regLastname').val();
+    //     data.middlename = $('#regMiddlename').val();
+    //     data.email = $('#regEmail').val();
+    //     data.nation = $('#regNation').val();
+    //     data.birthday = $('#regBirthday').val();
+    //     console.log(data);
+    //     $.ajax({
+    //         url:'api/register',
+    //         method:'post',
+    //         data:data,
+    //         dataType:'json',
+    //         success:function(ret){
+    //             // jump to main page
+    //             if(ret.result=="success"){
+    //                 $('#loginFailedBanner').hide();
+    //                 window.location.href = 'main.html';
+    //             } else {
+    //                 // register error
+    //                 $('#registerModal').modal();
+    //                 $('#loginFailedMessage').html(ret.reason);
+    //                 $('#loginFailedBanner').show();
+    //             }
+    //         },
+    //         error:function(){
+    //             // show error message
+    //             $('#loginFailedMessage').html("Server error, please try later...")
+    //             $('#loginFailedBanner').show();
+    //         }
+    //     });
+    //
+    // });
 
     $('#btnUploadAvatar').click(function(){
         $.ajax({
@@ -180,6 +185,5 @@ $(function () {
     } else {
         var own = false;
     }
-    console.log(own)
     getArticleList(own)
 })

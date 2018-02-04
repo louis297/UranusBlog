@@ -169,6 +169,18 @@ public class AccountEditController extends HttpServlet {
             return;
         }
 
+        if (
+                firstname.length() > 45 ||
+                lastname.length() > 45 ||
+                middlename.length() > 100 ||
+                email.length() > 70 ||
+                nation.length() > 2){
+            // fields size
+            out.print("\"result\":\"fail\",\"reason\":\"Some fields are too long.\"");
+            return;
+        }
+
+
         if(hasUploadedAvatar) {
             if (avatarPath == null || avatarPath.isEmpty()) {
                 // failed to save avatar file

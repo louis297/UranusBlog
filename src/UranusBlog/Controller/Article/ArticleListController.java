@@ -49,7 +49,7 @@ public class ArticleListController extends HttpServlet {
             start = 0;
         Integer amount = (Integer) req.getSession().getAttribute("amount");
         if(amount == null)
-            amount = 5;
+            amount = 50;
 //        int start = 0;
 //        int amount = 5;
 

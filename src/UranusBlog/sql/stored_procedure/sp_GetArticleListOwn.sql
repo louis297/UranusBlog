@@ -7,7 +7,8 @@ CREATE PROCEDURE GetArticleListOwn(IN userId int(11), IN startNum int(11), IN am
     WHERE active = 1 and author = userId and `account`.uid = userId
       GROUP BY `article`.article_id
       ORDER BY post_time desc
-    limit startNum, amount ;
+    -- limit startNum, amount
+    ;
   END ##
 
 DELIMITER ;

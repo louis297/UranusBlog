@@ -204,7 +204,7 @@ public class ArticleDAO implements AutoCloseable{
     private Comment commentFromResultSet(ResultSet r) throws SQLException {
         Boolean is_active = r.getInt(4) == 1;
         return new Comment(r.getInt(1), r.getString(2), r.getTimestamp(3), is_active,
-                r.getInt(5), r.getString(6), r.getString(7));
+                r.getInt(5), r.getString(6), r.getString(7), r.getInt(8));
     }
 
     @Override

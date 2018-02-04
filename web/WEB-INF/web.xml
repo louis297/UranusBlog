@@ -64,6 +64,15 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>accountDelete</servlet-name>
+        <servlet-class>UranusBlog.Controller.Account.AccountDeleteController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>accountDelete</servlet-name>
+        <url-pattern>/api/accountDelete</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>accountInfo</servlet-name>
         <servlet-class>UranusBlog.Controller.Account.AccountInfoController</servlet-class>
     </servlet>
