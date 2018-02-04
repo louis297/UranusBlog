@@ -107,7 +107,7 @@ public class PasswordResetPageController extends HttpServlet {
                     "    <div class=\"container\">\n" +
                     "        <div class=\"row\">\n" +
                     "            <div class=\" col-sm-12 col-md-8 offset-md-2\">\n" +
-                    "                <img src=\"WebMaterial/avi_2.png\" class=\"image\" width=\"200px\">\n" +
+                    "                <img src=\"WebMaterial/avatar2.png\" class=\"image\" width=\"200px\">\n" +
                     "            </div>\n" +
                     "        </div>\n" +
                     "\n" +
@@ -126,7 +126,7 @@ public class PasswordResetPageController extends HttpServlet {
                     "\n" +
                     "    <div class=\"container\">\n" +
                     "\n" +
-                    "        <img src=\"WebMaterial/avi_3.png\" width=\"200px\" class=\"image\">\n" +
+                    "        <img src=\"WebMaterial/avatar3.png\" width=\"200px\" class=\"image\">\n" +
                     "\n" +
                     "        <p class=\"text_style1\"> <span class=\"text_highlight\"> Hello </span> <span id=\"username\" class=\"text_highlight\"> </span> ! Welcome Back to Uranus Blog.</p>\n" +
                     "\n" +

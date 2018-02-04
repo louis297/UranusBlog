@@ -1,6 +1,7 @@
 var lock = true;
 var currentBlogList = 'all';
 var ARTICLES_PER_PAGE = 10;
+var uid;
 
 function loginAction(){
     var username = $('#Username').val();
@@ -38,8 +39,8 @@ function loginAction(){
 function updateLoginForm(success, ret){
     if(success){
         // display username and logout button
-        $('#loginForm').html('<button class="btn btn-outline-success mr-sm-1 my-2 my-sm-1" type="button" id="manageButton">Account Manage</button>\n' +
-            '            <button class="btn btn-outline-danger mr-sm-1 my-2 my-sm-1" type="button" id="logoutButton" onclick="logoutButtonClicked();">Logout</button>')
+        $('#loginForm').html('<button class="btn btn-outline-success mr-sm-1 my-2 my-sm-1" type="button" id="btnAccountManage" onclick="accountManageButtonClicked();">Account Manage</button>\n' +
+            '            <button class="btn btn-outline-danger mr-sm-1 my-2 my-sm-1" type="button" id="btnLogout" onclick="logoutButtonClicked();">Logout</button>')
 
         // display the "my blog" tag
         $('#ownBLog').show();
@@ -64,8 +65,10 @@ function isLogged(){
         success: function(ret){
             console.log(ret);
             if(ret.is_logged === true){
+                uid = ret.uid;
                 updateLoginForm(true, ret);
             } else {
+                uid = 0;
                 updateLoginForm(false, ret);
             }
         },
@@ -91,11 +94,13 @@ function logoutButtonClicked(){
     })
 }
 
+function accountManageButtonClicked(){
+    window.location.href='user_management.html?uid=' + uid;
+}
 
 $(function () {
     $('#allBlogBtn').click(function(){
 
-        console.log('all clicked')
         if(!lock && currentBlogList !=='all') {
             lock = true;
             $('#ownBlog').removeClass('active');
@@ -106,7 +111,6 @@ $(function () {
     });
     $('#ownBlogBtn').click(function(){
 
-        console.log('own clicked')
         if(!lock && currentBlogList !=='own') {
             lock = true;
             $('#allBlog').removeClass('active');

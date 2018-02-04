@@ -5,7 +5,7 @@ import java.sql.Date;
 public class Account {
     private Integer userId;
     private String username;
-    private String password;
+    private byte[] password;
     private String firstname;
     private String lastname;
     private String middlename;
@@ -17,8 +17,11 @@ public class Account {
     private String avatarThumbnailPath;
     private Integer roleId;
     private String roleDetail;
+    private byte[] salt;
+    private Integer iters;
+    private String description;
 
-    public Account(Integer userId, String username, String password, String firstname, String lastname, String middlename, String email, Date birthday, String nation, String nationFullname, String avatarPath, String avatarThumbnailPath, Integer roleId, String roleDetail) {
+    public Account(Integer userId, String username, byte[] password, String firstname, String lastname, String middlename, String email, Date birthday, String nation, String nationFullname, String avatarPath, String avatarThumbnailPath, Integer roleId, String roleDetail, byte[] salt, Integer iters, String description) {
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -33,6 +36,9 @@ public class Account {
         this.avatarThumbnailPath = avatarThumbnailPath;
         this.roleId = roleId;
         this.roleDetail = roleDetail;
+        this.salt = salt;
+        this.iters = iters;
+        this.description = description;
     }
 
     public Integer getUserId() {
@@ -49,14 +55,6 @@ public class Account {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getFirstname() {
@@ -145,6 +143,38 @@ public class Account {
 
     public void setRoleDetail(String roleDetail) {
         this.roleDetail = roleDetail;
+    }
+
+    public byte[] getPassword() {
+        return password;
+    }
+
+    public void setPassword(byte[] password) {
+        this.password = password;
+    }
+
+    public byte[] getSalt() {
+        return salt;
+    }
+
+    public void setSalt(byte[] salt) {
+        this.salt = salt;
+    }
+
+    public Integer getIters() {
+        return iters;
+    }
+
+    public void setIters(Integer iters) {
+        this.iters = iters;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

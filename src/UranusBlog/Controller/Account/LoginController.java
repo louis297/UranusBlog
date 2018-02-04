@@ -3,6 +3,7 @@ package UranusBlog.Controller.Account;
 import UranusBlog.DAO.AccountDAO;
 import UranusBlog.DB.MySQLDatabase;
 import UranusBlog.Model.Account;
+import UranusBlog.Utils.Passwords;
 import org.json.simple.JSONObject;
 
 import javax.servlet.ServletException;
@@ -19,21 +20,14 @@ public class LoginController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        PrintWriter out = resp.getWriter();
-//        out.println("hello login");
-        //   super.doGet(req,resp);
         // todo: use super.doGet if we don't need to use get method to test
         doPost(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //super.doPost(req, resp);
-        //Testing-> switch back
         String userName = req.getParameter("Username");
-        //String userName= "user7";
         String password = req.getParameter("Password");
-        //String password= "password7";
 
         // calculate hash of password (get salt and iteration for the user)
 
@@ -44,7 +38,9 @@ public class LoginController extends HttpServlet {
         HttpSession session = req.getSession();
 
         try(AccountDAO dao = new AccountDAO(new MySQLDatabase(getServletContext()))){
-            Account account = dao.login(userName, password);
+            Account account = dao.getUserByName(userName);
+            byte[] password_hash = Passwords.hash(password.toCharArray(), account.getSalt(), account.getIters());
+            account = dao.login(userName, password_hash);
             if(account == null){
                 // login failed
                 req.getSession().setAttribute("is_logged", false);
@@ -70,7 +66,6 @@ public class LoginController extends HttpServlet {
                 session.setAttribute("nation", account.getNation());
                 session.setAttribute("nationDetail", account.getNationFullname());
 
-                System.out.println(jsonObject);
                 out.println(jsonObject);
             }
         } catch (SQLException e) {

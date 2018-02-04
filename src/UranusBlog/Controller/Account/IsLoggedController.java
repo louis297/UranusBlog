@@ -14,7 +14,8 @@ public class IsLoggedController extends HttpServlet {
         JSONObject jsonObject = new JSONObject();
         if(isLogged != null && isLogged){
             jsonObject.put("is_logged", true);
-            jsonObject.put("username", (String) req.getSession().getAttribute("username"));
+            jsonObject.put("username", req.getSession().getAttribute("username"));
+            jsonObject.put("uid", req.getSession().getAttribute("userID"));
         } else {
             jsonObject.put("is_logged", false);
         }

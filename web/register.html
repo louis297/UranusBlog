@@ -2,68 +2,81 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Register</title>
 
     <link rel="stylesheet" href="static/css/bootstrap.css">
     <script src="static/js/jquery.min.js"></script>
     <script src="static/js/popper.min.js"></script>
     <script src="static/js/bootstrap.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#pass2').focusout(compareTwoPasswords)
+            $('#pass1').focusout(compareTwoPasswords)
 
-</head>
+        });
 
-<script>
-    $(document).ready(function() {
-        $("#pass2").focusout(function () {
+        function validateForm(){
+            if($('#pass1').val() !== $('#pass2').val()){
+                alert('Please input the same password to confirm.');
+                return false;
+            }
+            return true;
+        }
+
+        function compareTwoPasswords() {
             var value1 = $("#pass1").val();
             var value2 = $("#pass2").val();
-            if (value1 == value2) {
-                $("#password_reminder").css({"color": "green", "font-weight": "bold"});
-                document.getElementById("password_reminder").innerHTML = "Password matches!";
-                console.log("1");
+            var password_reminder = $("#password_reminder");
+            if (value2 == null || value2 === "") {
+                password_reminder.hide();
+            } else {
+                if (value1 == value2) {
+                    password_reminder.css({"color": "green", "font-weight": "bold"});
+                    password_reminder.html("Password matches!");
+                    password_reminder.show();
+                } else {
+                    password_reminder.css({"color": "red", "font-weight": "bold"});
+                    password_reminder.html("Password does not match! Please re-enter your password.");
+                    password_reminder.show();
+                }
             }
-            else if (value1 != value2)  {
-                $("#password_reminder").css({"color": "red", "font-weight": "bold"});
-                document.getElementById("password_reminder").innerHTML = "Password does not match! Please re-enter your password.";
-                console.log("2");
-            }
-        })
-    });
+        }
+    </script>
+    <style>
 
-</script>
-<style>
-    #nationalitydropdown {
-        max-width: 180px;
-        width:1000%;
-        align: right;
-    }
+    </style>
+</head>
 
 
-</style>
 <body>
 <!--Account Modification-->
 <div class="container">
     <div class="row">
-        <h2 class="" id="PageTitle">Account Modification</h2>
+        <h2 class="" id="PageTitle">Register New Account</h2>
     </div>
 
-    <form action="/api/register">
+    <form action="api/register" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
         <div class="">
             <fieldset>
                 <legend> General Account Settings</legend>
-
                 <div class="form-group">
-                    <label for="fname">First Name</label>
-                    <input type="text" class="form-control" id="fname" placeholder="Your First Name" name="fname">
+                    <label for="username">User Name</label>
+                    <input type="text" class="form-control" id="username" placeholder="Your User Name" name="username">
                 </div>
 
                 <div class="form-group">
-                    <label for="lname">Last Name</label>
-                    <input type="text" class="form-control" id="lname" placeholder="Your Last Name" name="lname">
+                    <label for="firstname">First Name</label>
+                    <input type="text" class="form-control" id="firstname" placeholder="Your First Name" name="firstname">
                 </div>
 
                 <div class="form-group">
-                    <label for="mname">Middle Name</label>
-                    <input type="text" class="form-control" id="mname" placeholder="Your Last Name" name="mname">
+                    <label for="lastname">Last Name</label>
+                    <input type="text" class="form-control" id="lastname" placeholder="Your Middle Name" name="lastname">
+                </div>
+
+                <div class="form-group">
+                    <label for="middlename">Middle Name</label>
+                    <input type="text" class="form-control" id="middlename" placeholder="Your Last Name" name="middlename">
                 </div>
 
                 <div class="form-group">
@@ -77,12 +90,13 @@
                 </div>
 
                 <div class="dropdown">
-                    <label for="nationalitydropdown">Nationality</label>
-                    <button class="btn btn-muted dropdown-toggle" type="button" id="nationalitydropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Select Your Nationality
-                    </button>
+                    <label for="nation">Select Your Nationality: </label>
+                    <br/>
+                    <!--<button class="btn btn-muted dropdown-toggle" type="button" id="nationalitydropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+                        <!--Select Your Nationality-->
+                    <!--</button>-->
 
-                    <div class="dropdown-menu" aria-labelledby="nationalitydropdown">
+                    <select id="nation" name="nation" required>
                         <!--placeholders-->
                         <option value="NZ">New Zealand</option>
                         <option value="AU">Australia</option>
@@ -333,7 +347,7 @@
                         <option value="ZM">Zambia</option>
                         <option value="ZW">Zimbabwe</option>
 
-                    </div>
+                    </select>
                 </div>
             </fieldset>
         </div>
@@ -342,24 +356,24 @@
             <fieldset>
                 <legend> Profile Picture</legend>
                 <div class="row">
-                    <input type="radio" id="avitar1" value="avitar1" name="system_avitars">
-                    <label for="avitar1"> <img src="WebMaterial/avi_1.png" width="150px"></label>
+                    <input type="radio" id="avatar1" value="avatar1" name="system_avatars">
+                    <label for="avatar1"> <img src="static/image/Avatar/avatar1.png" width="150px"></label>
                     <!--Need to modify value-->
 
-                    <input type="radio" id="avitar2" value="avitar2" name="system_avitars">
-                    <label for="avitar2"> <img src="WebMaterial/avi_2.png" width="150px"></label>
+                    <input type="radio" id="avatar2" value="avatar2" name="system_avatars">
+                    <label for="avatar2"> <img src="static/image/Avatar/avatar2.png" width="150px"></label>
                     <!--Need to modify value-->
 
-                    <input type="radio" id="avitar3" value="avitar3" name="system_avitars">
-                    <label for="avitar3"> <img src="WebMaterial/avi_3.png" width="150px"></label>
+                    <input type="radio" id="avatar3" value="avatar3" name="system_avatars">
+                    <label for="avatar3"> <img src="static/image/Avatar/avatar3.png" width="150px"></label>
                     <!--Need to modify value-->
 
-                    <input type="radio" id="avitar4" value="avitar4" name="system_avitars">
-                    <label for="avitar4"> <img src="WebMaterial/avi_4.png" width="150px"></label>
+                    <input type="radio" id="avatar4" value="avatar4" name="system_avatars">
+                    <label for="avatar4"> <img src="static/image/Avatar/avatar4.png" width="150px"></label>
                     <!--Need to modify value-->
 
-                    <input type="radio" id="avitar5" value="avitar5" name="system_avitars">
-                    <label for="avitar5"> <img src="WebMaterial/avi_5.png" width="150px"></label>
+                    <input type="radio" id="avatar5" value="avatar5" name="system_avatars">
+                    <label for="avatar5"> <img src="static/image/Avatar/avatar5.png" width="150px"></label>
                     <!--Need to modify value-->
                 </div>
                 <div class="row">
@@ -367,7 +381,10 @@
                 </div>
             </fieldset>
         </div>
-
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control" id="description" placeholder="Please input your personal description" name="description"></textarea>
+        </div>
         <div class="">
             <fieldset>
                 <legend> Password </legend>
@@ -377,13 +394,16 @@
                 </div>
                 <div class="form-group">
                     <label for="pass2">Re-enter Password</label>
-                    <input type="password" class="form-control" id="pass2" placeholder="Re-enter Your Password" name="password">
+                    <input type="password" class="form-control" id="pass2" placeholder="Re-enter Your Password" name="password_confirm">
                 </div>
             </fieldset>
+            <div>
+                <p id="password_reminder"></p>
+            </div>
         </div>
 
 
-        <div class="offset-md-2">
+        <div class="offset-md-1">
             <button type="submit" class="btn btn-primary">Register</button>
         </div>
     </form>

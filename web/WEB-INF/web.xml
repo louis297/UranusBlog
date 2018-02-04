@@ -64,6 +64,15 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>accountInfo</servlet-name>
+        <servlet-class>UranusBlog.Controller.Account.AccountInfoController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>accountInfo</servlet-name>
+        <url-pattern>/api/accountInfo</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>articleAdd</servlet-name>
         <servlet-class>UranusBlog.Controller.Article.ArticleAddController</servlet-class>
     </servlet>

@@ -1,22 +1,29 @@
 package UranusBlog.Controller.Account;
 
-//import org.apache.commons.fileupload.FileItem;
-//import org.apache.commons.fileupload.FileUploadException;
-//import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-//import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import UranusBlog.DAO.AccountDAO;
+import UranusBlog.DB.MySQLDatabase;
+import UranusBlog.Utils.Passwords;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 
 public class RegisterController extends HttpServlet {
 
@@ -28,120 +35,162 @@ public class RegisterController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        final int maxFileSize = 5 * 1024 * 1024;
+        final String RECAPTCHA_SECRET_CODE = "6LfWa0MUAAAAAOAipFBb2LbAImwDpVoA7A7xLU6F";
         PrintWriter out = resp.getWriter();
+        HttpSession session = req.getSession();
 
+        String username = "";
+        String password = "";
+        String firstname = "";
+        String lastname = "";
+        String middlename = "";
+        String email = "";
+        String nation = "";
+        String birthdayStr = "";
+        String description = "";
+        String sysAvatarPath = null;
+        String avatarPath = null;
+        Boolean hasUploadedAvatar = false;
+        Integer role = 2; // 2 for normal user
+
+        DiskFileItemFactory factory = new DiskFileItemFactory();
+
+        ServletContext context = req.getServletContext();
+        String path = context.getRealPath("/static/image/Avatar/");
+        String filePath = path;
+        System.out.println(filePath);
+
+        // Location to save data that is larger than maxMemSize.
+        factory.setRepository(new File(path));
+
+        // Create a new file upload handler
+        ServletFileUpload upload = new ServletFileUpload(factory);
+
+        // maximum file size to be uploaded.
+        upload.setSizeMax(maxFileSize);
+
+        try {
+            // Parse the request to get file items.
+            List fileItems = upload.parseRequest(req);
+
+            // Process the uploaded file items
+            Iterator i = fileItems.iterator();
+
+            File file;
+            while (i.hasNext()) {
+                FileItem fi = (FileItem) i.next();
+                if (!fi.isFormField()) {
+                    // Get the uploaded file parameters
+                    String fieldName = fi.getFieldName();
+                    String fileName = fi.getName();
+                    String contentType = fi.getContentType();
+                    boolean isInMemory = fi.isInMemory();
+                    long sizeInBytes = fi.getSize();
+                    if(sizeInBytes == 0){
+                        continue;
+                    }
+                    // Write the file
+                    String finalName;
+                    finalName = filePath + session.getId() + fileName.substring(fileName.lastIndexOf("."));
+                    file = new File(finalName);
+                    avatarPath = finalName;
+                    fi.write(file);
+
+                    // thumbnails
+                    BufferedImage img = null;
+                    try {
+                        img = ImageIO.read(new File(finalName));
+                        String thumbnailFile = finalName.replace(finalName.substring(finalName.lastIndexOf(".")), "_thumbnail.jpg");
+                        if (img.getHeight() < 400 && img.getWidth() < 400) {
+
+                            ImageIO.write(img, "jpg", new File(thumbnailFile));
+                        } else {
+                            double zoom = Math.max(1.0 * img.getHeight() / 400, 1.0 * img.getWidth() / 400);
+                            int type = img.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : img.getType();
+                            BufferedImage resizedImage = new BufferedImage((int) (img.getWidth() / zoom), (int) (img.getHeight() / zoom), type);
+                            Graphics2D g = resizedImage.createGraphics();
+                            g.drawImage(img, 0, 0, (int) (img.getWidth() / zoom), (int) (img.getHeight() / zoom), null);
+                            g.dispose();
+                            g.setComposite(AlphaComposite.Src);
+                            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                            g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+                            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                            ImageIO.write(resizedImage, "jpg", new File(thumbnailFile));
+                        }
+                        hasUploadedAvatar = true;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    // get all data from form
+                    String fieldName = fi.getFieldName();
+                    if (fieldName.equals("username")) {
+                        username = fi.getString();
+                    } else if (fieldName.equals("password")) {
+                        password = fi.getString();
+                    } else if (fieldName.equals("firstname")) {
+                        firstname = fi.getString();
+                    } else if (fieldName.equals("lastname")) {
+                        lastname = fi.getString();
+                    } else if (fieldName.equals("middlename")) {
+                        middlename = fi.getString();
+                    } else if (fieldName.equals("email")) {
+                        email = fi.getString();
+                    } else if (fieldName.equals("nation")) {
+                        nation = fi.getString();
+                    } else if (fieldName.equals("birthday")) {
+                        birthdayStr = fi.getString();
+                    } else if (fieldName.equals("system_avatars")){
+                        sysAvatarPath = "static/image/Avatar/" + fi.getString()+".png";
+                    } else if (fieldName.equals("description")){
+                        description = fi.getString();
+                    }
+
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        if (username == null || username.isEmpty() ||
+                password == null || password.isEmpty() ||
+                firstname == null || firstname.isEmpty() ||
+                lastname == null || lastname.isEmpty() ||
+                email == null || email.isEmpty() ||
+                nation == null || nation.isEmpty() ||
+                birthdayStr == null || birthdayStr.isEmpty()) {
+            // missing area and send error message back
+            out.print("\"result\":\"fail\",\"reason\":\"Some required fields are missing.\"");
+            return;
+        }
+
+        if(hasUploadedAvatar) {
+            if (avatarPath == null || avatarPath.isEmpty()) {
+                // failed to save avatar file
+                out.print("\"result\":\"fail\",\"reason\":\"Failed to save avatar file.\"");
+                return;
+            } else {
+                avatarPath = avatarPath.substring(avatarPath.indexOf("static/image/Avatar/"));
+            }
+        } else {
+            avatarPath = sysAvatarPath;
+        }
+        // validation data (e.g. length of username, etc.)
+
+        // try some format
+        LocalDate birthday = LocalDate.parse(birthdayStr);
+
+
+
+        // register
+        try (AccountDAO dao = new AccountDAO(new MySQLDatabase(getServletContext()))) {
+            dao.addUser(username, password, firstname, lastname, middlename, email, birthday, nation, avatarPath, role,description);
+            resp.sendRedirect("../main.html");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
-    //    @Override
-//    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        //super.doPost(req, resp);
-//
-//        //test case delete after testing
-//        //PrintWriter out = resp.getWriter();
-//        //String filePath;
-//        int maxFileSize = 5 * 1024 * 1024;
-//
-//
-//        ServletContext servletContext = getServletContext();
-//        String fullPhotoPath = servletContext.getRealPath("/Photos");
-//        String avitar_path = "";
-//
-////        boolean isMultipart;
-////        isMultipart = ServletFileUpload.isMultipartContent(request);
-//        DiskFileItemFactory factory = new DiskFileItemFactory();
-////        // maximum size that will be stored in memory
-////        factory.setSizeThreshold(maxFileSize);
-////
-////        // Location to save data that is larger than maxMemSize.
-////        factory.setRepository(new File("c:\\temp"));
-//
-//        // Create a new file upload handler
-//        ServletFileUpload upload = new ServletFileUpload(factory);
-//
-//        // maximum file size to be uploaded.
-//        upload.setSizeMax(maxFileSize);
-//
-//        try {
-//            List fileItems = upload.parseRequest(req);
-//            Iterator i = fileItems.iterator();
-//            while (i.hasNext()) {
-//                FileItem fi = (FileItem) i.next();
-//                if (!fi.isFormField()) {
-//                    // Get the uploaded file parameters
-//                    String fieldName = fi.getFieldName();
-//                    String fileName = fi.getName();
-//                    String contentType = fi.getContentType();
-//                    boolean isInMemory = fi.isInMemory();
-//                    long sizeInBytes = fi.getSize();
-//
-//                    // Write the file
-//                    File file;
-//                    if (fileName.lastIndexOf("\\") >= 0) {
-//                        file = new File(fullPhotoPath + "\\" + fileName.substring(fileName.lastIndexOf("\\"), fileName.lastIndexOf('.')) + "fullsize" + fileName.substring(fileName.lastIndexOf(".")));
-//                        avitar_path = fullPhotoPath + "\\" + fileName.substring(fileName.lastIndexOf("\\"), fileName.lastIndexOf('.')) + "fullsize" + fileName.substring(fileName.lastIndexOf("."));
-//                    } else {
-//                        file = new File(fullPhotoPath + "\\" + fileName.substring(fileName.lastIndexOf("\\") + 1, fileName.lastIndexOf('.')) + "fullsize" + fileName.substring(fileName.lastIndexOf(".")));
-//                        avitar_path = fullPhotoPath + "\\" + fileName.substring(fileName.lastIndexOf("\\"), fileName.lastIndexOf('.')) + "fullsize" + fileName.substring(fileName.lastIndexOf("."));
-//                    }
-//                    fi.write(file);
-//                }
-//            }
-//        } catch (FileUploadException e) {
-//            e.printStackTrace();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//        String username = req.getParameter("userName");
-//        String emailaddress = req.getParameter("email");
-//        String password = req.getParameter("password");
-//        String firstName = req.getParameter("fname");
-//        String lastName = req.getParameter("lname");
-//        String middleName = req.getParameter("mname");
-//        String birthday = req.getParameter("bday");
-//        String nation = req.getParameter("nation");
-//
-//
-//        boolean authorized = false;
-//
-//        try {
-//            Class.forName("com.mysql.jdbc.Driver");
-//        } catch (ClassNotFoundException e) {
-//            throw new RuntimeException(e);
-//        }
-//        String preparedStatment = "INSERT INTO account (username, password, firstname, lastname, middlename,email, birthday, nation, avatar_path, role) VALUES (?,?,?,?,?,?,?,?,?,?)";
-//        Properties dbProps = new Properties();
-//        dbProps.setProperty("url", "jdbc:mysql://db.sporadic.nz/xliu617");
-//        dbProps.setProperty("user", "xliu617");
-//        dbProps.setProperty("password", "123");
-//        try (Connection conn = DriverManager.getConnection(dbProps.getProperty("url"), dbProps.getProperty("user"), dbProps.getProperty("password"))) {
-//            try (PreparedStatement stmt = conn.prepareStatement("SELECT username FROM account WHERE username = ?")) {
-//                stmt.setString(1, username);
-//                try (ResultSet r = stmt.executeQuery()) {
-//                    if (r == null) {
-//                        try (PreparedStatement stmt1 = conn.prepareStatement(preparedStatment)) {
-//                            stmt1.setString(1, username);
-//                            stmt1.setString(2, password);
-//                            stmt1.setString(3, firstName);
-////                            "Hi James"
-//                            stmt1.setString(4, lastName);
-//                            stmt1.setString(5, middleName);
-//                            stmt1.setString(6, emailaddress);
-//                            stmt1.setString(7, birthday);
-//                            stmt1.setString(8, nation);
-//                            stmt1.setString(9, avitar_path);
-//                            stmt1.setInt(10, 2);
-//
-//                        }
-//                    }
-//
-//
-//                }
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }
 }

@@ -53,7 +53,7 @@ public class PasswordUpdateController extends HttpServlet {
             out.println("<body>\n" +
                     "    <div class=\"container\">\n" +
                     "\n" +
-                    "        <img src=\"WebMaterial/avi_4.png\" width=\"200px\" class=\"image\">\n" +
+                    "        <img src=\"WebMaterial/avatar4.png\" width=\"200px\" class=\"image\">\n" +
                     "\n" +
                     "        <p class=\"text_style1\"> Your password has been updated <span class=\"text_highlight\"> SUCCESSFULLY </span> <span id=\"username\" class=\"text_highlight\"> </span> You can now head to the login page</p>\n" +
                     "        \n" +
@@ -67,7 +67,7 @@ public class PasswordUpdateController extends HttpServlet {
             out.println("<body>\n" +
                     "    <div class=\"container\">\n" +
                     "\n" +
-                    "        <img src=\"WebMaterial/avi_1.png\" width=\"200px\" class=\"image\">\n" +
+                    "        <img src=\"WebMaterial/avatar1.png\" width=\"200px\" class=\"image\">\n" +
                     "\n" +
                     "        <p class=\"text_style1\"> Your password update is <span class=\"text_highlight\"> UNSUCCESSFUL </span> <span id=\"username\" class=\"text_highlight\"> </span> Please contact customer service at uranusblogpasswordreset@outlook.com</p>\n" +
                     "\n" +
