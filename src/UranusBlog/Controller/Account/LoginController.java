@@ -39,6 +39,12 @@ public class LoginController extends HttpServlet {
 
         try(AccountDAO dao = new AccountDAO(new MySQLDatabase(getServletContext()))){
             Account account = dao.getUserByName(userName);
+            if(account == null){
+                // login failed
+                req.getSession().setAttribute("is_logged", false);
+                out.print("{\"result\":\"fail\"}");
+                return;
+            }
             byte[] password_hash = Passwords.hash(password.toCharArray(), account.getSalt(), account.getIters());
             account = dao.login(userName, password_hash);
             if(account == null){

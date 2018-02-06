@@ -45,7 +45,6 @@ $(function(){
         postTime = postTime.replace('T', ' ');
         data.postTime = postTime;
         data.isPrivate = $('#isPrivate').is(':checked');
-        console.log(data);
         $.ajax({
             url:'api/articleModify',
             method:'post',

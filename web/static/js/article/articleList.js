@@ -6,7 +6,6 @@ function getArticleList(own) {
         data: params,
         dataType: 'json',
         success: function(ret) {
-            console.log(ret);
             if(ret.result != 'fail') {
                 updateArticles(ret);
                 lock = false;
@@ -18,7 +17,6 @@ function getArticleList(own) {
         },
         error: function(ret){
             console.log('getArticleList ajax fail')
-            console.log(ret)
         }
     });
 }

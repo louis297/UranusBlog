@@ -112,29 +112,37 @@ public class AccountDAO implements AutoCloseable{
         }
     }
 
-    public void modifyUser(int userID, String password, String firstname, String lastname, String middlename, String email, LocalDate birthday, String nation, String avatar_path, String description) throws SQLException {
-        try (PreparedStatement stmt = conn.prepareStatement("CALL UpdateAccount(?,?,?,?,?,?,?,?,?,?)")) {
+    public void modifyUser(int userID, String firstname, String lastname, String middlename, String email, LocalDate birthday, String nation, String avatar_path, String description) throws SQLException {
+        try (PreparedStatement stmt = conn.prepareStatement("CALL UpdateAccount(?,?,?,?,?,?,?,?,?)")) {
             stmt.setInt(1, userID);
-            stmt.setString(2, password);
-            stmt.setString(3, firstname);
-            stmt.setString(4, lastname);
-            stmt.setString(5, middlename);
-            stmt.setString(6, email);
-            stmt.setObject(7, birthday);
-            stmt.setString(8, nation);
-            stmt.setString(9, avatar_path);
-            stmt.setString(10, description);
+            stmt.setString(2, firstname);
+            stmt.setString(3, lastname);
+            stmt.setString(4, middlename);
+            stmt.setString(5, email);
+            stmt.setObject(6, birthday);
+            stmt.setString(7, nation);
+            stmt.setString(8, avatar_path);
+            stmt.setString(9, description);
             stmt.executeQuery();
         }
     }
 
-//    public void changePassword(int userID, String password) throws SQLException{
-//        try (PreparedStatement stmt = conn.prepareStatement("CALL UpdatePassword(?,?)")) {
-//            stmt.setInt(1, userID);
-//            stmt.setString(2, password);
-//            stmt.executeQuery();
-//        }
-//    }
+    public void changePassword(int userID, String password) throws SQLException{
+        try (PreparedStatement stmt = conn.prepareStatement("CALL UpdatePassword(?,?,?,?)")) {
+            byte[] salt = Passwords.getNextSalt();
+            Integer iters = (int) Math.round(Math.random()*50000 + 10000);
+            byte[] encrypted_password = Passwords.hash(password.toCharArray(),salt,iters);
+
+            Blob pass_blob = new javax.sql.rowset.serial.SerialBlob(encrypted_password);
+            Blob salt_blob = new javax.sql.rowset.serial.SerialBlob(salt);
+
+            stmt.setInt(1, userID);
+            stmt.setBlob(2, pass_blob);
+            stmt.setBlob(3,salt_blob);
+            stmt.setInt(4,iters);
+            stmt.executeQuery();
+        }
+    }
 
 
     private Account accountFromResultSet(ResultSet r)  throws SQLException {

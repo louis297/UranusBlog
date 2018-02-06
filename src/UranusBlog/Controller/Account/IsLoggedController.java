@@ -5,6 +5,7 @@ import org.json.simple.JSONObject;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class IsLoggedController extends HttpServlet {
@@ -13,9 +14,12 @@ public class IsLoggedController extends HttpServlet {
         Boolean isLogged = (Boolean) req.getSession().getAttribute("is_logged");
         JSONObject jsonObject = new JSONObject();
         if(isLogged != null && isLogged){
+            HttpSession session = req.getSession();
             jsonObject.put("is_logged", true);
-            jsonObject.put("username", req.getSession().getAttribute("username"));
-            jsonObject.put("uid", req.getSession().getAttribute("userID"));
+            jsonObject.put("username", session.getAttribute("username"));
+            jsonObject.put("uid", session.getAttribute("userID"));
+            jsonObject.put("avatarPath", session.getAttribute("avatarPath"));
+            jsonObject.put("roleDetail", session.getAttribute("roleDetail"));
         } else {
             jsonObject.put("is_logged", false);
         }

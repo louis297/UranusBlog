@@ -92,6 +92,7 @@ public class ArticleListController extends HttpServlet {
             jsonSingle.put("is_private", article.getPrivate());
             jsonSingle.put("author_name", article.getAuthorName());
 
+            jsonSingle.put("Hiden_Show", article.getActive());
             jsonArray.add(jsonSingle);
         }
         return jsonArray;

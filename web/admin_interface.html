@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Uranus Blog Admin Interface</title>
+
+    <link rel="stylesheet" href="static/css/bootstrap.css">
+    <script src="static/js/jquery.min.js"></script>
+    <script src="static/js/popper.min.js"></script>
+    <script src="static/js/bootstrap.js"></script>
+
+    <script>
+
+
+        $(document).ready(function() {
+            $("#user_display1").hide();
+            $("#account_tools1").hide();
+            $("#user_display2").hide();
+            $("#account_tools2").hide();
+            $("#registrationsuccess").hide();
+            $("#registrationfailed").hide();
+            $("#account_tools3").hide();
+            $("#user_display4").hide();
+            $("#account_tools4").hide();
+            $("#user_info").hide();
+            $("#article_info").hide();
+            $("#commentdisplay").hide();
+
+
+            $("#listAllUsersDelReset").click(function () {
+                $.ajax({
+                    url: '/accountList',
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (msg) {
+
+                        console.log(msg)
+                        console.log(JSON.stringify(msg));
+                        $("#user_info").show();
+                        if(msg.result=="fail"){
+                            var inforow = $(" <tr > <td colspan='5'> No Result Available </td> </tr>");
+                            $("#userlist").append(inforow);
+                            $(".nevershown").hide();
+                            return;
+                        }
+                        for (i = 0; i < msg.length; i++) {
+                            var inforow = $(" <tr id=\"userinfo" + i + "\"> " +
+                                "<td> <img src=\"" + msg[i]["avatar_thumbnailpath"] + "\"></td>" +
+                                " <td>" + msg[i]["uname"] + "</td> " +
+                                "<td>" + msg[i]["uid"] + "</td>" +
+                                "<td>" + msg[i]["fname"] + "</td>" +
+                                "<td>" + msg[i]["lname"] + "</td>" +
+                                "<td> <form method=\"post\" action='/deleteaccount'> <input class='nevershown' type='text' value='" + msg[i]["uid"] + "'name='userid'> <input type='submit'  value='Delete Account'>  </form> </td>" +
+                                "<td> <form method=\"post\" action='/pwreset'> <input class='nevershown' type='text' value='" + msg[i]["uid"] + "'name='userid'> <input type='submit'  value='Password Reset'>  </form> </td>  </tr> ");
+
+                            $("#userlist").append(inforow);
+                            $(".nevershown").hide();
+
+                        }
+                    }
+
+                });
+            });
+            $("#listallarticlestohideorshow_btn").click(function () {
+                $.ajax({
+                    url: '/adminlistarticle',
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (msg) {
+                        console.log(msg)
+                        console.log(JSON.stringify(msg));
+                        $("#article_info").show();
+                        if(msg.result=="fail"){
+                            var articlerow = $(" <tr > <td colspan='5'> No Result Available </td> </tr>");
+                            $("#article_row").append(articlerow);
+                            $(".nevershown").hide();
+                            return;
+                        }
+                        for (i = 0; i < msg.length; i++) {
+                            var showhidden = msg[i]["Hiden_Show"];
+                            var display = "";
+                            if (showhidden) {
+                                display = "Shown";
+                            }
+                            else if (!showhidden) {
+                                display = "Hidden";
+                            }
+                            var articlerow = $(" <tr id=\"articleinfo" + i + "\"> " +
+                                "<td>" + msg[i]["article_id"] + "</td>" +
+                                "<td>" + msg[i]["title"] + "</td> " +
+                                "<td>" + msg[i]["author_name"] + "</td>" +
+                                "<td>" + display + "</td>" +
+                                "<td> <form method=\"post\" action='/articleHideShow'> <input class='nevershown' type='text' value='" + msg[i]["Hiden_Show"] + "'name='active'> <input class='nevershown' type='text' value='" + msg[i]["article_id"] + "'name='articleid'> <input type='submit'  value='Hide/Show'>  </form> </td> </tr> ");
+
+                            $("#article_row").append(articlerow);
+                            $(".nevershown").hide();
+
+                        }
+                    }
+
+                });
+            });
+
+            $("#comment_articleID_btn").click(function () {
+                var id = document.getElementById("comment_articleID").value;
+                if (id==null||id==""){
+                    alert("Please Enter an Valid ArticleID");
+                    return;
+                }
+                $.ajax({
+                    url: '/commentListByArticle',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { articleid: id},
+                    success: function (msg) {
+                        console.log(msg);
+                        $("#commentdisplay").show();
+                        if(msg.result=="fail"){
+                            var commentrow = $(" <tr > <td colspan='5'> No Result Associated With Article - "+id + "</td> </tr>");
+                            $("#comment_row").append(commentrow);
+                            $(".nevershown").hide();
+                            return;
+                        }
+                        for (i = 0; i < msg.length; i++) {
+                            var showhidden = msg[i]["active"];
+                            var display = "";
+                            if (showhidden) {
+                                display = "Shown";
+                            }
+                            else if (!showhidden) {
+                                display = "Hidden";
+                            }
+
+                            var commentrow = $(" <tr id=\"commentnfo" + i + "\"> " +
+                                "<td>" + msg[i]["comment_id"] + "</td>" +
+                                "<td>" + msg[i]["content"] + "</td> " +
+                                "<td>" + msg[i]["authorname"] + "</td>" +
+                                "<td>" + display + "</td>" +
+                                "<td> <form method=\"post\" action='/commentHideShow'> <input class='nevershown' type='text' value='" + msg[i]["active"] + "'name='active'> <input class='nevershown' type='text' value='" + msg[i]["comment_id"] + "'name='commentid'> <input type='submit'  value='Hide/Show'>  </form> </td> </tr> ");
+
+                            $("#comment_row").append(commentrow);
+                            $(".nevershown").hide();
+                        }
+                    }
+
+
+                });
+
+            });
+        })
+
+
+    </script>
+
+    <style>
+
+        #title{
+            font-size:50px;
+            font-weight:bold;
+            color: darkslategrey;
+        }
+
+        #logout{
+            font-size:24px;
+            font-weight:bold;
+            color: dodgerblue;
+            position:absolute;
+            right:30px;
+
+        }
+
+        #second_line{
+            font-size:27px;
+            font-weight:bold;
+
+            color: darkgray;
+        }
+        button{
+            width:200px;
+        }
+
+        #registrationfailed{
+            color:red;
+            font-weight: bold;
+        }
+
+        #registrationsuccess{
+            color:green;
+            font-weight: bold;
+        }
+
+
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+
+    <div class="row">
+        <p id="title">Welcome to the administrative interface</p>
+    </div>
+
+    <div class="row">
+        <a id="logout" href="/logout"> <b> Logout </b> </a>
+    </div>
+
+
+    <div class="row">
+        <p id="second_line">Welcome back to the Administrative Interface! </p>
+    </div>
+
+
+
+
+    <div class="row">
+
+        <div class="col-md-6 col-sm-12">
+            <div class="panel-group">
+                <div class="panel panel-muted">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" href="#collapse1"><b> Delete Account and Reset User Password</b></a>
+                        </h4>
+                    </div>
+                    <div id="collapse1" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <p> You can <b>Delete Users</b> or <b>Reset User Password</b> by listing all users</p>
+                            <button class="btn btn-mute" width="100px" id="listAllUsersDelReset"> List All Users</button>
+
+                            <form action="/deleteaccount", method="post">
+
+                                <div class="form-group">
+                                    <label for="userID1"> You can <b>Delete</b> an User by Entering The User's ID: </label>
+                                    <input type="text" class="form-control" placeholder="Account/UserID" id="userID1" name="userid" required>
+                                </div>
+                                <input type="submit" value="Delete Account">
+                            </form>
+
+                            <form action="/pwreset", method="post">
+
+                                <div class="form-group">
+                                    <label for="userID2"> You can <b>Reset User Passowrd</b>  by Entering The User's ID: </label>
+                                    <input type="text" class="form-control" placeholder="Account/UserID" id="userID2" name="userid" required>
+                                </div>
+                                <input type="submit" value="Reset Password">
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="col-md-6 col-sm-12">
+            <div id="user_info">
+                <table>
+                    <thead>
+                    <tr>
+                        <td><b>Profile Picture</b></td>
+                        <td><b>User Name</b>/td>
+                        <td><b>User ID</b></td>
+                        <td><b>First Name</b></td>
+                        <td><b>Last Name</b></td>
+                        <td><b>Delete Account</b></td>
+                        <td><b>Reset Password</b></td>
+                    </tr>
+                    </thead>
+                    <tbody id="userlist">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="load_user">
+
+    </div>
+
+
+
+
+    <hr>
+
+
+
+
+    <div class="row">
+
+        <div class="col-md-6 col-sm-12">
+            <div class="panel-group">
+                <div class="panel panel-muted">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" href="#collapse2"><b> Add New User </b></a>
+                        </h4>
+                    </div>
+                    <div id="collapse2" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <form action="", method="post">
+                                <div class="form-group">
+                                    <label for="user_registration_id"> User Name: </label>
+                                    <input type="text" class="form-control" placeholder="User name" id="user_registration_id" name="ID" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="user_registration_fname"> First Name: </label>
+                                    <input type="text" class="form-control" placeholder="First name" id="user_registration_fname" name="fname" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="user_registration_lname"> Last Name: </label>
+                                    <input type="text" class="form-control" placeholder="Last name" id="user_registration_lname" name="lname" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="user_registration_dob"> Date Of Birth: </label>
+                                    <input type="date" class="form-control" id="user_registration_dob" name="dob" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="user_registration_nationality"> Nationality: </label>
+                                    <input type="text" class="form-control" placeholder="Nationality" id="user_registration_nationality" name="nationality" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="user_registration_email"> Email: </label>
+                                    <input type="date" class="form-control" placeholder="Email" id="user_registration_email" name="email" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="row">
+                                        <pre>  </pre>
+                                        <label for="admin_role"> Admin </label>
+                                        <input type="radio" id="admin_role" value="1" name="role">
+                                        <pre>    </pre>
+                                        <label for="user_role"> User </label>
+                                        <input type="radio" id="user_role" value="2" name="role">
+                                        <pre>    </pre>
+                                        <label for="guest_role"> Guest </label>
+                                        <input type="radio" id="guest_role" value="3" name="role">
+                                    </div>
+                                </div>
+
+
+
+
+
+                                <button type="submit" class="btn btn-muted">Submit</button>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-sm-12">
+
+        </div>
+
+    </div>
+
+
+
+    <hr>
+
+
+
+
+
+    <div class="row">
+
+        <div class="col-md-6 col-sm-12">
+            <div class="panel-group">
+                <div class="panel panel-muted">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" href="#collapse3"><b> Show or Hide Articles </b></a>
+                        </h4>
+                    </div>
+                    <div id="collapse3" class="panel-collapse collapse">
+
+                        <p> You can generate an article list to <b>Show</b> and <b> Hide</b> each article </p>
+                        <button class="btn btn-mute" width="100px" id="listallarticlestohideorshow_btn"> List All Articles</button>
+
+                        <div class="panel-body">
+                            <form action="/articleHideShow", method="post">
+
+                                <div class="form-group">
+                                    <label for="articleID"> If you know the ArticleID (AID). Please Enter The Article ID: </label>
+                                    <input type="text" class="form-control" placeholder="Article ID" id="articleID" name="articleid" required>
+                                </div>
+                                <input type="submit"  class="btn btn-muted" value="Show/Hide Article" >
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-sm-12">
+            <div id="article_info">
+                <table>
+                    <thead>
+                    <tr>
+                        <td><b>AID</b></td>
+                        <td><b>Title</b></td>
+                        <td><b>Author</b></td>
+                        <td><b>Display</b></td>
+                        <td><b>Hide/Show</b></td>
+                    </tr>
+                    </thead>
+                    <tbody id="article_row">
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <hr>
+
+
+    <div class="row">
+
+        <div class="col-md-6 col-sm-12">
+            <div class="panel-group">
+                <div class="panel panel-muted">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" href="#collapse4"><b> Show or Hide Comments </b></a>
+                        </h4>
+                    </div>
+                    <div id="collapse4" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <form action="/commentHideShow", method="post">
+
+                                <div class="form-group">
+                                    <label for="commentID"> If you know the comment ID, Please Enter The Comment ID: </label>
+                                    <input type="text" class="form-control" placeholder="Comment ID" id="commentID" name="commentid" required>
+                                </div>
+                                <input type="submit" class="btn btn-muted" value="Show/Hide Comment">
+
+                            </form>
+
+                            <p> You can list all comment for a particular article. Please enter the <b>Article ID</b></p>
+
+                                <div class="form-group">
+                                    <label for="comment_articleID">  Please Enter The Article ID: </label>
+                                    <input type="text" class="form-control" placeholder="Article ID" id="comment_articleID"
+                                           name="articleid">
+                                </div>
+                                <button type="submit" class="btn btn-muted" id="comment_articleID_btn">List all comments</button>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-sm-12">
+            <div id="noarticleid"> </div>
+            <div id="commentdisplay">
+                <table>
+                    <thead>
+                    <tr>
+                        <td><b>Comment ID</b></td>
+                        <td><b>Content</b></td>
+                        <td><b>Author</b></td>
+                        <td><b>Display</b></td>
+                        <td><b>Hide/Show</b></td>
+                    </tr>
+                    </thead>
+                    <tbody id="comment_row">
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+</body>
+</html>

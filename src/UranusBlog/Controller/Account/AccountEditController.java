@@ -211,7 +211,7 @@ return;
 
         // modify user info
         try (AccountDAO dao = new AccountDAO(new MySQLDatabase(getServletContext()))) {
-            dao.modifyUser(targetUserID, password, firstname, lastname, middlename, email, birthday, nation, avatarPath,description);
+            dao.modifyUser(targetUserID, firstname, lastname, middlename, email, birthday, nation, avatarPath,description);
             resp.sendRedirect("../main.html");
         } catch (Exception e) {
             e.printStackTrace();

@@ -36,7 +36,6 @@ function deleteComment(cid){
             }
         },
         error: function(ret){
-            console.log(ret);
             $('#failedBanner').show();
             if(!ret.reason)
                 ret.reason = "Unknown reason";
@@ -84,9 +83,9 @@ $(function () {
             if (ret.result === "success") {
 
                 $('#title').text(ret.title);
-                $('#content').text(ret.content);
+                $('#content').html(ret.content);
                 $('#author').text("Author: " + ret.authorName);
-                $('#modify').text("Modified on: " + ret.modified_time);
+                $('#modify').text("Modified on: " + ret.modified_time.replace('T',' '));
 
                 $('#title').show();
                 $('#content').show();

@@ -1,4 +1,4 @@
-package UranusBlog.Controller.james;
+package UranusBlog.Controller.Account;
 
 import jdk.nashorn.internal.parser.JSONParser;
 import org.json.simple.JSONObject;
@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.sql.*;
 import java.util.Properties;
@@ -19,32 +20,42 @@ public class PasswordResetPageController extends HttpServlet {
 
         String key = req.getParameter("key");
 
-        String username = "";
+        System.out.println(key+"test");
+
+        String username;
         boolean validRequest = false;
 
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
+        String userEmail="";
         Properties dbProps = new Properties();
         dbProps.setProperty("url", "jdbc:mysql://db.sporadic.nz/xliu617");
         dbProps.setProperty("user", "xliu617");
         dbProps.setProperty("password", "123");
-
         try (Connection conn = DriverManager.getConnection(dbProps.getProperty("url"), dbProps.getProperty("user"), dbProps.getProperty("password"))) {
-            try (PreparedStatement stmt = conn.prepareStatement("SELECT* FROM passwordreset WHERE `key`=?")) {
+            try (PreparedStatement stmt = conn.prepareStatement("SELECT * FROM passwordreset WHERE keypass =?;")) {
                 stmt.setString(1, key);
                 try (ResultSet r = stmt.executeQuery()) {
                     while (r.next()) {
-                        if (r != null) {
-                            validRequest = true;
-                            username = r.getString(2);
-                        } else {
-                            validRequest = false;
-                        }
+                        username = r.getString(2);
+                        System.out.println(username);
+                        validRequest=true;
+                        System.out.println(validRequest);
                     }
+
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        HttpSession passwordSess = req.getSession(true);
+        passwordSess.setAttribute("keypass",key);
+
 
         out.println("<!DOCTYPE html>\n" +
                 "<html lang=\"en\">\n" +
@@ -107,7 +118,7 @@ public class PasswordResetPageController extends HttpServlet {
                     "    <div class=\"container\">\n" +
                     "        <div class=\"row\">\n" +
                     "            <div class=\" col-sm-12 col-md-8 offset-md-2\">\n" +
-                    "                <img src=\"WebMaterial/avatar2.png\" class=\"image\" width=\"200px\">\n" +
+                    "                <img src=\"WebMaterial/avi_2.png\" class=\"image\" width=\"200px\">\n" +
                     "            </div>\n" +
                     "        </div>\n" +
                     "\n" +
@@ -126,13 +137,13 @@ public class PasswordResetPageController extends HttpServlet {
                     "\n" +
                     "    <div class=\"container\">\n" +
                     "\n" +
-                    "        <img src=\"WebMaterial/avatar3.png\" width=\"200px\" class=\"image\">\n" +
+                    "        <img src=\"WebMaterial/avi_3.png\" width=\"200px\" class=\"image\">\n" +
                     "\n" +
                     "        <p class=\"text_style1\"> <span class=\"text_highlight\"> Hello </span> <span id=\"username\" class=\"text_highlight\"> </span> ! Welcome Back to Uranus Blog.</p>\n" +
                     "\n" +
                     "        <p > You can reset your password using the form below! </p>\n" +
                     "\n" +
-                    "        <form action=\"/\" method=\"post\">\n" +
+                    "        <form action=\"/pwupdate\" method=\"post\">\n" +
                     "            <div class=\"form-group\">\n" +
                     "                <label for=\"pass1\">Password</label>\n" +
                     "                <input type=\"password\" class=\"form-control\" id=\"pass1\" placeholder=\"Enter Your New Password\" name=\"password\">\n" +

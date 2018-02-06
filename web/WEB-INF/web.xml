@@ -196,4 +196,89 @@
         <url-pattern>*.js</url-pattern>
     </servlet-mapping>
 
+
+    <!--from James-->
+    <servlet>
+        <servlet-name>PasswordResetLinkController</servlet-name>
+        <servlet-class>UranusBlog.Controller.Account.PasswordResetLinkController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PasswordResetLinkController</servlet-name>
+        <url-pattern>/pwreset</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>PasswordResetPageController</servlet-name>
+        <servlet-class>UranusBlog.Controller.Account.PasswordResetPageController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PasswordResetPageController</servlet-name>
+        <url-pattern>/pwresetpage</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>PasswordUpdateController</servlet-name>
+        <servlet-class>UranusBlog.Controller.Account.PasswordUpdateController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PasswordUpdateController</servlet-name>
+        <url-pattern>/pwupdate</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AccountListController</servlet-name>
+        <servlet-class>UranusBlog.Controller.Account.ListAccountController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AccountListController</servlet-name>
+        <url-pattern>/accountList</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>DeleteAccountController</servlet-name>
+        <servlet-class>UranusBlog.Controller.Account.DeleteAccountController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteAccountController</servlet-name>
+        <url-pattern>/deleteaccount</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdminListArticleController </servlet-name>
+        <servlet-class>UranusBlog.Controller.Article.ArticleListControllerAdminPage</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminListArticleController</servlet-name>
+        <url-pattern>/adminlistarticle</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>ArticleHideShowController </servlet-name>
+        <servlet-class>UranusBlog.Controller.Article.ArticalHideAndShowController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ArticleHideShowController</servlet-name>
+        <url-pattern>/articleHideShow</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CommentHideShowController </servlet-name>
+        <servlet-class>UranusBlog.Controller.Article.CommentShowHideController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CommentHideShowController</servlet-name>
+        <url-pattern>/commentHideShow</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>ListAllCommentsByArticleController </servlet-name>
+        <servlet-class>UranusBlog.Controller.Article.ListAllCommentsByArticleController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ListAllCommentsByArticleController</servlet-name>
+        <url-pattern>/commentListByArticle</url-pattern>
+    </servlet-mapping>
+
 </web-app>

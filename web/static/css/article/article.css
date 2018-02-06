@@ -1,0 +1,27 @@
+#ArticleContainer {
+    border: 1px solid black;
+    background-color: white;
+    margin-bottom: 0.5%;
+}
+
+.title {
+    padding-top: 1%;
+    font-size: 130%;
+    font-family: 'Titillium Web', sans-serif;
+}
+
+.col-form-label {
+    font-size: 100%;
+    font-family: 'Titillium Web', sans-serif;
+}
+
+body {
+    background: url("../../../static/image/space1.jpg");
+}
+
+/* change line for small size screen (when navbar collapse) */
+@media (min-width: 992px){
+    #loginForm div{
+        display: none;
+    }
+}

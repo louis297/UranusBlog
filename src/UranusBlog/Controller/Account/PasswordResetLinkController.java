@@ -1,4 +1,4 @@
-package UranusBlog.Controller.james;
+package UranusBlog.Controller.Account;
 
 import org.json.simple.JSONObject;
 import sun.net.smtp.SmtpClient;
@@ -18,15 +18,48 @@ public class PasswordResetLinkController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 //        PrintWriter out = resp.getWriter();
 //        out.println("hello login");
-     //   super.doGet(req,resp);
+//        super.doGet(req,resp);
         doPost(req,resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String userName = req.getParameter("Username");
+        String userEmail="";
+        Properties dbProps = new Properties();
+        dbProps.setProperty("url", "jdbc:mysql://db.sporadic.nz/xliu617");
+        dbProps.setProperty("user", "xliu617");
+        dbProps.setProperty("password", "123");
 
-        PrintWriter out = resp.getWriter();
+        String userName= req.getParameter("username");
+        int userID=Integer.parseInt(req.getParameter("userid"));
+
+        if (req.getParameter("username")==null || req.getParameter("userid")!=null) {
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+
+            try (Connection conn = DriverManager.getConnection(dbProps.getProperty("url"), dbProps.getProperty("user"), dbProps.getProperty("password"))) {
+                try (PreparedStatement stmt = conn.prepareStatement("SELECT * FROM account WHERE uid= ?;")) {
+                    stmt.setInt(1, userID);
+                    try (ResultSet r = stmt.executeQuery()) {
+                        while (r.next()) {
+                            userName = r.getString(r.findColumn("username"));
+                            System.out.println(userName);
+                        }
+
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+//       "jamesku2281993";
+//       System.out.println("user name");
+//       System.out.println(userName);
+         PrintWriter out = resp.getWriter();
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -34,17 +67,17 @@ public class PasswordResetLinkController extends HttpServlet {
             throw new RuntimeException(e);
         }
 
-        String userEmail="";
-        Properties dbProps = new Properties();
-        dbProps.setProperty("url", "jdbc:mysql://db.sporadic.nz/xliu617");
-        dbProps.setProperty("user", "xliu617");
-        dbProps.setProperty("password", "123");
+
         try (Connection conn = DriverManager.getConnection(dbProps.getProperty("url"), dbProps.getProperty("user"), dbProps.getProperty("password"))) {
             try (PreparedStatement stmt = conn.prepareStatement("SELECT * FROM account WHERE username = ?;")) {
                 stmt.setString(1, userName);
                 try (ResultSet r = stmt.executeQuery()) {
+                    if (!r.next()){
+                        out.print("<p> The user does not exist! </p>");
+                    }
                     while (r.next()) {
                         userEmail = r.getString(r.findColumn("email"));
+                        System.out.println(userEmail);
                     }
 
                 }
@@ -74,38 +107,49 @@ public class PasswordResetLinkController extends HttpServlet {
             try (PreparedStatement stmt = conn.prepareStatement("INSERT INTO passwordreset VALUES (?, ?);")) {
                 stmt.setString(1, paramStringForPassReset);
                 stmt.setString(2, userName);
-                stmt.execute();
+                stmt.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        boolean success= sendEmailToUser(userEmail,userName);
+        boolean success= sendEmailToUser(userEmail ,userName, paramStringForPassReset);
         if (success){
-            out.println("<p>Password link successfully sent to user </p>");
+            out.println("<p>Password link successfully sent to user </p> <button  onclick=\"window.history.back()\"> Go Back to Previous Page </button>");
         }
         else if(!success){
-            out.println("<p> Password reset unsuccessful </p>");
+            out.println("<p> Password reset unsuccessful </p> <button  onclick=\"window.history.back()\"> Go Back to Previous Page </button>");
         }
 
 
 
     }
 
-    public boolean sendEmailToUser(String userEmail, String userName)  {
+    public boolean sendEmailToUser(String userEmail, String userName, String paramStringForPassReset)  {
         boolean emailSuccess=true;
         try {
             SmtpClient smtpClient = new SmtpClient();
-            //email adress of admin is uranusblogpasswordreset@outlook.com, the password is louisjamesdan123
+
+            //email adess of admin is uranusblogpasswordreset@outlook.com, the password is louisjamesdan123
             smtpClient.from("uranusblogpasswordreset@outlook.com");
             smtpClient.to(userEmail);
+
             PrintStream msg = smtpClient.startMessage();
 
-            msg.println("Dear" + userName + ":");
+            msg.println("To: " + userEmail);  // so mailers will display the To: address
+            msg.println("Subject: Password Reset");
+            msg.println();
+            //System.out.println("test1");
+
+            msg.println("Dear  " + userName + " :");
+            msg.println("");
             msg.println("We have received your request for a password reset, which you can do by clicking on the link below. ");
             //Ask Andrew
-            msg.println();
-            msg.println("Yours Faithfully- UranusBlog ManagementTeam");
+            msg.println("");
+            msg.println("localhost:8181/pwresetpage?key="+paramStringForPassReset);
+            msg.println("");
+            msg.println("Urnaus Blog Management");
+            msg.flush();
             smtpClient.closeServer();
         }
         catch (IOException e) {
@@ -114,6 +158,7 @@ public class PasswordResetLinkController extends HttpServlet {
         }
 
         return emailSuccess;
+
     }
 
 }

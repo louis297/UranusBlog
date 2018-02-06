@@ -16,7 +16,7 @@
         font-size: 100%;
     }
     video#bgvideo{
-        background:url(WebMaterial/landingpage_bg.mp4) ;
+        background:url(static/video/landingpage_bg.mp4) ;
 
         position: fixed;
         top: 50%;
@@ -202,7 +202,7 @@
 
             $("#explore_btn").click(function(){
                 $("<audio></audio>").attr({
-                    'src':'WebMaterial/explore.mp3',
+                    'src':'static/video/explore.mp3',
                     'volume':1,
                     'autoplay':'autoplay'
                 }).appendTo("body");
@@ -224,7 +224,7 @@
 
             $("#register_btn").click(function(){
                 $("<audio></audio>").attr({
-                    'src':'WebMaterial/register.mp3',
+                    'src':'static/video/register.mp3',
                     'volume':1,
                     'autoplay':'autoplay'
                 }).appendTo("body");
@@ -246,7 +246,7 @@
 
             $("#login_btn").click(function(){
                 $("<audio></audio>").attr({
-                    'src':'WebMaterial/login.mp3',
+                    'src':'static/video/login.mp3',
                     'volume':1,
                     'autoplay':'autoplay'
                 }).appendTo("body");
@@ -388,7 +388,7 @@
     </div>
 
     <video id="bgvideo" autoplay loop >
-        <source src="WebMaterial/uranus_background.mp4" type="video/mp4"/>
+        <source src="static/video/uranus_background.mp4" type="video/mp4"/>
     </video>
 
     <img src="WebMaterial/uranus1.png" id="uranus_img">

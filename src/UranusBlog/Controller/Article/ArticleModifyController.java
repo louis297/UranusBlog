@@ -3,6 +3,7 @@ package UranusBlog.Controller.Article;
 import UranusBlog.DAO.ArticleDAO;
 import UranusBlog.DB.MySQLDatabase;
 import UranusBlog.Model.Article;
+import UranusBlog.Utils.Utils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -73,6 +74,7 @@ public class ArticleModifyController extends HttpServlet {
             Timestamp postTime = Timestamp.valueOf(postTimeStr);
             boolean modifiedPrivacy= Boolean.parseBoolean(isPrivateStr);
 
+            content = Utils.contentPrepare(content);
             // 4. do modify
             int aid = dao.updateArticle(articleID, title, content, postTime, modifiedPrivacy);
             out.print("{\"result\":\"success\", \"aid\":\"" + aid + "\"}");

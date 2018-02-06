@@ -2,6 +2,7 @@ package UranusBlog.Controller.Article;
 
 import UranusBlog.DAO.ArticleDAO;
 import UranusBlog.DB.MySQLDatabase;
+import UranusBlog.Utils.Utils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,9 +19,8 @@ public class ArticleAddController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // TODO: user super.doGet to replace doPost in product environment
-        //super.doGet(req, resp);
-        doPost(req,resp);
+        super.doGet(req, resp);
+//        doPost(req,resp);
     }
 
     @Override
@@ -44,7 +44,13 @@ public class ArticleAddController extends HttpServlet {
             return;
         }
         System.out.println(postTimeStr);
-        Timestamp postTime = Timestamp.valueOf(postTimeStr);
+        Timestamp postTime;
+        try {
+            postTime = Timestamp.valueOf(postTimeStr);
+        } catch (IllegalArgumentException e){
+            out.print("{\"result\":\"fail\",\"reason\":\"Post time format error.\"}");
+            return;
+        }
         boolean isPrivate = Boolean.parseBoolean(isPrivateStr);
 
 //        String title= "TitleTest";
@@ -56,6 +62,13 @@ public class ArticleAddController extends HttpServlet {
             out.print("{\"result\":\"fail\",\"reason\":\"Please login or register first\"}");
             return;
         }
+
+        if(title.length() > 100){
+            out.print("{\"result\":\"fail\",\"reason\":\"The title is too long\"}");
+            return;
+        }
+
+        content = Utils.contentPrepare(content);
 
         try (ArticleDAO dao = new ArticleDAO(new MySQLDatabase(getServletContext()))) {
             int aid = dao.addArticle(userID, title, content, postTime, isPrivate);

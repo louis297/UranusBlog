@@ -13,14 +13,15 @@ CREATE PROCEDURE InsertAccount(
   IN new_avatar_path VARCHAR(200),
   IN new_role int(11),
   IN new_salt BLOB,
-  IN new_iters int(11)
+  IN new_iters int(11),
+  IN new_description LONGTEXT
 )
 
   BEGIN
 
     insert into `account`
-    (username, `password`, firstname, lastname, middlename, email, birthday, nation, avatar_path, role, salt, iters)
-      value (new_username, new_password, new_firstname, new_lastname, new_middlename, new_email, new_birthday, new_nation, new_avatar_path, new_role, new_salt, new_iters);
+    (username, `password`, firstname, lastname, middlename, email, birthday, nation, avatar_path, role, salt, iters, description)
+      value (new_username, new_password, new_firstname, new_lastname, new_middlename, new_email, new_birthday, new_nation, new_avatar_path, new_role, new_salt, new_iters, new_description);
   END ##
 
 DELIMITER ;
