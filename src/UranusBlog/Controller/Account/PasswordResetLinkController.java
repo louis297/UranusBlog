@@ -146,7 +146,7 @@ public class PasswordResetLinkController extends HttpServlet {
             msg.println("We have received your request for a password reset, which you can do by clicking on the link below. ");
             //Ask Andrew
             msg.println("");
-            msg.println("localhost:8181/pwresetpage?key="+paramStringForPassReset);
+            msg.println("sporadic.nz/uranusblog/pwresetpage?key="+paramStringForPassReset);
             msg.println("");
             msg.println("Urnaus Blog Management");
             msg.flush();
