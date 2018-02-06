@@ -29,7 +29,7 @@
 
             $("#listAllUsersDelReset").click(function () {
                 $.ajax({
-                    url: '/accountList',
+                    url: 'accountList',
                     type: 'POST',
                     dataType: 'json',
                     success: function (msg) {
@@ -50,8 +50,8 @@
                                 "<td>" + msg[i]["uid"] + "</td>" +
                                 "<td>" + msg[i]["fname"] + "</td>" +
                                 "<td>" + msg[i]["lname"] + "</td>" +
-                                "<td> <form method=\"post\" action='/deleteaccount'> <input class='nevershown' type='text' value='" + msg[i]["uid"] + "'name='userid'> <input type='submit'  value='Delete Account'>  </form> </td>" +
-                                "<td> <form method=\"post\" action='/pwreset'> <input class='nevershown' type='text' value='" + msg[i]["uid"] + "'name='userid'> <input type='submit'  value='Password Reset'>  </form> </td>  </tr> ");
+                                "<td> <form method=\"post\" action='deleteaccount'> <input class='nevershown' type='text' value='" + msg[i]["uid"] + "'name='userid'> <input type='submit'  value='Delete Account'>  </form> </td>" +
+                                "<td> <form method=\"post\" action='pwreset'> <input class='nevershown' type='text' value='" + msg[i]["uid"] + "'name='userid'> <input type='submit'  value='Password Reset'>  </form> </td>  </tr> ");
 
                             $("#userlist").append(inforow);
                             $(".nevershown").hide();
@@ -63,7 +63,7 @@
             });
             $("#listallarticlestohideorshow_btn").click(function () {
                 $.ajax({
-                    url: '/adminlistarticle',
+                    url: 'adminlistarticle',
                     type: 'POST',
                     dataType: 'json',
                     success: function (msg) {
@@ -90,7 +90,7 @@
                                 "<td>" + msg[i]["title"] + "</td> " +
                                 "<td>" + msg[i]["author_name"] + "</td>" +
                                 "<td>" + display + "</td>" +
-                                "<td> <form method=\"post\" action='/articleHideShow'> <input class='nevershown' type='text' value='" + msg[i]["Hiden_Show"] + "'name='active'> <input class='nevershown' type='text' value='" + msg[i]["article_id"] + "'name='articleid'> <input type='submit'  value='Hide/Show'>  </form> </td> </tr> ");
+                                "<td> <form method=\"post\" action='articleHideShow'> <input class='nevershown' type='text' value='" + msg[i]["Hiden_Show"] + "'name='active'> <input class='nevershown' type='text' value='" + msg[i]["article_id"] + "'name='articleid'> <input type='submit'  value='Hide/Show'>  </form> </td> </tr> ");
 
                             $("#article_row").append(articlerow);
                             $(".nevershown").hide();
@@ -108,7 +108,7 @@
                     return;
                 }
                 $.ajax({
-                    url: '/commentListByArticle',
+                    url: 'commentListByArticle',
                     type: 'POST',
                     dataType: 'json',
                     data: { articleid: id},
@@ -136,7 +136,7 @@
                                 "<td>" + msg[i]["content"] + "</td> " +
                                 "<td>" + msg[i]["authorname"] + "</td>" +
                                 "<td>" + display + "</td>" +
-                                "<td> <form method=\"post\" action='/commentHideShow'> <input class='nevershown' type='text' value='" + msg[i]["active"] + "'name='active'> <input class='nevershown' type='text' value='" + msg[i]["comment_id"] + "'name='commentid'> <input type='submit'  value='Hide/Show'>  </form> </td> </tr> ");
+                                "<td> <form method=\"post\" action='commentHideShow'> <input class='nevershown' type='text' value='" + msg[i]["active"] + "'name='active'> <input class='nevershown' type='text' value='" + msg[i]["comment_id"] + "'name='commentid'> <input type='submit'  value='Hide/Show'>  </form> </td> </tr> ");
 
                             $("#comment_row").append(commentrow);
                             $(".nevershown").hide();
@@ -202,7 +202,7 @@
     </div>
 
     <div class="row">
-        <a id="logout" href="/logout"> <b> Logout </b> </a>
+        <a id="logout" href="logout"> <b> Logout </b> </a>
     </div>
 
 
@@ -228,7 +228,7 @@
                             <p> You can <b>Delete Users</b> or <b>Reset User Password</b> by listing all users</p>
                             <button class="btn btn-mute" width="100px" id="listAllUsersDelReset"> List All Users</button>
 
-                            <form action="/deleteaccount", method="post">
+                            <form action="deleteaccount", method="post">
 
                                 <div class="form-group">
                                     <label for="userID1"> You can <b>Delete</b> an User by Entering The User's ID: </label>
@@ -237,7 +237,7 @@
                                 <input type="submit" value="Delete Account">
                             </form>
 
-                            <form action="/pwreset", method="post">
+                            <form action="pwreset", method="post">
 
                                 <div class="form-group">
                                     <label for="userID2"> You can <b>Reset User Passowrd</b>  by Entering The User's ID: </label>
@@ -327,7 +327,7 @@
 
                                 <div class="form-group">
                                     <label for="user_registration_email"> Email: </label>
-                                    <input type="date" class="form-control" placeholder="Email" id="user_registration_email" name="email" required>
+                                    <input type="email" class="form-control" placeholder="Email" id="user_registration_email" name="email" required>
                                 </div>
 
                                 <div class="form-group">
@@ -387,7 +387,7 @@
                         <button class="btn btn-mute" width="100px" id="listallarticlestohideorshow_btn"> List All Articles</button>
 
                         <div class="panel-body">
-                            <form action="/articleHideShow", method="post">
+                            <form action="articleHideShow", method="post">
 
                                 <div class="form-group">
                                     <label for="articleID"> If you know the ArticleID (AID). Please Enter The Article ID: </label>
@@ -441,7 +441,7 @@
                     </div>
                     <div id="collapse4" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <form action="/commentHideShow", method="post">
+                            <form action="commentHideShow", method="post">
 
                                 <div class="form-group">
                                     <label for="commentID"> If you know the comment ID, Please Enter The Comment ID: </label>
