@@ -174,7 +174,9 @@ public class RegisterController extends HttpServlet {
             out.print("\"result\":\"fail\",\"reason\":\"Some fields are too long.\"");
             return;
         }
-
+        if(avatarPath == null || avatarPath.isEmpty()){
+            avatarPath = "static/image/Avatar/avatar1.jpg";
+        }
         if(hasUploadedAvatar) {
             if (avatarPath == null || avatarPath.isEmpty()) {
                 // failed to save avatar file
